@@ -3,17 +3,19 @@
 namespace Bundle\GoogleChartBundle\Library\LineChart;
 
 use Bundle\GoogleChartBundle\Library\LineChart\Line;
-use Bundle\GoogleChartBundle\Library\ChartInterface;
+use Bundle\GoogleChartBundle\Library\AbstractChart;
 
 
-class LineChart implements ChartInterface {
+class LineChart implements AbstractChart {
+    
+    protected $lines = array();
     
     public function __construct(array $options = array()) {
         
     }
     
-    public function addLine(Line $lineData) {
-        
+    public function addLine(Line $line) {
+        $this->lines[] = $line;
     }
     
     public function render() {
