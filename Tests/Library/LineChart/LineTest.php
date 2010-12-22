@@ -13,5 +13,16 @@ class LineTest extends AbstractChartDataTest {
         $this->chartData = new Line();
     }
     
+    public function testDefaultOptions() {
+        $this->assertFalse($this->chartData->getFilled());
+    }
+    
+    public function testFilled() {
+        $this->chartData->setFilled(true);
+        $this->assertTrue($this->chartData->getFilled()); // should be true
+        
+        $this->chartData->setFilled(0);
+        $this->assertFalse($this->chartData->getFilled()); // should be false
+    }
     
 }
