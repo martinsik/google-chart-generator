@@ -8,7 +8,7 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
     
     protected $color;
     
-    protected $data;
+    protected $data = array();
     
     protected $innerPosition = 0;
     
@@ -33,6 +33,16 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
     
     public function getColor() {
         return $this->color;
+    }
+    
+    public function add($value, $key = null) {
+        if (is_null($key)) {
+            $this->data[] = $value;
+            return $this->count() - 1;
+        } else {
+            $this->data[$key] = $value;
+            return $key;
+        }
     }
     
     

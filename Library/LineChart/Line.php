@@ -5,7 +5,7 @@ namespace Bundle\GoogleChartBundle\Library\LineChart;
 use Bundle\GoogleChartBundle\Library\AbstractChartData;
 
 
-class Line implements AbstractChartData {
+class Line extends AbstractChartData {
 
     protected $options = array();
     

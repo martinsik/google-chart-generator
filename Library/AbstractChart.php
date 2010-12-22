@@ -23,9 +23,11 @@ abstract class AbstractChart {
                 
     }
     
-    public function render();
+    public function render() {
+        return '<img src="' . $this->getUrl() . '" />';
+    }
     
-    public function getImageUrl();
+    abstract public function getUrl();
     
     /**
      * Sets chart output size in pixels
@@ -61,7 +63,12 @@ abstract class AbstractChart {
         
     }
     
-    
+    /**
+     * Get actual chart size
+     * 
+     * @return array   return chart size as an associative array containing
+     *                 two items: width and height
+     */
     public function getSize() {
         return $this->options['size'];
     }

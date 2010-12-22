@@ -5,8 +5,7 @@ namespace Bundle\GoogleChartBundle\Library\LineChart;
 use Bundle\GoogleChartBundle\Library\LineChart\Line;
 use Bundle\GoogleChartBundle\Library\AbstractChart;
 
-
-class LineChart implements AbstractChart {
+class LineChart extends AbstractChart {
     
     protected $lines = array();
     
@@ -18,7 +17,7 @@ class LineChart implements AbstractChart {
         $this->lines[] = $line;
     }
     
-    public function render() {
+    public function getUrl() {
         
     }
     
