@@ -1,0 +1,3 @@
+showroom:
+    pattern:  /googleChartBundle
+    defaults: { _controller: GoogleChartBundle:Default:index }
