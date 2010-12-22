@@ -4,15 +4,35 @@ namespace Bundle\GoogleChartBundle\Library;
 
 abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator {
     
-    protected $title;
+    /**
+     * data collection title
+     * @var string
+     */
+    protected $title = 'call setTitle($title) to change this text :)';
     
-    protected $color;
+    /**
+     * data collection color
+     * @var string
+     */
+    protected $colour = 'auto';
     
+    /**
+     * data itself
+     * @var array
+     */
     protected $data = array();
     
+    /**
+     * inner pointer positon (used only when iterating data array)
+     * @var integer 
+     */
     protected $innerPosition = 0;
     
-    protected $defaultColors = array('FF0000', '00FF00', '0000FF');
+    /**
+     * default colors used for data collection when set to auto
+     * @var array
+     */
+    protected $defaultColours = array('FF0000', '00FF00', '0000FF');
     
     
     public function __construct(array $options = array()) {
@@ -28,11 +48,24 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
     }
     
     public function setColor($color) {
-        $this->color = $color;
+        return $this->setColour($color);
+    }
+    
+    public function setColour($colour) {
+        if (preg_match('/[0-9A-F]{2}[0-9A-F]{2}[0-9A-F]{2}/i', $colour)) {
+            $this->colour = $colour;
+            return true;
+        } else {
+            throw new \InvalidArgumentException ('Sorry, but the only appropriate colour format is "RRGGBB"');
+        }
     }
     
     public function getColor() {
-        return $this->color;
+        return $this->getColour();
+    }
+    
+    public function getColour() {
+        return $this->colour;
     }
     
     public function add($value, $key = null) {
@@ -43,6 +76,20 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
             $this->data[$key] = $value;
             return $key;
         }
+    }
+    
+    public function reset() {
+        $this->data = array();
+        $this->color = 'auto';
+        $this->innerPosition = 0;
+        $this->title = 'call setTitle($title) to change this text :)';
+        /**
+         * TODO: reset to default settings (just check it :))
+         */
+    }
+    
+    public function removeAll() {
+        $this->data = array();
     }
     
     

@@ -14,7 +14,6 @@ class Line extends AbstractChartData {
         
         $defaultOptions = array(
             'filled' => false,
-            'color'  => 'auto'
         );
     }
     
