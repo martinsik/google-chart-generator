@@ -6,6 +6,8 @@ abstract class AbstractChart {
     
     protected $options = array();
     
+    protected $data = array();
+    
     static protected $chartNumber = 1;
     
     public function __construct(array $options = array()) {
@@ -21,6 +23,10 @@ abstract class AbstractChart {
         $this->options = array_merge($defaultOptions, $options);
         
                 
+    }
+    
+    public function addData(AbstractChartData $cd) {
+        $this->data[] = $cd;
     }
     
     public function render() {
