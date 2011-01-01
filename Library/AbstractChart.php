@@ -2,43 +2,69 @@
 
 namespace Bundle\GoogleChartBundle\Library;
 
+use Bundle\GoogleChartBundle\Library\Axis;
+
 abstract class AbstractChart {
     
     protected $options = array();
     
     protected $data = array();
     
+    protected $defaultOptions = array();
+    
     static protected $chartNumber = 1;
+    
     
     public function __construct(array $options = array()) {
         
-        $defaultOptions = array (
+        $this->defaultOptions = array (
+            'title' => 'Chart #' . self::$chartNumber++,
             'size' => array (
                 'width'   => 300,
                 'height'  => 200,
             ),
-            'title' => 'Chart #' . $chartNumber++,
+            'axes'  => array (
+                'x' => new Axis('x'),
+                'y' => new Axis('y'),
+            )
         );
 
-        $this->options = array_merge($defaultOptions, $options);
+        $this->options = array_merge($this->defaultOptions, $options);
         
-                
     }
-    
-    public function addData(AbstractChartData $cd) {
-        $this->data[] = $cd;
+        
+    public function getUrl() {
+        $baseUrl = 'https://chart.googleapis.com/chart?';
+        $parts = array (
+            'cht=' . $this->getChartTypeUrlPart(),
+            'chs=' . $this->getSizeUrlPart(),
+            'chd=' . $this->getDataUrlPart(),
+            $this->getTitleUrlPart() ? 'chtt=' . $this->getTitleUrlPart() : false,
+            $this->getChartSpecificUrlPart(),
+        );
+        return trim($baseUrl . implode('&', $parts), '&');
     }
     
     public function render() {
         return '<img src="' . $this->getUrl() . '" />';
     }
     
-    abstract public function getUrl();
+    public function addData(AbstractChartData $cd) {
+        $this->data[] = $cd;
+    }
+    
+    public function getData() {
+        return $this->data;
+    }
+    
+    public function getOptions() {
+        return $this->options;
+    }
     
     /**
      * Sets chart output size in pixels
-     * correct is eg. 300x200, 5x100, 300 (guesses 300x300)
-     * incorrect is eg. x300, 300x, 0, 0x0, 500px
+     * correct are eg. 300x200, 5x100, 300 (guesses 300x300)
+     * incorrect are eg. x300, 300x, 0, 0x0, 500px
      * 
      * @param integer|string  $x 
      * @param integer         $y 
@@ -57,7 +83,7 @@ abstract class AbstractChart {
             
         // check if new size has appropriate format
         if (!preg_match('/^[0-9]+x[0-9]+$/i', $width)) {
-            return false;
+            throw new InvalidArgumentException();
         }
         
         list($width, $height) = explode('x', $width);
@@ -78,5 +104,36 @@ abstract class AbstractChart {
     public function getSize() {
         return $this->options['size'];
     }
+    
+    public function setTitle($title) {
+        $this->options['title'] = $title;
+    }
+    
+    public function getTitle() {
+        return $this->options['title'];
+    }
+    
+    public function debugUrl() {
+        return str_replace(array('?', '&'), array("\n    ?", "\n    &"), $this->getUrl());
+    }
+    
+    protected function getSizeUrlPart() {
+        $size = $this->getSize();
+        return $size['width'] . 'x' . $size['height'];
+    }
+    
+    protected function getTitleUrlPart() {
+        if ($this->options['title']) {
+            return urlencode($this->options['title']);
+        } else {
+            return false;
+        }
+    }
+    
+    abstract protected function getChartTypeUrlPart();
+    
+    abstract protected function getChartSpecificUrlPart();
+    
+    abstract protected function getDataUrlPart();
     
 }

@@ -1,1 +1,12 @@
-GoogleChartBundle showcase
+<style>
+h1 { font-size: 20px; }
+pre { border: 1px solid #ddd; border-radius: 3px; padding: 3px; background: #eee; }
+</style>
+
+<h1>GoogleChartBundle showroom</h1>
+
+<pre>{{ chart1.debugUrl }}</pre>
+{% autoescape off %}
+{{ chart1.render }}
+{% endautoescape %}
+
