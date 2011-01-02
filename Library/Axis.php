@@ -2,6 +2,8 @@
 
 namespace Bundle\GoogleChartBundle\Library;
 
+use Bundle\GoogleChartBundle\Library\Font;
+
 class Axis {
     
     protected $position;
@@ -14,7 +16,7 @@ class Axis {
     
     public function __construct($position, $labels = 'auto', $font = null) {
         if (!in_array($position, array('x', 'y', 'top', 'right'))) {
-            throw new InvalidArgumentException('Allowed positions are only: x, y, top, right');
+            throw new \InvalidArgumentException('Allowed values are only: x, y, top, right');
         }
         $this->position = $position;
         $this->labels = $labels;
@@ -38,11 +40,11 @@ class Axis {
         $this->enabled = $enabled;
     }
     
-    public function getEnabled() {
-        return $this->enabled;
+    public function isEnabled() {
+        return (boolean) $this->enabled;
     }
     
-    public function setFont($font) {
+    public function setFont(Font $font) {
         $this->font = $font;
     }
     

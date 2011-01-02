@@ -10,8 +10,9 @@ class DefaultController extends Controller {
     
     public function indexAction() {
         $chart1 = new LineChart();
+        $chart1->setSize('300x100');
         $line = new Line();
-        $line->add($this->getRandomData(10));
+        $line->add($this->getRandomData(20));
         $chart1->addData($line);
         
         return $this->render('GoogleChartBundle:Default:index.twig', array('chart1' => $chart1));

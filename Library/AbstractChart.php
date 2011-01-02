@@ -23,10 +23,10 @@ abstract class AbstractChart {
                 'width'   => 300,
                 'height'  => 200,
             ),
-            'axes'  => array (
+            'axis'  => array (
                 'x' => new Axis('x'),
                 'y' => new Axis('y'),
-            )
+            ),
         );
 
         $this->options = array_merge($this->defaultOptions, $options);
@@ -82,15 +82,15 @@ abstract class AbstractChart {
         }
             
         // check if new size has appropriate format
-        if (!preg_match('/^[0-9]+x[0-9]+$/i', $width)) {
-            throw new InvalidArgumentException();
+        if (!preg_match('/^[0-9]+x[0-9]+$/i', $size)) {
+            throw new \InvalidArgumentException();
         }
         
-        list($width, $height) = explode('x', $width);
+        list($width, $height) = explode('x', $size);
         
         $this->options['size'] = array(
-            'width'   => $x,
-            'height'  => $y,
+            'width'   => $width,
+            'height'  => $height,
         );
         
     }

@@ -5,21 +5,24 @@ namespace Bundle\GoogleChartBundle\Library;
 use Bundle\GoogleChartBundle\Library\AbstractChart;
 
 abstract class AbstractAxisChart extends AbstractChart {
-    
-    public function hasXAxe() {
-        return $this->options['axes']['x']['enabled'];
+
+    public function __construct(array $options = array()) {
+        $this->defaultOptions = array_merge(
+            array(
+                'scale' => array(
+                    'xmin' => 'auto',
+                    'xmax' => 'auto',
+                    'ymin' => 'auto',
+                    'ymax' => 'auto',
+                ),
+            ),
+            $this->defaultOptions
+        );
+        parent::__construct($options);
     }
-    
-    public function hasXAxeLabels() {
-        return $this->options['axes']['x']['labels'];
+
+    public function getAxis() {
+        return $this->options['axis'];
     }
-    
-    public function hasYAxe() {
-        return $this->options['axes']['y']['enabled'];
-    }
-    
-    public function hasYAxeLabels() {
-        return $this->options['axes']['y']['labels'];
-    }
-    
+
 }
