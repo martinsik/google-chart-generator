@@ -8,8 +8,6 @@ use Bundle\GoogleChartBundle\Library\AbstractAxisChart;
 
 class LineChart extends AbstractAxisChart {
     
-    protected $lines = array();
-    
     protected $sparkline = false;
     
     /*public function __construct(array $options = array()) {
@@ -17,7 +15,7 @@ class LineChart extends AbstractAxisChart {
     }*/
     
     public function addLine(Line $line) {
-        $this->lines[] = $line;
+        $this->addData($line);
     }
     
     public function setSparkline($sparkline) {
@@ -49,8 +47,9 @@ class LineChart extends AbstractAxisChart {
     }
     
     protected function getDataUrlPart() {
-        $series = array ();
+        $series = array();
         foreach ($this->getData() as $dataCollection) {
+            //var_dump($this->getData());
             $urlString = '';
             foreach ($dataCollection as $x => $value) {
                 $urlString .= $value . ',';

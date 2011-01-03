@@ -89,6 +89,10 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
         $this->data = array();
     }
     
+    public function getAll() {
+        return $this->data;
+    }
+    
     
     /**
      * Implementation of ArrayAccess interface
