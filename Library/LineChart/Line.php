@@ -15,17 +15,31 @@ class Line extends AbstractChartData {
      */
     protected $options = array();
     
+    
     public function __construct(array $options = array()) {
         parent::__construct($options);
-        $this->options = array_merge(array('filled' => false), $this->options);
+        $this->options = array_merge(
+            array (
+                'filled'      => false,
+                'normalized'  => false,
+            ), $this->options
+        );
     }
     
     public function setFilled($filled) {
         $this->options['filled'] = $filled;
     }
     
-    public function getFilled() {
+    public function isFilled() {
         return (boolean) $this->options['filled'];
+    }
+    
+    public function setNormalized($normalized) {
+        $this->options['normalized'] = $normalized;
+    }
+    
+    public function isNormalized() {
+        return (boolean) $this->options['normalized'];
     }
     
 }

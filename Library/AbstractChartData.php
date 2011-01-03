@@ -89,8 +89,26 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
         $this->data = array();
     }
     
-    public function getAll() {
+    public function getData() {
         return $this->data;
+    }
+    
+    public function getMinX() {
+        $keys = array_keys($this->getData());
+        return min($keys);
+    }
+    
+    public function getMaxX() {
+        $keys = array_keys($this->getData());
+        return max($keys);
+    }
+    
+    public function getMinY() {
+        return min($this->getData());
+    }
+    
+    public function getMaxY() {
+        return max($this->getData());
     }
     
     

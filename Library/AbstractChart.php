@@ -32,17 +32,26 @@ abstract class AbstractChart {
         $this->options = array_merge($this->defaultOptions, $options);
         
     }
+    
+
+    protected function getUrlParts() {
+        return array(
+            'cht'   => $this->getChartTypeUrlPart(),
+            'chs'   => $this->getSizeUrlPart(),
+            'chd'   => $this->getDataUrlPart(),
+            'chtt'  => $this->getTitleUrlPart(),
+        );
+    }
         
     public function getUrl() {
         $baseUrl = 'https://chart.googleapis.com/chart?';
-        $parts = array (
-            'cht=' . $this->getChartTypeUrlPart(),
-            'chs=' . $this->getSizeUrlPart(),
-            'chd=' . $this->getDataUrlPart(),
-            $this->getTitleUrlPart() ? 'chtt=' . $this->getTitleUrlPart() : false,
-            $this->getChartSpecificUrlPart(),
-        );
-        return trim($baseUrl . implode('&', $parts), '&');
+        $filteredParts = array();
+        foreach ($this->getUrlParts() as $key => $content) {
+            if ($content) {
+                $filteredParts[] = $key . '=' . $content;
+            }
+        }
+        return $baseUrl . implode('&', $filteredParts);
     }
     
     public function render() {
@@ -117,6 +126,7 @@ abstract class AbstractChart {
         return str_replace(array('?', '&'), array("\n    ?", "\n    &"), $this->getUrl());
     }
     
+    
     protected function getSizeUrlPart() {
         $size = $this->getSize();
         return $size['width'] . 'x' . $size['height'];
@@ -125,10 +135,9 @@ abstract class AbstractChart {
     protected function getTitleUrlPart() {
         if ($this->options['title']) {
             return urlencode($this->options['title']);
-        } else {
-            return false;
         }
     }
+    
     
     abstract protected function getChartTypeUrlPart();
     
