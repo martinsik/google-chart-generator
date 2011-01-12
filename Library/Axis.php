@@ -47,7 +47,9 @@ class Axis {
     }
     
     public function setMin($min) {
-        return $this->min = $min;
+        if ($this->validateDimension($min)) {
+            $this->min = $min;
+        }
     }
     
     public function getMin() {
@@ -55,7 +57,9 @@ class Axis {
     }
     
     public function setMax($max) {
-        return $this->max = $max;
+        if ($this->validateDimension($max)) {
+            $this->max = $max;
+        }
     }
     
     public function getMax() {
@@ -69,6 +73,13 @@ class Axis {
             return false;
         }
         
+    }
+    
+    protected function validateDimension($value) {
+        if ($value != 'auto' && !is_numeric($value)) {
+            throw new \InvalidArgumentException('Use only \'auto\' or a numeric value');
+        }
+        return true;
     }
     
 }

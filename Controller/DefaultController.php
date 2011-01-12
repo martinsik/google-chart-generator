@@ -8,9 +8,9 @@ use Bundle\GoogleChartBundle\Library\LineChart\Line;
 
 class DefaultController extends Controller {
     
-    public function indexAction() {
+    public function lineChartAction() {
         $chart1 = new LineChart();
-        $chart1->setSize('300x100');
+        $chart1->setSize('400x200');
         $line = new Line();
         $line->add($this->getRandomData(20));
         $chart1->addData($line);
