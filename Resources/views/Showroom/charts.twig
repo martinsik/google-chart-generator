@@ -10,21 +10,13 @@ span.option { color: green; }
 
 <h1>GoogleChartBundle showroom</h1>
 
-{% autoescape off %}
-<div class="tabs">
-    <ul>
-        <li><a href="#tab-chart1-image">image</a></li>
-        <li><a href="#tab-chart1-url">url</a></li>
-        <li><a href="#tab-chart1-data">data</a></li>
-        <li><a href="#tab-chart1-options">options</a></li>
-    </ul>
-    <div id="tab-chart1-image">{{ chart1.render }}</div>
-    <div id="tab-chart1-url"><pre>{{ chart1.debugUrl|nice_dump }}</pre></div>
-    <div id="tab-chart1-data"><pre>{{ chart1.data|print_r }}</pre></div>
-    <div id="tab-chart1-options"><pre>{{ chart1.options|print_r }}</pre></div>
-</div>
 
-{% endautoescape %}
+
+{% for chart in charts %}
+    {% include 'GoogleChartBundle:Showroom:chartDebug.twig' with loop %}
+{% endfor %}
+
+
 
 
 {% javascript 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js' %}
@@ -35,5 +27,4 @@ span.option { color: green; }
 $(function() {
     $('.tabs').tabs();
 });
-
 </script>

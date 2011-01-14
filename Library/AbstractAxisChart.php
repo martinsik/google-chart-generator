@@ -3,19 +3,20 @@
 namespace Bundle\GoogleChartBundle\Library;
 
 use Bundle\GoogleChartBundle\Library\AbstractChart;
+use Bundle\GoogleChartBundle\Library\Axis;
 
 abstract class AbstractAxisChart extends AbstractChart {
 
     public function __construct(array $options = array()) {
-        $defaultXAxis = new Axis();
-        $defaultXAxis->setMin(0);
+        $defaultYAxis = new Axis();
+        $defaultYAxis->setMin(0);
         
         $this->defaultOptions = array_merge(
+            $this->defaultOptions,
             array('axis' => array (
-                'x' => $defaultXAxis,
-                'y' => new Axis(),
-            )),
-            $this->defaultOptions
+                'x' => new Axis(),
+                'y' => $defaultYAxis,
+            ))
         );
         parent::__construct($options);
     }
@@ -48,22 +49,22 @@ abstract class AbstractAxisChart extends AbstractChart {
     protected function getScaleUrlPart() {
         //$this->calculateDimensions(); // update chart dimensions
         $scalesArray = array();
-        $disabledAxis = $index = 0;
+        /*$disabledAxis = */$index = 0;
         foreach ($this->getAxis() as $position => $axis) {
-            if ($axis->isEnabled() && !$axis->hasDefaultSettings()) {
+            if ($this->hasToPrint($axis)) {
                 // if scale is set to 'auto' get minimal and maximal values found among all collections
                 if ($axis->getMax() == 'auto' || $axis->getMin() == 'auto') {
                     list($min, $max) = $this->calculateDimensions($position);
                 }
                 $scalesArray[] = 
-                    ($index - $disabledAxis) . ',' . // skip disabled axis
-                    ($axis->getMin() == 'auto' ? $min : $axis->getMin()) . ',' . 
-                    ($axis->getMax() == 'auto' ? $max : $axis->getMax());
+                    /*($index - $disabledAxis)*/ $index++ . ',' .
+                    ($axis->getMin() === 'auto' ? $min : $axis->getMin()) . ',' . 
+                    ($axis->getMax() === 'auto' ? $max : $axis->getMax());
                 
-            } elseif (!$axis->isEnabled()) {
+            }/* elseif (!$axis->isEnabled()) {
+                // each axis has index, we need to know how many disabled axis we want to skip
                 $disabledAxis++;
-            }
-            $index++;
+            }*/
         }
         if ($scalesArray) {
             return implode('|', $scalesArray);
@@ -96,6 +97,14 @@ abstract class AbstractAxisChart extends AbstractChart {
             }
         }
         return array($min, $max);
+    }
+    
+    /**
+     *
+     * @return boolean  True if it's necessary to print this axis
+     */
+    protected function hasToPrint(Axis $axis) {
+        return $axis->isEnabled() && !$axis->hasDefaultSettings();
     }
 
 }

@@ -17,16 +17,15 @@ abstract class AbstractChart {
     
     public function __construct(array $options = array()) {
         
-        $this->defaultOptions = array (
-            'title' => 'Chart #' . self::$chartNumber++,
-            'size' => array (
-                'width'   => 300,
-                'height'  => 200,
-            ),
-            'axis'  => array (
-                'x' => new Axis('x'),
-                'y' => new Axis('y'),
-            ),
+        $this->defaultOptions = array_merge(
+            $this->defaultOptions,
+            array (
+                'title' => 'Chart #' . self::$chartNumber++,
+                'size' => array (
+                    'width'   => 300,
+                    'height'  => 200,
+                )
+            )
         );
 
         $this->options = array_merge($this->defaultOptions, $options);

@@ -6,16 +6,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Bundle\GoogleChartBundle\Library\LineChart\LineChart;
 use Bundle\GoogleChartBundle\Library\LineChart\Line;
 
-class DefaultController extends Controller {
+class ShowroomController extends Controller {
     
     public function lineChartAction() {
-        $chart1 = new LineChart();
-        $chart1->setSize('400x200');
+        $charts = array();
+        
+        $chart = new LineChart();
+        $chart->setTitle('Default configuration');
         $line = new Line();
         $line->add($this->getRandomData(20));
-        $chart1->addData($line);
+        $chart->addData($line);
+        $charts[] = $chart;
         
-        return $this->render('GoogleChartBundle:Default:index.twig', array('chart1' => $chart1));
+        $chart = new LineChart();
+        $chart->setSize('400x200');
+        $line = new Line();
+        $line->add($this->getRandomData(10));
+        $chart->addData($line);
+        $charts[] = $chart;
+        
+        return $this->render('GoogleChartBundle:Showroom:charts.twig', array('charts' => $charts));
     }
     
     protected function getRandomData($size) {

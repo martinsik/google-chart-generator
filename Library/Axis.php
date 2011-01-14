@@ -6,6 +6,8 @@ use Bundle\GoogleChartBundle\Library\Font;
 
 class Axis {
     
+    const AUTO = 'auto';
+    
     protected $labels;
     
     protected $enabled;
