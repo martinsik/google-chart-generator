@@ -1,12 +1,39 @@
 <style>
+body { padding: 0; margin: 0; }
 h1 { font-size: 20px; }
-pre { border: 1px solid #ddd; border-radius: 3px; padding: 5px; background: #eee; width: 800px; }
+.tabs { width: 100%; }
+.tabs > div { padding: 5px; }
+.tabs > div pre { border: 1px solid #ddd; border-radius: 3px; padding: 5px; background: #eee;  }
+span.option { color: green; }
+.ui-tabs-hide { display: none; }
 </style>
 
 <h1>GoogleChartBundle showroom</h1>
 
-<pre>{{ chart1.debugUrl }}</pre>
 {% autoescape off %}
-{{ chart1.render }}
+<div class="tabs">
+    <ul>
+        <li><a href="#tab-chart1-image">image</a></li>
+        <li><a href="#tab-chart1-url">url</a></li>
+        <li><a href="#tab-chart1-data">data</a></li>
+        <li><a href="#tab-chart1-options">options</a></li>
+    </ul>
+    <div id="tab-chart1-image">{{ chart1.render }}</div>
+    <div id="tab-chart1-url"><pre>{{ chart1.debugUrl|nice_dump }}</pre></div>
+    <div id="tab-chart1-data"><pre>{{ chart1.data|print_r }}</pre></div>
+    <div id="tab-chart1-options"><pre>{{ chart1.options|print_r }}</pre></div>
+</div>
+
 {% endautoescape %}
 
+
+{% javascript 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js' %}
+{% javascript 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/jquery-ui.min.js' %}
+{% javascripts %}
+
+<script type="text/javascript">
+$(function() {
+    $('.tabs').tabs();
+});
+
+</script>
