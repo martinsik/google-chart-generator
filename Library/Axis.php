@@ -12,16 +12,19 @@ class Axis {
     
     protected $enabled;
     
+    protected $position;
+    
     protected $font;
     
     protected $max = 'auto';
     
     protected $min = 'auto';
     
-    public function __construct($labels = 'auto', $font = null) {
+    public function __construct($position, $labels = 'auto', $font = null) {
         $this->labels = $labels;
         $this->enabled = true;
         $this->font = $font;
+        $this->position = $position;
     }
     
     public function setLabels($labels) {
@@ -46,6 +49,14 @@ class Axis {
     
     public function getFont() {
         return $this->font;
+    }
+    
+    public function setPosition($position) {
+        $this->position = $position;
+    }
+    
+    public function getPosition() {
+        return $this->position;
     }
     
     public function setMin($min) {
@@ -74,7 +85,14 @@ class Axis {
         } else {
             return false;
         }
-        
+    }
+    
+    public function isVertical() {
+        return $this->getPosition() == 'y' || $this->getPosition() == 'right';
+    }
+    
+    public function isHorizontal() {
+        return $this->getPosition() == 'x' || $this->getPosition() == 'top';
     }
     
     protected function validateDimension($value) {

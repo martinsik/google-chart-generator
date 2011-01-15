@@ -8,14 +8,14 @@ use Bundle\GoogleChartBundle\Library\Axis;
 abstract class AbstractAxisChart extends AbstractChart {
 
     public function __construct(array $options = array()) {
-        $defaultYAxis = new Axis();
-        $defaultYAxis->setMin(0);
+        $yAxis = new Axis('y');
+        $yAxis->setMin(0);
         
         $this->defaultOptions = array_merge(
             $this->defaultOptions,
             array('axis' => array (
-                'x' => new Axis(),
-                'y' => $defaultYAxis,
+                new Axis('x'),
+                $yAxis,
             ))
         );
         parent::__construct($options);
@@ -23,6 +23,22 @@ abstract class AbstractAxisChart extends AbstractChart {
     
     public function getAxis() {
         return $this->options['axis'];
+    }
+    
+    public function getXAxis() {
+        return $this->_getAxis('x');
+    }
+    
+    public function getYAxis() {
+        return $this->_getAxis('y');
+    }
+    
+    protected function _getAxis($position) {
+        foreach ($this->options['axis'] as &$axis) {
+            if ($axis->getPosition() == $position) {
+                return $axis;
+            }
+        }
     }
     
     
@@ -38,9 +54,9 @@ abstract class AbstractAxisChart extends AbstractChart {
     
     protected function getAxisUrlPart() {
         $axisArray = array();
-        foreach ($this->getAxis() as $position => $axis) {
+        foreach ($this->getAxis() as $axis) {
             if ($axis->isEnabled()) {
-                $axisArray[] = $position;
+                $axisArray[] = $axis->getPosition();
             }
         }
         return implode(',', $axisArray);
@@ -50,16 +66,16 @@ abstract class AbstractAxisChart extends AbstractChart {
         //$this->calculateDimensions(); // update chart dimensions
         $scalesArray = array();
         /*$disabledAxis = */$index = 0;
-        foreach ($this->getAxis() as $position => $axis) {
+        foreach ($this->getAxis() as $axis) {
             if ($this->hasToPrint($axis)) {
                 // if scale is set to 'auto' get minimal and maximal values found among all collections
-                if ($axis->getMax() == 'auto' || $axis->getMin() == 'auto') {
-                    list($min, $max) = $this->calculateDimensions($position);
+                if ($axis->getMax() === Axis::AUTO || $axis->getMin() === Axis::AUTO) {
+                    list($min, $max) = $axis->isVertical() ? $this->getYDimensions() : $this->getXDimensions();
                 }
                 $scalesArray[] = 
                     /*($index - $disabledAxis)*/ $index++ . ',' .
-                    ($axis->getMin() === 'auto' ? $min : $axis->getMin()) . ',' . 
-                    ($axis->getMax() === 'auto' ? $max : $axis->getMax());
+                    ($axis->getMin() === Axis::AUTO ? $min : $axis->getMin()) . ',' . 
+                    ($axis->getMax() === Axis::AUTO ? $max : $axis->getMax());
                 
             }/* elseif (!$axis->isEnabled()) {
                 // each axis has index, we need to know how many disabled axis we want to skip
@@ -73,19 +89,61 @@ abstract class AbstractAxisChart extends AbstractChart {
         }
     }
     
+    public function getYDimensions() {
+        return $this->calculateAxisDimensions('vertical');
+    }
+    
+    public function getXDimensions() {
+        return $this->calculateAxisDimensions('horizontal');
+    }
+    
     /**
      * Get minimum and maximum values among all data collections for particular axis
-     * 
-     * @param string $position  Particular axis (only x, y, right, top)
-     * @return array            Returns array(min, max)
      */
-    protected function calculateDimensions($position) {
-        if ($position != 'x' && $position != 'y' && $position != 'right' && $position != 'top') {
+    protected function calculateAxisDimensions($dimension) {
+        /*if ($dimension != 'x' && $position != 'y' && $position != 'right' && $position != 'top') {
             throw new \InvalidArgumentException('Invalid axis, use only x, y, right or top');
-        }
+        }*/
+        
         $min = null;
         $max = null;
-        if ($position == 'x' || $position == 't') { // set dimensions for x axis
+        foreach ($this->getAxis() as $axis) {
+            //if ($dimension == 'vertical' && ($axis->getPosition() == 'y' || $axis->getPosition() = 'right')) {
+            foreach ($this->getData() as $collection) {
+                if (($dimension == 'vertical' && ($axis->getPosition() == 'y' || $axis->getPosition() == 'right'))
+                        || ($dimension == 'horizontal' && ($axis->getPosition() == 'x' || $axis->getPosition() == 'top'))) {
+                    
+                    if ($axis->getMin() === Axis::AUTO) {
+                        $min = is_null($min) ? ($dimension == 'vertical' ? $collection->getMinY() : $collection->getMinX())
+                                             : min(($dimension == 'vertical' ? $collection->getMinY() : $collection->getMinX()), $min);
+                    } else {
+                        $min = $axis->getMin();
+                    }
+                    if ($axis->getMax() === Axis::AUTO) {
+                        $max = is_null($max) ? ($dimension == 'vertical' ? $collection->getMaxY() : $collection->getMaxX())
+                                             :  max(($dimension == 'vertical' ? $collection->getMaxY() : $collection->getMaxX()), $max);
+                    } else {
+                        $max = $axis->getMax();
+                    }
+                }
+            }
+            /*} elseif ($dimension == 'horizontal' && ($axis->getPosition() == 'x' || $axis->getPosition() = 'top')) {
+                foreach ($this->getData() as $collection) {
+                    if ($axis->getMin() == Axis::AUTO) {
+                        $min = $axis->getMin();
+                    } else {
+                        $min = is_null($min) ? $collection->getMinY() : min($collection->getMinY(), $min);
+                    }
+                    if ($axis->getMax() == Axis::AUTO) {
+                        $max = $axis->getMax();
+                    } else {
+                        $max = is_null($max) ? $collection->getMaxY() : max($collection->getMaxY(), $max);
+                    }
+                }
+            }*/
+        }
+        
+        /*if ($position == 'x' || $position == 't') { // set dimensions for x axis
             foreach ($this->getData() as $collection) {
                 $min = is_null($min) ? $collection->getMinX() : min($collection->getMinX(), $min);
                 $max = is_null($max) ? $collection->getMaxX() : max($collection->getMaxX(), $max);
@@ -95,7 +153,10 @@ abstract class AbstractAxisChart extends AbstractChart {
                 $min = is_null($min) ? $collection->getMinY() : min($collection->getMinY(), $min);
                 $max = is_null($max) ? $collection->getMaxY() : max($collection->getMaxY(), $max);
             }
-        }
+            foreach ($this->getAxis() as $posititon => $axis) {
+                //if ($posititon == '')
+            }
+        }*/
         return array($min, $max);
     }
     

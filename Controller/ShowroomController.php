@@ -15,14 +15,15 @@ class ShowroomController extends Controller {
         $chart->setTitle('Default configuration');
         $line = new Line();
         $line->add($this->getRandomData(20));
-        $chart->addData($line);
+        $chart->addLine($line);
         $charts[] = $chart;
         
         $chart = new LineChart();
         $chart->setSize('400x200');
+        $chart->getYAxis()->setMax(150);
         $line = new Line();
         $line->add($this->getRandomData(10));
-        $chart->addData($line);
+        $chart->addLine($line);
         $charts[] = $chart;
         
         return $this->render('GoogleChartBundle:Showroom:charts.twig', array('charts' => $charts));

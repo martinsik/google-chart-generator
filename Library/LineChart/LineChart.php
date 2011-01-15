@@ -48,7 +48,7 @@ class LineChart extends AbstractAxisChart {
     
     protected function getDataUrlPart() {
         $series = array();
-        list($min, $max) = $this->calculateDimensions('y');
+        list($min, $max) = $this->getYDimensions();
         $range = $max - $min;
         
         foreach ($this->getData() as $dataCollection) {
