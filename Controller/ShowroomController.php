@@ -21,8 +21,9 @@ class ShowroomController extends Controller {
         $chart = new LineChart();
         $chart->setSize('400x200');
         $chart->getYAxis()->setMax(150);
+        $chart->getYAxis()->setMin(-50);
         $line = new Line();
-        $line->add($this->getRandomData(10));
+        $line->add($this->getRandomData(20));
         $chart->addLine($line);
         $charts[] = $chart;
         
