@@ -10,13 +10,9 @@ span.option { color: green; }
 
 <h1>GoogleChartBundle showroom</h1>
 
-
-
 {% for chart in charts %}
     {% include 'GoogleChartBundle:Showroom:chartDebug.twig' with loop %}
 {% endfor %}
-
-
 
 
 {% javascript 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js' %}

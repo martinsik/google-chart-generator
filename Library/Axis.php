@@ -4,16 +4,23 @@ namespace Bundle\GoogleChartBundle\Library;
 
 use Bundle\GoogleChartBundle\Library\Font;
 
+/**
+ * Class representing an anix, supports chaining
+ */
 class Axis {
     
     const AUTO = 'auto';
     
+    /*
+     * by default generates automaticly numeric values according to values
+     */
     protected $labels;
     
     protected $enabled;
     
     protected $position;
     
+    /* not implemented yet */
     protected $font;
     
     protected $max = 'auto';
@@ -29,6 +36,7 @@ class Axis {
     
     public function setLabels($labels) {
         $this->labels = $labels;
+        return $this;
     }
     
     public function getLabels() {
@@ -37,6 +45,7 @@ class Axis {
     
     public function setEnabled($enabled) {
         $this->enabled = $enabled;
+        return $this;
     }
     
     public function isEnabled() {
@@ -45,6 +54,7 @@ class Axis {
     
     public function setFont(Font $font) {
         $this->font = $font;
+        return $this;
     }
     
     public function getFont() {
@@ -53,6 +63,7 @@ class Axis {
     
     public function setPosition($position) {
         $this->position = $position;
+        return $this;
     }
     
     public function getPosition() {
@@ -63,6 +74,7 @@ class Axis {
         if ($this->validateDimension($min)) {
             $this->min = $min;
         }
+        return $this;
     }
     
     public function getMin() {
@@ -73,6 +85,7 @@ class Axis {
         if ($this->validateDimension($max)) {
             $this->max = $max;
         }
+        return $this;
     }
     
     public function getMax() {

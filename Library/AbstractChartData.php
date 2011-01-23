@@ -20,7 +20,7 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
      * default colors used for data collection when set to auto
      * @var array
      */
-    protected $defaultColours = array('FF0000', '00FF00', '0000FF');
+    public static $defaultColours = array('f07d00', '26348c', '00b34b', 'e40613', 'e9d801', 'a71580');
     
     protected $defaultOptions = array(
         'colour'    => 'auto',

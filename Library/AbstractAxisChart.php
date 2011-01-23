@@ -48,8 +48,18 @@ abstract class AbstractAxisChart extends AbstractChart {
             array (
                 'chxt' =>  $this->getAxisUrlPart(),
                 'chxr' =>  $this->getScaleUrlPart(),
+                'chco' =>  $this->getColoursUrlPart(),
             )
         );
+    }
+    
+    protected function getColoursUrlPart() {
+        $colours = array();
+        $autoColoursIndex = 0;
+        foreach ($this->getData() as $collection) {
+            $colours[] = $collection->getColour() == 'auto' ? $collection::$defaultColours[$autoColoursIndex++] : $collection->getColour();
+        }
+        return implode(',', $colours);
     }
     
     protected function getAxisUrlPart() {
@@ -101,9 +111,6 @@ abstract class AbstractAxisChart extends AbstractChart {
      * Get minimum and maximum values among all data collections for particular axis
      */
     protected function calculateAxisDimensions($dimension) {
-        /*if ($dimension != 'x' && $position != 'y' && $position != 'right' && $position != 'top') {
-            throw new \InvalidArgumentException('Invalid axis, use only x, y, right or top');
-        }*/
         
         $min = null;
         $max = null;
@@ -127,36 +134,8 @@ abstract class AbstractAxisChart extends AbstractChart {
                     }
                 }
             }
-            /*} elseif ($dimension == 'horizontal' && ($axis->getPosition() == 'x' || $axis->getPosition() = 'top')) {
-                foreach ($this->getData() as $collection) {
-                    if ($axis->getMin() == Axis::AUTO) {
-                        $min = $axis->getMin();
-                    } else {
-                        $min = is_null($min) ? $collection->getMinY() : min($collection->getMinY(), $min);
-                    }
-                    if ($axis->getMax() == Axis::AUTO) {
-                        $max = $axis->getMax();
-                    } else {
-                        $max = is_null($max) ? $collection->getMaxY() : max($collection->getMaxY(), $max);
-                    }
-                }
-            }*/
         }
         
-        /*if ($position == 'x' || $position == 't') { // set dimensions for x axis
-            foreach ($this->getData() as $collection) {
-                $min = is_null($min) ? $collection->getMinX() : min($collection->getMinX(), $min);
-                $max = is_null($max) ? $collection->getMaxX() : max($collection->getMaxX(), $max);
-            }
-        } elseif ($position == 'y' || $position == 'r') { // set dimensions for y axis
-            foreach ($this->getData() as $collection) {
-                $min = is_null($min) ? $collection->getMinY() : min($collection->getMinY(), $min);
-                $max = is_null($max) ? $collection->getMaxY() : max($collection->getMaxY(), $max);
-            }
-            foreach ($this->getAxis() as $posititon => $axis) {
-                //if ($posititon == '')
-            }
-        }*/
         return array($min, $max);
     }
     

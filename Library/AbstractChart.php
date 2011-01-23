@@ -43,14 +43,15 @@ abstract class AbstractChart {
     }
         
     public function getUrl() {
-        $baseUrl = 'https://chart.googleapis.com/chart?';
+        //$baseUrl = 'https://chart.googleapis.com/chart?';
         $filteredParts = array();
-        foreach ($this->getUrlParts() as $key => $content) {
+        $urlParts = $this->getUrlParts();
+        foreach ($urlParts as $key => $content) {
             if ($content) {
                 $filteredParts[] = $key . '=' . $content;
             }
         }
-        return $baseUrl . implode('&', $filteredParts);
+        return 'https://chart.googleapis.com/chart?' . implode('&', $filteredParts);
     }
     
     public function render() {
@@ -139,8 +140,6 @@ abstract class AbstractChart {
     
     
     abstract protected function getChartTypeUrlPart();
-    
-    abstract protected function getChartSpecificUrlPart();
     
     abstract protected function getDataUrlPart();
     

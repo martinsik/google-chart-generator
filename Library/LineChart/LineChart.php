@@ -59,17 +59,36 @@ class LineChart extends AbstractAxisChart {
             }
             $series[] = substr($urlString, 0, -1);
         }
-        $dataString = implode('|', $series);
+        $dataString = implode($this->getChartTypeUrlPart() == 'lxy' ? '|-1|' : '|', $series);
         
+        //return 't:' . $dataString;
         if ($this->getChartTypeUrlPart() == 'lxy') {
             return 't:-1|' . $dataString;
         } else {
             return 't:' . $dataString;
         }
     }
-
-    protected function getChartSpecificUrlPart() {
-        
+    
+    protected function getLineStylesUrlPart() {
+        $widths = array();
+        $needSpecify = false;
+        foreach ($this->getData() as $dataCollection) {
+            $widths[] = $dataCollection->getWidth();
+            if ($dataCollection->getWidth() != 1) {
+                $needSpecify = true;
+            }
+        }
+        return $needSpecify ? implode('|', $widths) : false;
+    }
+    
+    
+    protected function getUrlParts() {
+        return array_merge(
+            parent::getUrlParts(),
+            array (
+                'chls' =>  $this->getLineStylesUrlPart(),
+            )
+        );
     }
     
 
