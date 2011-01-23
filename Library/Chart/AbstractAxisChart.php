@@ -1,8 +1,8 @@
 <?php
 
-namespace Bundle\GoogleChartBundle\Library;
+namespace Bundle\GoogleChartBundle\Library\Chart;
 
-use Bundle\GoogleChartBundle\Library\AbstractChart;
+use Bundle\GoogleChartBundle\Library\Chart\AbstractChart;
 use Bundle\GoogleChartBundle\Library\Axis;
 
 abstract class AbstractAxisChart extends AbstractChart {

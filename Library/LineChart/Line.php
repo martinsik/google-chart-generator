@@ -2,7 +2,7 @@
 
 namespace Bundle\GoogleChartBundle\Library\LineChart;
 
-use Bundle\GoogleChartBundle\Library\AbstractChartData;
+use Bundle\GoogleChartBundle\Library\DataCollection\AbstractChartData;
 
 
 class Line extends AbstractChartData {
@@ -36,11 +36,14 @@ class Line extends AbstractChartData {
         $this->options['filled'] = $filled;
     }
     
-    public function isFilled() {
+    public function getFilled() {
         return (boolean) $this->options['filled'];
     }
     
     public function setWidth($width) {
+        if (!is_numeric($width)) {
+            throw new \InvalidArgumentException('Use only numeric value');
+        }
         $this->options['width'] = $width;
     }
     

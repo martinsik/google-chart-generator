@@ -3,8 +3,8 @@
 namespace Bundle\GoogleChartBundle\Library\LineChart;
 
 use Bundle\GoogleChartBundle\Library\LineChart\Line;
+use Bundle\GoogleChartBundle\Library\Chart\AbstractAxisChart;
 use Bundle\GoogleChartBundle\Library\Font;
-use Bundle\GoogleChartBundle\Library\AbstractAxisChart;
 
 class LineChart extends AbstractAxisChart {
     

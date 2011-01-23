@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\GoogleChartBundle\Library;
+namespace Bundle\GoogleChartBundle\Library\DataCollection;
 
 abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator {
     

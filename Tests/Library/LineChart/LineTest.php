@@ -13,9 +13,9 @@ class LineTest extends AbstractChartDataTest {
         $this->chartData = new Line();
     }
     
-    public function testDefaultOptions() {
+    /*public function testDefaultOptions() {
         $this->assertFalse($this->chartData->getFilled());
-    }
+    }*/
     
     public function testFilled() {
         $this->chartData->setFilled(true);
@@ -24,5 +24,17 @@ class LineTest extends AbstractChartDataTest {
         $this->chartData->setFilled(0);
         $this->assertFalse($this->chartData->getFilled()); // should be false
     }
+    
+    /**
+     * @expectedException InvalidArgumentException 
+     */
+    public function testWidth() {
+        $this->chartData->setWidth(100);
+        $this->assertEquals($this->chartData->getWidth(), 100);
+        
+        $this->chartData->setWidth('test');
+    }
+    
+
     
 }
