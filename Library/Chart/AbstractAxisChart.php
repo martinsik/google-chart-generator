@@ -4,6 +4,7 @@ namespace Bundle\GoogleChartBundle\Library\Chart;
 
 use Bundle\GoogleChartBundle\Library\Chart\AbstractChart;
 use Bundle\GoogleChartBundle\Library\Axis;
+use Bundle\GoogleChartBundle\Library\Grid;
 
 abstract class AbstractAxisChart extends AbstractChart {
 
@@ -13,10 +14,12 @@ abstract class AbstractAxisChart extends AbstractChart {
         
         $this->defaultOptions = array_merge(
             $this->defaultOptions,
-            array('axis' => array (
-                new Axis('x'),
-                $yAxis,
-            ))
+            array(
+                'axis' => array (
+                    new Axis('x'),
+                    $yAxis,
+                ), 'grid' => new Grid(),
+            )
         );
         parent::__construct($options);
     }
@@ -33,6 +36,16 @@ abstract class AbstractAxisChart extends AbstractChart {
         return $this->_getAxis('y');
     }
     
+    public function getGrid() {
+        return $this->options['grid']; 
+    }
+    
+    /**
+     * Get first axis for specified dimension
+     * 
+     * @param type $position
+     * @return type 
+     */
     protected function _getAxis($position) {
         foreach ($this->options['axis'] as &$axis) {
             if ($axis->getPosition() == $position) {
@@ -46,9 +59,10 @@ abstract class AbstractAxisChart extends AbstractChart {
         return array_merge(
             parent::getUrlParts(),
             array (
-                'chxt' =>  $this->getAxisUrlPart(),
-                'chxr' =>  $this->getScaleUrlPart(),
-                'chco' =>  $this->getColoursUrlPart(),
+                'chxt' => $this->getAxisUrlPart(),
+                'chxr' => $this->getScaleUrlPart(),
+                'chco' => $this->getColoursUrlPart(),
+                'chg'  => $this->getGridUrlPart(),
             )
         );
     }
@@ -99,6 +113,16 @@ abstract class AbstractAxisChart extends AbstractChart {
         }
     }
     
+    protected function getGridUrlPart() {
+        $grid = $this->getGrid();
+        if ($grid->getLineSegmentLength() > 0 && $grid->getBlankSegmentLength()) {
+            $blocksX = $grid->getBlocksX() == 'auto' ? round(100 / 5) : 0;
+            $blocksY = $grid->getBlocksY() == 'auto' ? round(100 / 5) : 0;
+            return $blocksX . ',' . $blocksY . ',' . $grid->getLineSegmentLength() . ',' . $grid->getBlankSegmentLength();
+        }
+        return false;
+    }
+    
     public function getYDimensions() {
         return $this->calculateAxisDimensions('vertical');
     }
@@ -140,12 +164,12 @@ abstract class AbstractAxisChart extends AbstractChart {
     }
     
     /**
-     *
      * @return boolean  True if it's necessary to print this axis
      */
     protected function hasToPrint(Axis $axis) {
         return $axis->isEnabled() && !$axis->hasDefaultSettings();
     }
+
 
 }
 
