@@ -113,11 +113,11 @@ abstract class AbstractAxisChart extends AbstractChart {
         }
     }
     
-    protected function getGridUrlPart() {
+    protected function getGridUrlPart() { 
         $grid = $this->getGrid();
         if ($grid->getLineSegmentLength() > 0 && $grid->getBlankSegmentLength()) {
-            $blocksX = $grid->getBlocksX() == 'auto' ? round(100 / 5) : 0;
-            $blocksY = $grid->getBlocksY() == 'auto' ? round(100 / 5) : 0;
+            $blocksX = $grid->getBlocksX() == 'auto' ? $this->autoGridBlocks($this->getSizeX()) : 0;
+            $blocksY = $grid->getBlocksY() == 'auto' ? $this->autoGridBlocks($this->getSizeY()) : 0;
             return $blocksX . ',' . $blocksY . ',' . $grid->getLineSegmentLength() . ',' . $grid->getBlankSegmentLength();
         }
         return false;
