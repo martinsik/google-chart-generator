@@ -131,7 +131,7 @@ abstract class AbstractAxisChart extends AbstractChart {
         } elseif ($size <= 350) {
             return 4;
         } else {
-            return round($size / 100);
+            return round(100 / ($size / 100));
         }
     }
     
