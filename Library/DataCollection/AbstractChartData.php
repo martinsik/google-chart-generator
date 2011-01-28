@@ -4,6 +4,11 @@ namespace Bundle\GoogleChartBundle\Library\DataCollection;
 
 abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator {
     
+    const PRINT_STRATEGY_AUTO = 'auto';
+    
+    
+    protected $options = array();
+    
     /**
      * data itself
      * @var array
@@ -24,8 +29,9 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
     
     
     protected $defaultOptions = array(
-        'colour'    => 'auto',
-        'title'     => 'call setTitle($title) to change this text :)',
+        'colour'        => 'auto',
+        'title'         => 'call setTitle($title) to change this text :)',
+        'printStrategy' => self::PRINT_STRATEGY_AUTO,
     );
     
     
@@ -112,6 +118,20 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
         return max($this->getData());
     }
     
+    public function setPrintStrategy($strategy) {
+        $this->options['printStrategy'] = $strategy;
+    }
+    
+    public function getPrintStrategy() {
+        return $this->options['printStrategy'];
+    }
+    
+    public function applyPrintStrategy($value) {
+        if ($this->getPrintStrategy() == 'auto') {
+            return round($value);
+        }
+        throw new Exception('Unknown print strategy.');
+    }
     
     /**
      * Implementation of ArrayAccess interface

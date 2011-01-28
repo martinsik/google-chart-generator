@@ -55,7 +55,7 @@ class LineChart extends AbstractAxisChart {
             //var_dump($this->getData());
             $urlString = '';
             foreach ($dataCollection as $x => $value) {
-                $urlString .= round(($value - $min) * 100 / $range, 3) . ',';
+                $urlString .= $dataCollection->applyPrintStrategy(($value - $min) * 100 / $range) . ',';
             }
             $series[] = substr($urlString, 0, -1);
         }

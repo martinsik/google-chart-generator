@@ -16,9 +16,7 @@ class Line extends AbstractChartData {
      *     colour      = 'auto'
      *     title       = 'call setTitle($title) to change this text :)',
      * 
-     * @var type 
      */
-    protected $options = array();
     
     
     public function __construct(array $options = array()) {

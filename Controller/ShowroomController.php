@@ -23,7 +23,7 @@ class ShowroomController extends Controller {
         $chart->setSize('500x200');
         $chart->getYAxis()->setMax(150)->setMin(-50);
         $line = new Line();
-        $line->add($this->getRandomData(20));
+        $line->add(array(72.932,74.812,74.436,78.195,66.917,73.308,68.045,66.165,64.286,77.068,65.789,57.895,67.669,64.286,71.429,81.579,85.338,64.662,67.293,75.188,60.902,66.917,74.812,85.338,72.932,73.308,72.556,75.564,75.564,74.812,77.82,78.947,77.444));
         $chart->addLine($line);
         $charts[] = $chart;
         
