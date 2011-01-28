@@ -123,6 +123,18 @@ abstract class AbstractAxisChart extends AbstractChart {
         return false;
     }
     
+    protected function autoGridBlocks($size) {
+        if ($size <= 100) {
+            return 2;
+        } elseif ($size <= 200) {
+            return 3;
+        } elseif ($size <= 350) {
+            return 4;
+        } else {
+            return round($size / 100);
+        }
+    }
+    
     public function getYDimensions() {
         return $this->calculateAxisDimensions('vertical');
     }
