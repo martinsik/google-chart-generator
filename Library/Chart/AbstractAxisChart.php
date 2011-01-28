@@ -125,11 +125,11 @@ abstract class AbstractAxisChart extends AbstractChart {
     
     protected function autoGridBlocks($size) {
         if ($size <= 100) {
-            return 2;
+            return round(100 / 2);
         } elseif ($size <= 200) {
-            return 3;
+            return round(100 / 3);
         } elseif ($size <= 350) {
-            return 4;
+            return round(100 / 4);
         } else {
             return round(100 / ($size / 100));
         }
