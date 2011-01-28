@@ -115,6 +115,14 @@ abstract class AbstractChart {
         return $this->options['size'];
     }
     
+    public function getSizeX() {
+        return $this->options['size']['width'];
+    }
+    
+    public function getSizeY() {
+        return $this->options['size']['height'];
+    }
+    
     public function setTitle($title) {
         $this->options['title'] = $title;
     }
