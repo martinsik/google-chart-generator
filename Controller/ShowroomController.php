@@ -52,6 +52,12 @@ class ShowroomController extends Controller {
         $chart->addLine($line3);
         $charts[] = $chart;
         
+        $chart = new LineChart();
+        $line = new Line();
+        $line->add(array(5 => 10, 6 => 30, 7 => 40, 8 => 30, 9 => 45));
+        $chart->addLine($line);
+        $charts[] = $chart;
+        
         return $this->render('GoogleChartBundle:Showroom:charts.twig', array('charts' => $charts));
     }
     

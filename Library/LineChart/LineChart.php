@@ -47,26 +47,47 @@ class LineChart extends AbstractAxisChart {
     }
     
     protected function getDataUrlPart() {
-        $series = array();
+        //$series = array();
+        $dataString = 't:';
+        $chartType = $this->getChartTypeUrlPart();
         list($min, $max) = $this->getYDimensions();
         $range = $max - $min;
-        
+        //var_dump($chartType);
         foreach ($this->getData() as $dataCollection) {
-            //var_dump($this->getData());
-            $urlString = '';
-            foreach ($dataCollection as $x => $value) {
-                $urlString .= $dataCollection->applyPrintStrategy(($value - $min) * 100 / $range) . ',';
+            // check if the collection keys are in order
+            $keys = $dataCollection->getKeys(); //array_keys($dataCollection);
+            if ($keys[count($keys) - 1] == count($keys) - 1) {
+                $continous = true;
+            } else {
+                $continous = false;
             }
-            $series[] = substr($urlString, 0, -1);
+            
+            $valuesString = $keysString = '';
+            $data = $dataCollection->getData();
+            foreach ($data as $x => $value) {
+                if (!$continous && $chartType == 'lxy') {
+                    $keysString .= $x . ',';
+                }
+                $valuesString .= $dataCollection->applyPrintStrategy(($value - $min) * 100 / $range) . ',';
+            }
+            
+            $dataString .= ($keysString ? trim($keysString, ',') : '-1') . '|' . trim($valuesString, ',') . '|';
+            
+            //$series[] = array($keysString ? $keysString : '-1|', substr($valuesString, 0, -1));
         }
-        $dataString = implode($this->getChartTypeUrlPart() == 'lxy' ? '|-1|' : '|', $series);
+        
+        //$dataString = implode($this->getChartTypeUrlPart() == 'lxy' ? '|-1|' : '|', $series);
+        
+        return trim($dataString, '|');
         
         //return 't:' . $dataString;
-        if ($this->getChartTypeUrlPart() == 'lxy') {
-            return 't:-1|' . $dataString;
+        /*if ($chartType == 'lxy') {
+            //return 't:-1|' . $dataString;
+            return trim($dataString, '|');
         } else {
-            return 't:' . $dataString;
-        }
+            //return 't:' . $dataString;
+            return $dataString;
+        }*/
     }
     
     protected function getLineStylesUrlPart() {

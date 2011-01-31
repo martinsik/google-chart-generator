@@ -74,7 +74,13 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
             throw new \InvalidArgumentException ('Sorry, but this doesn\'t make sence. Use only add(array), add(value) or add(value, index).');
         }
         if (is_array($value)) {
-            $this->data = array_merge($this->data, $value);
+            if ($this->data) {
+                foreach ($value as $key => $value) {
+                    $this->data[$key] = $value;
+                }
+            } else {
+                $this->data = $value;
+            }
         } elseif (is_null($index)) {
             $this->data[] = $value;
         } else {
@@ -96,9 +102,14 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
         $this->data = array();
     }
     
+    public function getKeys() {
+        return array_keys($this->data);
+    }
+    
     public function getData() {
         return $this->data;
     }
+    
     
     public function getMinX() {
         $keys = array_keys($this->getData());
