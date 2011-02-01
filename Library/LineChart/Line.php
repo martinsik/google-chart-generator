@@ -7,19 +7,8 @@ use Bundle\GoogleChartBundle\Library\DataCollection\AbstractChartData;
 
 class Line extends AbstractChartData {
     
-    /**
-     * Specific options for Line chart:
-     *   default: 
-     *     filled      = false
-     *     normalized  = false
-     *     width       = 1
-     *     colour      = 'auto'
-     *     title       = 'call setTitle($title) to change this text :)',
-     * 
-     */
     
-    
-    public function __construct(array $options = array()) {
+    public function __construct($data = array(), array $options = array()) {
         parent::__construct($options);
         $this->options = array_merge(
             array (
@@ -28,6 +17,10 @@ class Line extends AbstractChartData {
                 'width'       => 1,
             ), $this->options
         );
+        
+        if ($data) {
+            $this->add($data);
+        }
     }
     
     public function setFilled($filled) {

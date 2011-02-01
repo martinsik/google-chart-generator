@@ -28,16 +28,22 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
     public static $defaultColours = array('ffa909', '26348c', '55d500', 'e40613', 'e9d801', 'a71580');
     
     
-    protected $defaultOptions = array(
+    /*protected $defaultOptions = array(
         'colour'        => 'auto',
         'title'         => 'call setTitle($title) to change this text :)',
         'printStrategy' => self::PRINT_STRATEGY_AUTO,
-    );
+    );*/
     
     
     public function __construct(array $options = array()) {
-        $this->reset();
-        $this->options = array_merge($this->options, $options);
+        $this->options = array_merge(
+            array(
+                'colour'        => 'auto',
+                'title'         => 'call setTitle($title) to change this text :)',
+                'printStrategy' => self::PRINT_STRATEGY_AUTO,
+            ),
+            $options
+        );
     }
     
     public function setTitle($title) {
@@ -89,15 +95,6 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
         return true;
     }
     
-    public function reset() {
-        $this->data = array();
-        $this->innerPosition = 0;
-        $this->options = $this->defaultOptions;
-        /**
-         * TODO: reset to default settings (just check it :))
-         */
-    }
-    
     public function removeAll() {
         $this->data = array();
     }
@@ -135,6 +132,15 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
     
     public function getPrintStrategy() {
         return $this->options['printStrategy'];
+    }
+    
+    public function isContinous() {
+        $keys = $this->getKeys(); //array_keys($dataCollection);
+        if ($keys[count($keys) - 1] == count($keys) - 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public function applyPrintStrategy($value) {

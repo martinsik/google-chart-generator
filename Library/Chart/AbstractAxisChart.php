@@ -59,8 +59,8 @@ abstract class AbstractAxisChart extends AbstractChart {
         return array_merge(
             parent::getUrlParts(),
             array (
-                'chxt' => $this->getAxisUrlPart(),
-                'chxr' => $this->getScaleUrlPart(),
+                'chxt' => $this->getAxisUrlPart(), // visible axes
+                'chxr' => $this->getAxisRangeUrlPart(), // axis range
                 'chco' => $this->getColoursUrlPart(),
                 'chg'  => $this->getGridUrlPart(),
             )
@@ -76,6 +76,11 @@ abstract class AbstractAxisChart extends AbstractChart {
         return implode(',', $colours);
     }
     
+    /**
+     * Visible axes
+     * 
+     * @return srting  Visible axes url part
+     */
     protected function getAxisUrlPart() {
         $axisArray = array();
         foreach ($this->getAxis() as $axis) {
@@ -86,7 +91,12 @@ abstract class AbstractAxisChart extends AbstractChart {
         return implode(',', $axisArray);
     }
     
-    protected function getScaleUrlPart() {
+    /**
+     * Axis range
+     * 
+     * @return string
+     */
+    protected function getAxisRangeUrlPart() {
         //$this->calculateDimensions(); // update chart dimensions
         $scalesArray = array();
         /*$disabledAxis = */$index = 0;
@@ -109,7 +119,7 @@ abstract class AbstractAxisChart extends AbstractChart {
         if ($scalesArray) {
             return implode('|', $scalesArray);
         } else {
-            return null;
+            return false;
         }
     }
     
@@ -133,6 +143,7 @@ abstract class AbstractAxisChart extends AbstractChart {
         } else {
             return round(100 / ($size / 100), 2);
         }
+        
     }
     
     public function getYDimensions() {
