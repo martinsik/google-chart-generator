@@ -35,7 +35,7 @@ class ShowroomController extends Controller {
         $line2->setWidth(3);
         $line3 = new Line($this->getRandomData(20, 20, 80));
         $line3->setWidth(2);
-        $line4 = new Line($this->getRandomData(30));
+        $line4 = new Line($this->getRandomData(20));
         $line4->setColour('eeeeee');
         
         $chart->addLine($line4);

@@ -32,24 +32,13 @@ Register bundle in your XXXKernel.php:
     new Bundle\GoogleChartBundle\GoogleChartBundle()
 
 
-How to use it
+Usage
 -------------
 
-    use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-    use Bundle\GoogleChartBundle\Library\LineChart\LineChart;
-    use Bundle\GoogleChartBundle\Library\LineChart\Line;
-
-    class HelloController extends Controller {
-
-        public function indexAction() {
-            $chart = new LineChart(array('title' => 'Default settings'));
-            $line = new Line();
-            $line->add(array(20, 50, 10, 30, 45, 87, 60, 10, 25, 70));
-            $chart->addLine($line);
-
-            return $this->render('HelloBundle:Hello:index.twig.html', array('chart' => $chart));
-        }
-    }
+    $chart = new LineChart(array('title' => 'Default settings'));
+    $line = new Line();
+    $line->add(array(20, 50, 10, 30, 45, 87, 60, 10, 25, 70));
+    $chart->addLine($line);
 
 rendering in Twig:
 

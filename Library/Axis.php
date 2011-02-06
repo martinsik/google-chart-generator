@@ -16,7 +16,7 @@ class Axis {
      */
     protected $labels;
     
-    protected $enabled;
+    protected $enabled = true;
     
     protected $position;
     
@@ -29,7 +29,6 @@ class Axis {
     
     public function __construct($position, $labels = 'auto', $font = null) {
         $this->labels = $labels;
-        $this->enabled = true;
         $this->font = $font;
         $this->position = $position;
     }
@@ -92,6 +91,7 @@ class Axis {
         return $this->max;
     }
     
+    /*
     public function hasDefaultSettings() {
         if ($this->min == 0 && $this->max == 100) {
             return true;
@@ -99,13 +99,23 @@ class Axis {
             return false;
         }
     }
+     * 
+     */
     
     public function isVertical() {
-        return $this->getPosition() == 'y' || $this->getPosition() == 'right';
+        return $this->getPosition() == 'y' || $this->getPosition() == 'r';
     }
     
     public function isHorizontal() {
-        return $this->getPosition() == 'x' || $this->getPosition() == 'top';
+        return $this->getPosition() == 'x' || $this->getPosition() == 't';
+    }
+    
+    public function hasToPrint() {
+        if ($this->min == 0 && $this->max == 100) {
+            return $this->isEnabled();
+        } else {
+            return false;
+        }
     }
     
     protected function validateDimension($value) {

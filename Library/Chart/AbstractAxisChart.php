@@ -101,7 +101,7 @@ abstract class AbstractAxisChart extends AbstractChart {
         $scalesArray = array();
         /*$disabledAxis = */$index = 0;
         foreach ($this->getAxis() as $axis) {
-            if ($this->hasToPrint($axis)) {
+            if ($axis->hasToPrint()) {
                 // if scale is set to 'auto' get minimal and maximal values found among all collections
                 if ($axis->getMax() === Axis::AUTO || $axis->getMin() === Axis::AUTO) {
                     list($min, $max) = $axis->isVertical() ? $this->getYDimensions() : $this->getXDimensions();
@@ -125,9 +125,11 @@ abstract class AbstractAxisChart extends AbstractChart {
     
     protected function getGridUrlPart() { 
         $grid = $this->getGrid();
-        if ($grid->getLineSegmentLength() > 0 && $grid->getBlankSegmentLength()) {
-            $blocksX = $grid->getBlocksX() == 'auto' ? $this->autoGridBlocks($this->getSizeX()) : 0;
-            $blocksY = $grid->getBlocksY() == 'auto' ? $this->autoGridBlocks($this->getSizeY()) : 0;
+        if ($grid->getBlocksX() === 0 && $grid->getBlocksY() === 0) {
+            return false;
+        } elseif ($grid->getBlocksX() === 0 || $grid->getBlocksY() === 0) {
+            $blocksX = $grid->getBlocksX() === 'auto' ? $this->autoGridBlocks($this->getSizeX()) : ($grid->getBlocksX() === 0 ? 0 : round(100 / $grid->getBlocksX(), 1));
+            $blocksY = $grid->getBlocksY() === 'auto' ? $this->autoGridBlocks($this->getSizeY()) : ($grid->getBlocksY() === 0 ? 0 : round(100 / $grid->getBlocksY(), 1));
             return $blocksX . ',' . $blocksY . ',' . $grid->getLineSegmentLength() . ',' . $grid->getBlankSegmentLength();
         }
         return false;
@@ -135,13 +137,13 @@ abstract class AbstractAxisChart extends AbstractChart {
     
     protected function autoGridBlocks($size) {
         if ($size <= 100) {
-            return round(100 / 2, 2);
+            return round(100 / 2, 1);
         } elseif ($size <= 200) {
-            return round(100 / 3, 2);
+            return round(100 / 3, 1);
         } elseif ($size <= 350) {
-            return round(100 / 4, 2);
+            return round(100 / 4, 1);
         } else {
-            return round(100 / ($size / 100), 2);
+            return round(100 / ($size / 100), 1);
         }
         
     }
@@ -189,9 +191,9 @@ abstract class AbstractAxisChart extends AbstractChart {
     /**
      * @return boolean  True if it's necessary to print this axis
      */
-    protected function hasToPrint(Axis $axis) {
+    /*protected function hasToPrint(Axis $axis) {
         return $axis->isEnabled() && !$axis->hasDefaultSettings();
-    }
+    }*/
 
 
 }
