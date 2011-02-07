@@ -127,7 +127,7 @@ abstract class AbstractAxisChart extends AbstractChart {
         $grid = $this->getGrid();
         if ($grid->getBlocksX() === 0 && $grid->getBlocksY() === 0) {
             return false;
-        } elseif ($grid->getBlocksX() === 0 || $grid->getBlocksY() === 0) {
+        } else {
             $blocksX = $grid->getBlocksX() === 'auto' ? $this->autoGridBlocks($this->getSizeX()) : ($grid->getBlocksX() === 0 ? 0 : round(100 / $grid->getBlocksX(), 1));
             $blocksY = $grid->getBlocksY() === 'auto' ? $this->autoGridBlocks($this->getSizeY()) : ($grid->getBlocksY() === 0 ? 0 : round(100 / $grid->getBlocksY(), 1));
             return $blocksX . ',' . $blocksY . ',' . $grid->getLineSegmentLength() . ',' . $grid->getBlankSegmentLength();

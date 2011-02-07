@@ -1,3 +1,7 @@
 showroom:
     pattern:  /googleChartBundle/lineChart
     defaults: { _controller: GoogleChartBundle:Showroom:lineChart }
+
+tutorial:
+    pattern:  /googleChartBundle/tutorial
+    defaults: { _controller: GoogleChartBundle:Tutorial:index }
