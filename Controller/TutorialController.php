@@ -24,7 +24,7 @@ class TutorialController extends Controller {
         //$chart->addLine(new Line(array(50,76,74,37,20,80,24,70,78,43,69,58,76,69,46,28,22,51,69,40)));
         $chart->addLine(new Line(array(5=>52, 6=>32, 7=>36, 8=>61, 9=>53, 10=>24, 15=>59, 16=>29, 17=>5)));
         
-        return $this->render('GoogleChartBundle:Showroom:tutorial.twig', array('chart' => $chart));
+        return $this->render('GoogleChartBundle:Showroom:tutorial.html.twig', array('chart' => $chart));
     }
     
 }

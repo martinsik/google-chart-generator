@@ -91,7 +91,7 @@ class Axis {
         return $this->max;
     }
     
-    /*
+    
     public function hasDefaultSettings() {
         if ($this->min == 0 && $this->max == 100) {
             return true;
@@ -99,8 +99,6 @@ class Axis {
             return false;
         }
     }
-     * 
-     */
     
     public function isVertical() {
         return $this->getPosition() == 'y' || $this->getPosition() == 'r';
@@ -110,13 +108,13 @@ class Axis {
         return $this->getPosition() == 'x' || $this->getPosition() == 't';
     }
     
-    public function hasToPrint() {
+    /*public function hasToPrint() {
         if ($this->min == 0 && $this->max == 100) {
             return $this->isEnabled();
         } else {
             return false;
         }
-    }
+    }*/
     
     protected function validateDimension($value) {
         if ($value != 'auto' && !is_numeric($value)) {

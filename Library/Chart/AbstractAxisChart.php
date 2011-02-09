@@ -101,7 +101,7 @@ abstract class AbstractAxisChart extends AbstractChart {
         $scalesArray = array();
         /*$disabledAxis = */$index = 0;
         foreach ($this->getAxis() as $axis) {
-            if ($axis->hasToPrint()) {
+            if ($axis->isEnabled() && !$axis->hasDefaultSettings()) {
                 // if scale is set to 'auto' get minimal and maximal values found among all collections
                 if ($axis->getMax() === Axis::AUTO || $axis->getMin() === Axis::AUTO) {
                     list($min, $max) = $axis->isVertical() ? $this->getYDimensions() : $this->getXDimensions();

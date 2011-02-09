@@ -53,7 +53,7 @@ class ShowroomController extends Controller {
         $chart->getYAxis()->setMin(10)->setMax(60);
         $charts[] = $chart;
         
-        return $this->render('GoogleChartBundle:Showroom:charts.twig', array('charts' => $charts));
+        return $this->render('GoogleChartBundle:Showroom:charts.html.twig', array('charts' => $charts));
     }
     
     protected function getRandomData($size, $min = 0, $max = 100) {
