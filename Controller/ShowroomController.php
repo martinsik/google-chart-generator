@@ -45,7 +45,7 @@ class ShowroomController extends Controller {
         $charts[] = $chart;
         
         // custom x values
-        $chart = new LineChart(array('legend' => 'r'));
+        $chart = new LineChart(array('legend' => true));
         $chart->addLine(new Line($this->getRandomData(10, 10, 60), array('title' => 'Line #1')));
         $chart->addLine(new Line(array(4 => 50, 5 => 30, 7 => 30, 8 => 45), array('title' => 'Line #2')));
         $chart->addLine(new Line(array(2 => 50, 3 => 30, 4 => 35, 5 => 45, 6 => 20), array('title' => 'Line #3')));

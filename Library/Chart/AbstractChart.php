@@ -150,7 +150,7 @@ abstract class AbstractChart {
     }
     
     public function setLegend($legend) {
-        if (!in_array($legend, array('l', 'r', 't', 'b', false))) {
+        if (!in_array($legend, array('l', 'r', 't', 'b', false, true, null))) {
             throw new \InvalidArgumentException();
         }
         $this->options['legend'] = $legend;
