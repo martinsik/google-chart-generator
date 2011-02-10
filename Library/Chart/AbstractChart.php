@@ -31,6 +31,9 @@ abstract class AbstractChart {
 
         $this->options = array_merge($this->defaultOptions, $options);
         
+        if (isset($options['size'])) {
+            $this->setSize($options['size']);
+        }
     }
     
 
@@ -43,7 +46,7 @@ abstract class AbstractChart {
         );
     }
         
-    public function getUrl() {
+    public function renderUrl() {
         //$baseUrl = 'https://chart.googleapis.com/chart?';
         $filteredParts = array();
         $urlParts = $this->getUrlParts();
@@ -56,7 +59,7 @@ abstract class AbstractChart {
     }
     
     public function render() {
-        return '<img src="' . $this->getUrl() . '" />';
+        return '<img src="' . $this->renderUrl() . '" />';
     }
     
     public function addData(AbstractChartData $cd) {
@@ -132,7 +135,7 @@ abstract class AbstractChart {
     }
     
     public function debugUrl() {
-        return str_replace(array('?', '&'), array("\n    ?", "\n    &"), $this->getUrl());
+        return str_replace(array('?', '&'), array("\n    ?", "\n    &"), $this->renderUrl());
     }
     
     

@@ -53,6 +53,21 @@ class ShowroomController extends Controller {
         $chart->getYAxis()->setMin(10)->setMax(60);
         $charts[] = $chart;
         
+        $chart = new LineChart();
+        $chart->setTitle(null);
+        $chart->setSize('180x120');
+        $chart->setSparkline(true);
+        $chart->addLine(new Line(array(5,6,14,8,11,3,2,29,35,26,40,29,51,60,57,6,2,1), array('color' => '000088')));
+        $charts[] = $chart;
+        
+        $chart = new LineChart(array('title' => null, 'size' => '180x120', 'sparkline' => true));
+        $chart->addLine(new Line(array(5,6,14,8,11,3,2,29,35,26,40,29,51,60,57,6,2,1), array('color' => '880000')));
+        $charts[] = $chart;
+        
+        $chart = new LineChart(array('size' => '180x120', 'title' => 'Custom x values'));
+        $chart->addLine(new Line(array(2 => 50, 3 => 30, 4 => 35, 5 => 45, 6 => 20)));
+        $charts[] = $chart;
+        
         return $this->render('GoogleChartBundle:Showroom:charts.html.twig', array('charts' => $charts));
     }
     

@@ -38,7 +38,7 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
     public function __construct(array $options = array()) {
         $this->options = array_merge(
             array(
-                'colour'        => 'auto',
+                'color'         => 'auto',
                 'title'         => 'call setTitle($title) to change this text :)',
                 'printStrategy' => self::PRINT_STRATEGY_AUTO,
             ),
@@ -60,10 +60,10 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
     
     public function setColour($colour) {
         if (preg_match('/[0-9A-F]{2}[0-9A-F]{2}[0-9A-F]{2}/i', $colour)) {
-            $this->options['colour'] = $colour;
+            $this->options['color'] = $colour;
             return true;
         } else {
-            throw new \InvalidArgumentException ('Sorry, but the only appropriate colour format is "RRGGBB"');
+            throw new \InvalidArgumentException ('Sorry, but the only appropriate color format is "RRGGBB"');
         }
     }
     
@@ -72,7 +72,7 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
     }
     
     public function getColour() {
-        return $this->options['colour'];
+        return $this->options['color'];
     }
     
     public function add($value, $index = null) {

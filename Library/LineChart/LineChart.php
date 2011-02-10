@@ -9,22 +9,28 @@ use Bundle\GoogleChartBundle\Library\Axis;
 
 class LineChart extends AbstractAxisChart {
     
-    protected $sparkline = false;
+    //protected $sparkline = false;
     
-    /*public function __construct(array $options = array()) {
-        
-    }*/
+    public function __construct(array $options = array()) {
+        $this->defaultOptions = array_merge(
+            $this->defaultOptions,
+            array(
+                'sparkline' => false
+            )
+        );
+        parent::__construct($options);
+    }
     
     public function addLine(Line $line) {
         $this->addData($line);
     }
     
     public function setSparkline($sparkline) {
-        $this->sparkline = $sparkline;
+        $this->options['sparkline'] = $sparkline;
     }
     
     public function getSparkline() {
-        return $this->sparkline;
+        return $this->options['sparkline'];
     }
     
     
@@ -143,5 +149,27 @@ class LineChart extends AbstractAxisChart {
         );
     }
 
+    /**
+     * In the case we're generating sparkline, disable axis
+     */
+    protected function getAxisUrlPart() {
+        if ($this->getSparkline()) {
+            return null;
+        } else {
+            return parent::getAxisUrlPart();
+        }
+    }
+    
+    /**
+     * In the case we're generating sparkline, disable grid
+     */
+    protected function getGridUrlPart() {
+        if ($this->getSparkline()) {
+            return null;
+        } else {
+            return parent::getGridUrlPart();
+        }
+    }
+    
     
 }
