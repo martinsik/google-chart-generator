@@ -39,7 +39,7 @@ abstract class AbstractChartData implements \ArrayAccess, \Countable, \Iterator 
         $this->options = array_merge(
             array(
                 'color'         => 'auto',
-                'title'         => 'call setTitle($title) to change this text :)',
+                'title'         => 'call setTitle($title) to change this text',
                 'printStrategy' => self::PRINT_STRATEGY_AUTO,
             ),
             $options

@@ -37,18 +37,18 @@ class ShowroomController extends Controller {
         $line3->setWidth(2);
         $line4 = new Line($this->getRandomData(20));
         $line4->setColour('eeeeee');
-        
         $chart->addLine($line4);
         $chart->addLine($line);
         $chart->addLine($line2);
         $chart->addLine($line3);
+        $chart->download(realpath(__DIR__ . '/../../../../app/cache') . '/' . time() . '.png');
         $charts[] = $chart;
         
         // custom x values
-        $chart = new LineChart();
-        $chart->addLine(new Line($this->getRandomData(10, 10, 60)));
-        $chart->addLine(new Line(array(4 => 50, 5 => 30, 7 => 30, 8 => 45)));
-        $chart->addLine(new Line(array(2 => 50, 3 => 30, 4 => 35, 5 => 45, 6 => 20)));
+        $chart = new LineChart(array('legend' => 'r'));
+        $chart->addLine(new Line($this->getRandomData(10, 10, 60), array('title' => 'Line #1')));
+        $chart->addLine(new Line(array(4 => 50, 5 => 30, 7 => 30, 8 => 45), array('title' => 'Line #2')));
+        $chart->addLine(new Line(array(2 => 50, 3 => 30, 4 => 35, 5 => 45, 6 => 20), array('title' => 'Line #3')));
         $chart->getXAxis()->setMin(0)->setMax(10);
         $chart->getYAxis()->setMin(10)->setMax(60);
         $charts[] = $chart;
@@ -64,8 +64,8 @@ class ShowroomController extends Controller {
         $chart->addLine(new Line(array(5,6,14,8,11,3,2,29,35,26,40,29,51,60,57,6,2,1), array('color' => '880000')));
         $charts[] = $chart;
         
-        $chart = new LineChart(array('size' => '180x120', 'title' => 'Custom x values'));
-        $chart->addLine(new Line(array(2 => 50, 3 => 30, 4 => 35, 5 => 45, 6 => 20)));
+        $chart = new LineChart(array('size' => '180x120', 'title' => 'Custom x values', 'legend' => 'b'));
+        $chart->addLine(new Line(array(2 => 50, 3 => 30, 4 => 35, 5 => 45, 6 => 20), array('title' => 'hello!')));
         $charts[] = $chart;
         
         return $this->render('GoogleChartBundle:Showroom:charts.html.twig', array('charts' => $charts));

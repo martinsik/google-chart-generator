@@ -25,7 +25,8 @@ abstract class AbstractChart {
                 'size' => array (
                     'width'   => 300,
                     'height'  => 200,
-                )
+                ),
+                'legend' => false
             )
         );
 
@@ -43,11 +44,12 @@ abstract class AbstractChart {
             'chs'   => $this->getSizeUrlPart(),
             'chd'   => $this->getDataUrlPart(),
             'chtt'  => $this->getTitleUrlPart(),
+            'chdlp' => $this->getLegendPositionUrlPart(),
+            'chdl'  => $this->getLegendLabelsUrlPart(),
         );
     }
         
     public function renderUrl() {
-        //$baseUrl = 'https://chart.googleapis.com/chart?';
         $filteredParts = array();
         $urlParts = $this->getUrlParts();
         foreach ($urlParts as $key => $content) {
@@ -55,13 +57,26 @@ abstract class AbstractChart {
                 $filteredParts[] = $key . '=' . $content;
             }
         }
-        return 'https://chart.googleapis.com/chart?' . implode('&', $filteredParts);
+        return 'http://chart.googleapis.com/chart?' . implode('&', $filteredParts);
     }
     
     public function render() {
         return '<img src="' . $this->renderUrl() . '" />';
     }
     
+    public function download($filename) {
+        file_put_contents($filename, file_get_contents($this->renderUrl()));
+    }
+    
+    public function debugUrl() {
+        return str_replace(array('?', '&'), array("\n    ?", "\n    &"), $this->renderUrl());
+    }
+    
+    /**
+     * Add data collection to the chart
+     * 
+     * @param AbstractChartData $cd  Data collection
+     */
     public function addData(AbstractChartData $cd) {
         $this->data[] = $cd;
     }
@@ -134,10 +149,16 @@ abstract class AbstractChart {
         return $this->options['title'];
     }
     
-    public function debugUrl() {
-        return str_replace(array('?', '&'), array("\n    ?", "\n    &"), $this->renderUrl());
+    public function setLegend($legend) {
+        if (!in_array($legend, array('l', 'r', 't', 'b', false))) {
+            throw new \InvalidArgumentException();
+        }
+        $this->options['legend'] = $legend;
     }
     
+    public function getLegend() {
+        return $this->options['legend'];
+    }
     
     protected function getSizeUrlPart() {
         $size = $this->getSize();
@@ -147,6 +168,30 @@ abstract class AbstractChart {
     protected function getTitleUrlPart() {
         if ($this->options['title']) {
             return urlencode($this->options['title']);
+        }
+    }
+    
+    protected function getLegendPositionUrlPart() {
+        if ($this->options['legend']) {
+            foreach ($this->getData() as $collection) {
+                if ($collection->getTitle()) {
+                    // when legend is set to 'r' we don't need to render it. It's default value.
+                    return $this->options['legend'] == 'r' ? false : $this->options['legend'];
+                }
+            }
+        }
+        return false;
+    }
+    
+    protected function getLegendLabelsUrlPart() {
+        if ($this->options['legend']) {
+            $titles = array();
+            foreach ($this->getData() as $collection) {
+                $titles[] = urlencode($collection->getTitle());
+            }
+            return implode('|', $titles);
+        } else {
+            return false;
         }
     }
     
