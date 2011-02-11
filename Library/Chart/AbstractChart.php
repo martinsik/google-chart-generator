@@ -61,7 +61,7 @@ abstract class AbstractChart {
     }
     
     public function render() {
-        return '<img src="' . $this->renderUrl() . '" />';
+        return '<img src="' . $this->renderUrl() . '" width="' . $this->getSizeX() . '" height="' . $this->getSizeY() . '" alt="' . $this->getTitle() . '" />';
     }
     
     public function download($filename) {

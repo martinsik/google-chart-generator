@@ -26,16 +26,16 @@ class ShowroomController extends Controller {
         
         // size, more lines, colours, widths
         $chart = new LineChart(array('title' => 'Size, more lines, colors, widths'));
-        $chart->setSize('600x300');
+        $chart->setSize('800x200');
         $chart->getYAxis()->setMax(100);
-        
-        $line = new Line($this->getRandomData(20, 40, 60));
+        $chart->setLegend('b');
+        $line = new Line($this->getRandomData(20, 40, 60), array('title' => 'Line #1'));
         $line->setWidth(4);
-        $line2 = new Line($this->getRandomData(20, 20, 80));
+        $line2 = new Line($this->getRandomData(20, 20, 80), array('title' => 'Line #2'));
         $line2->setWidth(3);
-        $line3 = new Line($this->getRandomData(20, 20, 80));
+        $line3 = new Line($this->getRandomData(20, 20, 80), array('title' => 'Line #3'));
         $line3->setWidth(2);
-        $line4 = new Line($this->getRandomData(20));
+        $line4 = new Line($this->getRandomData(20), array('title' => 'grey line'));
         $line4->setColour('eeeeee');
         $chart->addLine($line4);
         $chart->addLine($line);
@@ -68,6 +68,21 @@ class ShowroomController extends Controller {
         $chart->addLine(new Line(array(2 => 50, 3 => 30, 4 => 35, 5 => 45, 6 => 20), array('title' => 'hello!')));
         $charts[] = $chart;
         
+        $chart = new LineChart(array('title' => null, 'size' => '180x120'/*, 'legend' => 'b'*/));
+        $chart->getXAxis()->setEnabled(false);
+        $chart->getYAxis()->setEnabled(false);
+        $chart->addLine(new Line(array(5,24,18,8,11,27,26,29,35,20), array('width' => 3, 'title' => 'blue', 'color' => '0070C0')));
+        $chart->addLine(new Line(array(8,11,25,2,29,35,8,40,29,23), array('width' => 3, 'title' => 'orange', 'color' => 'F07200')));
+        $charts[] = $chart;
+
+        $chart = new LineChart(array('title' => null, 'size' => '180x120'/*, 'legend' => 'b'*/));
+        $chart->getXAxis()->setEnabled(false);
+        $chart->getYAxis()->setEnabled(false);
+        $chart->addLine(new Line(array(8,11,25,2,29,35,8,40,29,23), array('width' => 3, 'title' => 'orange', 'color' => 'F07200')));
+        $chart->addLine(new Line(array(5,24,18,8,11,27,26,29,35,20), array('width' => 3, 'title' => 'blue', 'color' => '0070C0')));
+        $charts[] = $chart;
+
+
         return $this->render('GoogleChartBundle:Showroom:charts.html.twig', array('charts' => $charts));
     }
     

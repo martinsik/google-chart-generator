@@ -42,7 +42,7 @@ class LineChart extends AbstractAxisChart {
         if ($this->getSparkline()) {
             return 'ls';
         }
-        $axisEnabled = false;
+        /*$axisEnabled = false;
         foreach ($this->getAxis() as $axis) {
             if ($axis->isEnabled()) {
                 $axisEnabled = true;
@@ -50,11 +50,11 @@ class LineChart extends AbstractAxisChart {
             }
         }
         
-        if ($axisEnabled) {
+        if ($axisEnabled) {*/
             return 'lxy';
-        } else {
-            return 'lc';
-        }
+        /*} else {
+            return 'lxy';
+        }*/
     }
     
     protected function getDataUrlPart() {

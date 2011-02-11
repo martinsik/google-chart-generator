@@ -1,47 +1,69 @@
-GoogleChartBundle 0.1
+GoogleChartBundle 0.1.1
 ========================
 
-This bundle simplifies work with [Google Chart API](http://code.google.com/apis/chart/).
+Bundle for comfy implementation of [Google Chart API](http://code.google.com/apis/chart/).
 
 How does it look like
 ---------------------
 
-Line chart: [default setting](https://chart.googleapis.com/chart?cht=lxy&chs=300x200&chd=t:-1|47.423,23.711,71.134,79.381,94.845,86.598,58.763,17.526,79.381,54.639,70.103,45.361,80.412,36.082,17.526,51.546,57.732,100,59.794,6.186&chtt=Default+settings&chxt=x,y&chxr=0,0,19|1,0,97&chco=f07d00), [size, y axis scaling](https://chart.googleapis.com/chart?cht=lxy&chs=400x200&chd=t:-1|48.5,36,63,44.5,54.5,70,36.5,67,29.5,48.5,61.5,53,60,46,41,55.5,37.5,70,64,26&chtt=example+%232&chxt=x,y&chxr=0,0,19|1,-50,150&chco=f07d00), [size, more lines, colours, widths](https://chart.googleapis.com/chart?cht=lxy&chs=400x200&chd=t:-1|52,48,56,55,58,48,44,43,58,43,48,40,52,43,59,48,41,46,59,50|-1|50,74,53,56,23,72,77,63,78,68,74,56,63,47,24,68,60,72,34,35|-1|77,64,71,45,42,23,76,69,78,40,21,59,21,62,49,67,27,75,80,64|-1|26,100,81,30,69,14,81,25,93,96,51,68,24,68,73,73,20,80,7,51,51,65,70,92,36,13,84,25,20,23&chtt=example+%233&chxt=x,y&chxr=0,0,29&chco=3996B9,2775CB,46CAF0,bbbbbb&chls=4|3|2|1)
+ - Line chart
+   - [default setting](http://chart.googleapis.com/chart?cht=lxy&chs=300x200&chd=t:-1|83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7&chtt=GoogleChartBundle+with+default+settings&chxt=x,y&chxr=0,0,19|1,0,100&chco=ffa909&chg=25,33.33,3,3)
+   - [more lines, colors, widths, legend](http://chart.googleapis.com/chart?cht=lxy&chs=800x200&chd=t:-1|46,11,29,22,39,43,20,91,28,70,50,91,63,8,36,33,14,85,27,94|-1|58,55,40,44,58,60,58,54,48,59,47,47,47,47,40,59,45,44,46,46|-1|28,47,79,34,43,45,44,73,38,64,46,62,38,54,61,41,74,79,63,62|-1|40,56,66,45,76,63,63,76,72,62,45,28,50,27,75,23,54,42,21,46&chtt=Line+chart+generated+by+GoogleChartBundle&chdlp=b&chdl=grey+line|Line+%231|Line+%232|Line+%233&chxt=x,y&chxr=0,0,19&chco=eeeeee,ffa909,26348c,4fc400&chg=16.7,25,3,3&chls=1|4|3|2)
+   - [sparkline](https://chart.googleapis.com/chart?cht=ls&chs=180x80&chd=t:-1|8,10,23,13,18,5,3,48,58,43,67,48,85,100,95,10,3,2&chxr=0,0,17|1,0,60&chco=000088 "sparkline")
 
-Known limitations
------------------
+Documentation
+-------------
 
-By now, only **line charts** are available with some limitations.
-The most important is probably that X axis is not scalable and there's no support for grids, but these things will be fixed as soon as posible.
-Implementation is not 100%, so all features are not available at this moment.
-Also complete documentation with deeper description and more examples will be available soon.
+For deeper information about this bundle visit [GoogleChartBundle documentation](http://www.martinsikora.com/googlechartbundle "GoogleChartBundle documentation")
 
 Installation
 ------------
 
-From GitHub:
+###Download the Source Code
 
-    git@github.com:martinsik/GoogleChartBundle.git
+From GitHub repository [git@github.com:martinsik/GoogleChartBundle.git](https://github.com/martinsik/GoogleChartBundle "git@github.com:martinsik/GoogleChartBundle.git"):
 
-or download and unzip:
+    git clone git@github.com:martinsik/GoogleChartBundle.git __my_project__/src/Bundle/GoogleChartBundle
 
-    https://github.com/martinsik/GoogleChartBundle
+or download, unzip:
 
-Register bundle in your XXXKernel.php:
+    https://github.com/downloads/martinsik/GoogleChartBundle/GoogleChartBundle%20v0.1.1.zip
 
+and put into your `__my_project__/src/Bundle/GoogleChartBundle`
+
+###Enable Bundle
+
+**NOTE:** Guidelines for Symfony2 PR6, for older versions might be slightly different.
+
+Register bundle in your `XXXKernel.php`:
+
+    #PHP
+    // app/AppKernel.php
     new Bundle\GoogleChartBundle\GoogleChartBundle()
 
+Register default bundle namespace in your `autoload.php`:
 
-Usage
--------------
+    #PHP
+    // app/autoload.php
+    $loader->registerNamespaces(array(
+        'Symfony'  => __DIR__ . '/../vendor/symfony/src',
+        ...
+        'Bundle'   => __DIR__ . '/../src',
+    ));
 
-    $chart = new LineChart(array('title' => 'Default settings'));
-    $line = new Line();
-    $line->add(array(20, 50, 10, 30, 45, 87, 60, 10, 25, 70));
-    $chart->addLine($line);
 
-rendering in Twig:
+Quick Tutorial
+--------------
 
+defining a line chart:
+
+    #PHP
+    $chart = new LineChart(array('title' => 'Chart with default settings'));
+    $chart->addLine(new Line(array(83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7)));
+
+rendering in a Twig view:
+
+    #HTML
     {# render <img> tag #}
     {{ chart.render }}
 
@@ -49,11 +71,24 @@ rendering in Twig:
     {{ chart.renderUrl }}
     
 
-or in PHP view:
+or in a PHP view:
 
+    #HTML
     <!-- render <img> tag -->
     <?php echo $chart->render(); ?>
 
     <!-- or just get image url -->
     <?php echo $chart->renderUrl(); ?>
 
+Generated HTML output is:
+
+    #HTML
+    <!-- render <img> tag -->
+    <img src="http://chart.googleapis.com/chart?cht=lxy&chs=300x200&chd=t:-1|83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7&chtt=Chart+with+default+settings&chxt=x,y&chxr=0,0,19|1,0,100&chco=ffa909&chg=25,33.33,3,3" width="300" height="200" alt="GoogleChartBundle with default settings" />
+
+    <!-- or just get image url -->
+    http://chart.googleapis.com/chart?cht=lxy&chs=300x200&chd=t:-1|83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7&chtt=Chart+with+default+settings&chxt=x,y&chxr=0,0,19|1,0,100&chco=ffa909&chg=25,33.33,3,3
+
+and finally the image:
+
+[show generated chart](http://chart.googleapis.com/chart?cht=lxy&chs=300x200&chd=t:-1|83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7&chtt=GoogleChartBundle+with+default+settings&chxt=x,y&chxr=0,0,19|1,0,100&chco=ffa909&chg=25,33.33,3,3 "GoogleChartBundle with default settings")
