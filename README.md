@@ -1,4 +1,4 @@
-GoogleChartBundle 0.1.1
+GoogleChartBundle v0.1.1
 ========================
 
 Bundle for comfy implementation of [Google Chart API](http://code.google.com/apis/chart/).
