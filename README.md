@@ -25,11 +25,11 @@ From GitHub repository [git@github.com:martinsik/GoogleChartBundle.git](https://
 
     git clone git@github.com:martinsik/GoogleChartBundle.git __my_project__/src/Bundle/GoogleChartBundle
 
-or download, unzip:
+or download and unzip latest version from:
 
-    https://github.com/downloads/martinsik/GoogleChartBundle/GoogleChartBundle%20v0.1.1.zip
+    https://github.com/martinsik/GoogleChartBundle
 
-and put into your `__my_project__/src/Bundle/GoogleChartBundle`
+and put all content into `__my_project__/src/Bundle/GoogleChartBundle`
 
 ###Enable Bundle
 
