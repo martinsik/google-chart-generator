@@ -76,7 +76,7 @@ class LineChart extends AbstractAxisChart {
             $valuesString = $keysString = '';
             $data = $dataCollection->getData();
             foreach ($data as $x => $value) {
-                if (!$dataCollection->isContinous() && $chartType == 'lxy') {
+                if (!$dataCollection->isSequence() && $chartType == 'lxy') {
                     $keysString .= $x . ',';
                 }
                 $valuesString .= $dataCollection->applyPrintStrategy(($value - $min) * 100 / $range) . ',';
@@ -122,7 +122,7 @@ class LineChart extends AbstractAxisChart {
         $urlString = '';
         list($min, $max) = $this->getXDimensions();
         foreach ($this->getData() as $dataCollection) {
-            if (!$dataCollection->isContinous()) {
+            if (!$dataCollection->isSequence()) {
                 $hasCustom = true;
                 break;
             }

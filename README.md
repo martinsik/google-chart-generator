@@ -14,7 +14,7 @@ How does it look like
 Documentation
 -------------
 
-For deeper information about this bundle visit [GoogleChartBundle documentation](http://www.martinsikora.com/googlechartbundle "GoogleChartBundle documentation")
+For deeper information about this bundle visit [GoogleChartBundle documentation](http://www.martinsikora.com/googlechartbundle "GoogleChartBundle documentation").
 
 Installation
 ------------
@@ -37,13 +37,11 @@ and put all content into `__my_project__/src/Bundle/GoogleChartBundle`
 
 Register bundle in your `XXXKernel.php`:
 
-    #PHP
     // app/AppKernel.php
     new Bundle\GoogleChartBundle\GoogleChartBundle()
 
 Register default bundle namespace in your `autoload.php`:
 
-    #PHP
     // app/autoload.php
     $loader->registerNamespaces(array(
         'Symfony'  => __DIR__ . '/../vendor/symfony/src',
@@ -57,13 +55,11 @@ Quick Tutorial
 
 defining a line chart:
 
-    #PHP
     $chart = new LineChart(array('title' => 'Chart with default settings'));
     $chart->addLine(new Line(array(83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7)));
 
 rendering in a Twig view:
 
-    #HTML
     {# render <img> tag #}
     {{ chart.render }}
 
@@ -73,7 +69,6 @@ rendering in a Twig view:
 
 or in a PHP view:
 
-    #HTML
     <!-- render <img> tag -->
     <?php echo $chart->render(); ?>
 
@@ -82,7 +77,6 @@ or in a PHP view:
 
 Generated HTML output is:
 
-    #HTML
     <!-- render <img> tag -->
     <img src="http://chart.googleapis.com/chart?cht=lxy&chs=300x200&chd=t:-1|83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7&chtt=Chart+with+default+settings&chxt=x,y&chxr=0,0,19|1,0,100&chco=ffa909&chg=25,33.33,3,3" width="300" height="200" alt="GoogleChartBundle with default settings" />
 

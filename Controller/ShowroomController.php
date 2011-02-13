@@ -5,6 +5,8 @@ namespace Bundle\GoogleChartBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Bundle\GoogleChartBundle\Library\LineChart\LineChart;
 use Bundle\GoogleChartBundle\Library\LineChart\Line;
+use Bundle\GoogleChartBundle\Library\PieChart\PieChart;
+use Bundle\GoogleChartBundle\Library\PieChart\Pie;
 
 class ShowroomController extends Controller {
     
@@ -83,6 +85,17 @@ class ShowroomController extends Controller {
         $charts[] = $chart;
 
 
+        return $this->render('GoogleChartBundle:Showroom:charts.html.twig', array('charts' => $charts));
+    }
+    
+    public function pieChartAction() {
+        $charts = array();
+        
+        $chart = new PieChart();
+        $chart->addData(new Pie(rand(1,30)));
+        $chart->addData(new Pie(rand(1,30)));
+        $charts[] = $chart;
+        
         return $this->render('GoogleChartBundle:Showroom:charts.html.twig', array('charts' => $charts));
     }
     

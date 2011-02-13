@@ -3,7 +3,7 @@
 namespace Bundle\GoogleChartBundle\Library\Chart;
 
 use Bundle\GoogleChartBundle\Library\Axis;
-use Bundle\GoogleChartBundle\Library\DataCollection\AbstractChartData;
+use Bundle\GoogleChartBundle\Library\DataCollection\AbstractData;
 
 abstract class AbstractChart {
     
@@ -44,6 +44,7 @@ abstract class AbstractChart {
             'chs'   => $this->getSizeUrlPart(),
             'chd'   => $this->getDataUrlPart(),
             'chtt'  => $this->getTitleUrlPart(),
+            'chco' => $this->getColorsUrlPart(),
             'chdlp' => $this->getLegendPositionUrlPart(),
             'chdl'  => $this->getLegendLabelsUrlPart(),
         );
@@ -77,7 +78,7 @@ abstract class AbstractChart {
      * 
      * @param AbstractChartData $cd  Data collection
      */
-    public function addData(AbstractChartData $cd) {
+    public function addData(AbstractData $cd) {
         $this->data[] = $cd;
     }
     
@@ -169,6 +170,15 @@ abstract class AbstractChart {
         if ($this->options['title']) {
             return urlencode($this->options['title']);
         }
+    }
+    
+    protected function getColorsUrlPart() {
+        $colours = array();
+        $autoColoursIndex = 0;
+        foreach ($this->getData() as $collection) {
+            $colours[] = $collection->getColour() == 'auto' ? $collection::$defaultColours[$autoColoursIndex++] : $collection->getColour();
+        }
+        return implode(',', $colours);
     }
     
     protected function getLegendPositionUrlPart() {

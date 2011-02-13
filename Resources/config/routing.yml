@@ -1,6 +1,10 @@
-showroom:
+lineChart:
     pattern:  /googleChartBundle/lineChart
     defaults: { _controller: GoogleChartBundle:Showroom:lineChart }
+
+pieChart:
+    pattern:  /googleChartBundle/pieChart
+    defaults: { _controller: GoogleChartBundle:Showroom:pieChart }
 
 tutorial:
     pattern:  /googleChartBundle/tutorial

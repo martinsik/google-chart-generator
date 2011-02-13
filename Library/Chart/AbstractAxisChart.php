@@ -61,20 +61,12 @@ abstract class AbstractAxisChart extends AbstractChart {
             array (
                 'chxt' => $this->getAxisUrlPart(), // visible axes
                 'chxr' => $this->getAxisRangeUrlPart(), // axis range
-                'chco' => $this->getColoursUrlPart(),
                 'chg'  => $this->getGridUrlPart(),
             )
         );
     }
     
-    protected function getColoursUrlPart() {
-        $colours = array();
-        $autoColoursIndex = 0;
-        foreach ($this->getData() as $collection) {
-            $colours[] = $collection->getColour() == 'auto' ? $collection::$defaultColours[$autoColoursIndex++] : $collection->getColour();
-        }
-        return implode(',', $colours);
-    }
+
     
     /**
      * Visible axes

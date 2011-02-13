@@ -2,14 +2,13 @@
 
 namespace Bundle\GoogleChartBundle\Library\LineChart;
 
-use Bundle\GoogleChartBundle\Library\DataCollection\AbstractChartData;
+use Bundle\GoogleChartBundle\Library\DataCollection\SequenceData;
 
 
-class Line extends AbstractChartData {
-    
+class Line extends SequenceData {
     
     public function __construct($data = array(), array $options = array()) {
-        parent::__construct($options);
+        parent::__construct($data, $options);
         $this->options = array_merge(
             array (
                 'filled'      => false,
@@ -17,10 +16,7 @@ class Line extends AbstractChartData {
                 'width'       => 1,
             ), $this->options
         );
-        
-        if ($data) {
-            $this->add($data);
-        }
+
     }
     
     public function setFilled($filled) {
