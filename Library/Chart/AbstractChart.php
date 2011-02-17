@@ -44,7 +44,7 @@ abstract class AbstractChart {
             'chs'   => $this->getSizeUrlPart(),
             'chd'   => $this->getDataUrlPart(),
             'chtt'  => $this->getTitleUrlPart(),
-            'chco' => $this->getColorsUrlPart(),
+            'chco'  => $this->getColorsUrlPart(),
             'chdlp' => $this->getLegendPositionUrlPart(),
             'chdl'  => $this->getLegendLabelsUrlPart(),
         );
@@ -74,12 +74,24 @@ abstract class AbstractChart {
     }
     
     /**
-     * Add data collection to the chart
+     * Add data to the chart
      * 
-     * @param AbstractChartData $cd  Data collection
+     * @param AbstractData|array  $data  Chart data
      */
-    public function addData(AbstractData $cd) {
-        $this->data[] = $cd;
+    public function addData($data) {
+        if (is_array($data)) {
+            foreach ($data as $dataCollection) {
+                if ($dataCollection instanceof AbstractData) {
+                    $this->data[] = $dataCollection;
+                } else {
+                    throw new \InvalidArgumentException();
+                }
+            }
+        } elseif ($data instanceof AbstractData) {
+            $this->data[] = $data;
+        } else {
+            throw new \InvalidArgumentException();
+        }
     }
     
     public function getData() {

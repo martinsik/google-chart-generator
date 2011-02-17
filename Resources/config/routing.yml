@@ -6,6 +6,11 @@ pieChart:
     pattern:  /googleChartBundle/pieChart
     defaults: { _controller: GoogleChartBundle:Showroom:pieChart }
 
+barChart:
+    pattern:  /googleChartBundle/barChart
+    defaults: { _controller: GoogleChartBundle:Showroom:barChart }
+
+
 tutorial:
     pattern:  /googleChartBundle/tutorial
     defaults: { _controller: GoogleChartBundle:Tutorial:index }

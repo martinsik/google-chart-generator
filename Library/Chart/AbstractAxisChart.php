@@ -127,6 +127,36 @@ abstract class AbstractAxisChart extends AbstractChart {
         return false;
     }
     
+    protected function getDataUrlPart() {
+        //$series = array();
+        $dataString = 't:';
+        $chartType = $this->getChartTypeUrlPart();
+        list($min, $max) = $this->getYDimensions();
+        $range = $max - $min;
+        //var_dump($chartType);
+        foreach ($this->getData() as $dataCollection) {
+            // check if the collection keys are in order
+            
+            $valuesString = $keysString = '';
+            $data = $dataCollection->getData();
+            foreach ($data as $x => $value) {
+                if (!$dataCollection->isSequence() && $chartType == 'lxy') {
+                    $keysString .= $x . ',';
+                }
+                $valuesString .= $dataCollection->applyPrintStrategy(($value - $min) * 100 / $range) . ',';
+            }
+            
+            $dataString .= ($keysString ? trim($keysString, ',') : '-1') . '|' . trim($valuesString, ',') . '|';
+            
+            //$series[] = array($keysString ? $keysString : '-1|', substr($valuesString, 0, -1));
+        }
+        
+        //$dataString = implode($this->getChartTypeUrlPart() == 'lxy' ? '|-1|' : '|', $series);
+        
+        return trim($dataString, '|');
+        
+    }
+    
     protected function autoGridBlocks($size) {
         if ($size <= 100) {
             return round(100 / 2, 1);

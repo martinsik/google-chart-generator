@@ -6,7 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Bundle\GoogleChartBundle\Library\LineChart\LineChart;
 use Bundle\GoogleChartBundle\Library\LineChart\Line;
 use Bundle\GoogleChartBundle\Library\PieChart\PieChart;
-use Bundle\GoogleChartBundle\Library\PieChart\Pie;
+use Bundle\GoogleChartBundle\Library\PieChart\Arc;
+use Bundle\GoogleChartBundle\Library\BarChart\BarChart;
+use Bundle\GoogleChartBundle\Library\BarChart\Bar;
 
 class ShowroomController extends Controller {
     
@@ -91,13 +93,53 @@ class ShowroomController extends Controller {
     public function pieChartAction() {
         $charts = array();
         
+        $chart = new PieChart(array('title' => 'Default settings'));
+        $chart->addData(new Arc(40));
+        $chart->addData(new Arc(60));
+        $chart->addData(new Arc(30));
+        $charts[] = $chart;
+        
         $chart = new PieChart();
-        $chart->addData(new Pie(rand(1,30)));
-        $chart->addData(new Pie(rand(1,30)));
+        $chart->addData(array(new Arc(40), new Arc(60), new Arc(30)));
+        $charts[] = $chart;
+        
+        $chart = new PieChart(array('legend' => true));
+        $chart->addData(new Arc(rand(1,30), array('title' => 'Arc #1')));
+        $chart->addData(new Arc(rand(1,30), array('title' => 'Arc #2')));
+        $chart->addData(new Arc(rand(1,30), array('title' => 'Arc #3')));
+        $chart->addData(new Arc(rand(1,30), array('title' => 'Arc #4')));
+        $charts[] = $chart;
+        
+        $chart = new PieChart(array('legend' => true, '3d' => true));
+        for ($i=1; $i < 7; $i++) {
+            $chart->addData(new Arc(rand(1,30), array('title' => 'Arc #' . $i)));
+        }
         $charts[] = $chart;
         
         return $this->render('GoogleChartBundle:Showroom:charts.html.twig', array('charts' => $charts));
     }
+    
+    public function barChartAction() {
+        $charts = array();
+        
+        $chart = new BarChart(array('title' => 'Default settings'));
+        $chart->addData(new Bar($this->getRandomData(6)));
+        $charts[] = $chart;
+        
+        $chart = new BarChart(array('title' => 'Default settings', 'size' => '620x200', 'legend' => true));
+        $chart->addData(new Bar($this->getRandomData(6), array('title' => 'Bar #1')));
+        $chart->addData(new Bar($this->getRandomData(6), array('title' => 'Bar #2')));
+        $chart->addData(new Bar($this->getRandomData(6), array('title' => 'Bar #3')));
+        $charts[] = $chart;
+        
+        $chart = new BarChart(array('title' => 'Default settings', 'stacked' => true));
+        $chart->addData(new Bar($this->getRandomData(6)));
+        $chart->addData(new Bar($this->getRandomData(6)));
+        $charts[] = $chart;
+        
+        return $this->render('GoogleChartBundle:Showroom:charts.html.twig', array('charts' => $charts));
+    }
+    
     
     protected function getRandomData($size, $min = 0, $max = 100) {
         $values = $keys = array();
