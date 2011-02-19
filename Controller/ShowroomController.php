@@ -121,18 +121,35 @@ class ShowroomController extends Controller {
     
     public function barChartAction() {
         $charts = array();
-        
+        /*
         $chart = new BarChart(array('title' => 'Default settings'));
         $chart->addData(new Bar($this->getRandomData(6)));
         $charts[] = $chart;
         
-        $chart = new BarChart(array('title' => 'Default settings', 'size' => '620x200', 'legend' => true));
+        $chart = new BarChart(array('size' => '620x200', 'legend' => true));
         $chart->addData(new Bar($this->getRandomData(6), array('title' => 'Bar #1')));
         $chart->addData(new Bar($this->getRandomData(6), array('title' => 'Bar #2')));
         $chart->addData(new Bar($this->getRandomData(6), array('title' => 'Bar #3')));
         $charts[] = $chart;
         
-        $chart = new BarChart(array('title' => 'Default settings', 'stacked' => true));
+        $chart = new BarChart(array('stacked' => true));
+        $chart->addData(new Bar($this->getRandomData(6)));
+        $chart->addData(new Bar($this->getRandomData(6)));
+        $charts[] = $chart;
+        
+        $chart = new BarChart(array('position' => 'horizontal', 'size' => '300x230'));
+        $chart->addData(new Bar($this->getRandomData(6)));
+        $charts[] = $chart;
+        
+        $chart = new BarChart(array('position' => 'horizontal', 'size' => '300x550'));
+        $chart->addData(new Bar($this->getRandomData(6)));
+        $chart->addData(new Bar($this->getRandomData(6)));
+        $chart->addData(new Bar($this->getRandomData(6)));
+        $charts[] = $chart;
+        */
+        $chart = new BarChart(array('position' => 'horizontal', 'size' => '300x200'));
+        $chart->setStacked(true);
+        $chart->addData(new Bar($this->getRandomData(6)));
         $chart->addData(new Bar($this->getRandomData(6)));
         $chart->addData(new Bar($this->getRandomData(6)));
         $charts[] = $chart;

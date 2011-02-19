@@ -120,42 +120,23 @@ abstract class AbstractAxisChart extends AbstractChart {
         if ($grid->getBlocksX() === 0 && $grid->getBlocksY() === 0) {
             return false;
         } else {
-            $blocksX = $grid->getBlocksX() === 'auto' ? $this->autoGridBlocks($this->getSizeX()) : ($grid->getBlocksX() === 0 ? 0 : round(100 / $grid->getBlocksX(), 1));
-            $blocksY = $grid->getBlocksY() === 'auto' ? $this->autoGridBlocks($this->getSizeY()) : ($grid->getBlocksY() === 0 ? 0 : round(100 / $grid->getBlocksY(), 1));
+            if ($grid->getBlocksX()) {
+                $blocksX = $grid->getBlocksX() === 'auto' ? $this->autoGridBlocks($this->getSizeX()) : round(100 / $grid->getBlocksX(), 1);
+            } else {
+                $blocksX = 0;
+            }
+            
+            if ($grid->getBlocksY()) {
+                $blocksY = $grid->getBlocksY() === 'auto' ? $this->autoGridBlocks($this->getSizeY()) : round(100 / $grid->getBlocksY(), 1);
+            } else {
+                $blocksY = 0;
+            }
+            //$blocksY = $grid->getBlocksY() === 'auto' ? $this->autoGridBlocks($this->getSizeY()) : ($grid->getBlocksY() === 0 ? 0 : round(100 / $grid->getBlocksY(), 1));
             return $blocksX . ',' . $blocksY . ',' . $grid->getLineSegmentLength() . ',' . $grid->getBlankSegmentLength();
         }
         return false;
     }
-    
-    protected function getDataUrlPart() {
-        //$series = array();
-        $dataString = 't:';
-        $chartType = $this->getChartTypeUrlPart();
-        list($min, $max) = $this->getYDimensions();
-        $range = $max - $min;
-        //var_dump($chartType);
-        foreach ($this->getData() as $dataCollection) {
-            // check if the collection keys are in order
-            
-            $valuesString = $keysString = '';
-            $data = $dataCollection->getData();
-            foreach ($data as $x => $value) {
-                if (!$dataCollection->isSequence() && $chartType == 'lxy') {
-                    $keysString .= $x . ',';
-                }
-                $valuesString .= $dataCollection->applyPrintStrategy(($value - $min) * 100 / $range) . ',';
-            }
-            
-            $dataString .= ($keysString ? trim($keysString, ',') : '-1') . '|' . trim($valuesString, ',') . '|';
-            
-            //$series[] = array($keysString ? $keysString : '-1|', substr($valuesString, 0, -1));
-        }
-        
-        //$dataString = implode($this->getChartTypeUrlPart() == 'lxy' ? '|-1|' : '|', $series);
-        
-        return trim($dataString, '|');
-        
-    }
+
     
     protected function autoGridBlocks($size) {
         if ($size <= 100) {
@@ -177,6 +158,7 @@ abstract class AbstractAxisChart extends AbstractChart {
     public function getXDimensions() {
         return $this->calculateAxisDimensions('horizontal');
     }
+
     
     /**
      * Get minimum and maximum values among all data collections for particular axis
