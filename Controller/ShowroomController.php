@@ -121,7 +121,7 @@ class ShowroomController extends Controller {
     
     public function barChartAction() {
         $charts = array();
-        /*
+        
         $chart = new BarChart(array('title' => 'Default settings'));
         $chart->addData(new Bar($this->getRandomData(6)));
         $charts[] = $chart;
@@ -146,7 +146,7 @@ class ShowroomController extends Controller {
         $chart->addData(new Bar($this->getRandomData(6)));
         $chart->addData(new Bar($this->getRandomData(6)));
         $charts[] = $chart;
-        */
+        
         $chart = new BarChart(array('position' => 'horizontal', 'size' => '300x200'));
         $chart->setStacked(true);
         $chart->addData(new Bar($this->getRandomData(6)));
