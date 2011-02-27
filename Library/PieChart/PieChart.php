@@ -11,8 +11,8 @@ class PieChart extends AbstractChart {
         $this->defaultOptions = array_merge(
             $this->defaultOptions,
             array(
-                '3d' => false,
-                'angle' => 0,
+                '3d'     => false,
+                'angle'  => 0,
             )
         );
         parent::__construct($options);

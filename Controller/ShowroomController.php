@@ -101,6 +101,7 @@ class ShowroomController extends Controller {
         
         $chart = new PieChart();
         $chart->addData(array(new Arc(40), new Arc(60), new Arc(30)));
+        $chart->setOrientation(0.5);
         $charts[] = $chart;
         
         $chart = new PieChart(array('legend' => true));
@@ -111,7 +112,7 @@ class ShowroomController extends Controller {
         $charts[] = $chart;
         
         $chart = new PieChart(array('legend' => true, '3d' => true));
-        for ($i=1; $i < 7; $i++) {
+        for ($i=1; $i < 5; $i++) {
             $chart->addData(new Arc(rand(1,30), array('title' => 'Arc #' . $i)));
         }
         $charts[] = $chart;
