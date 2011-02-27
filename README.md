@@ -1,4 +1,4 @@
-GoogleChartBundle v0.1.1
+GoogleChartBundle v0.1.2
 ========================
 
 Bundle for comfy implementation of [Google Chart API](http://code.google.com/apis/chart/).
@@ -6,10 +6,18 @@ Bundle for comfy implementation of [Google Chart API](http://code.google.com/api
 How does it look like
 ---------------------
 
- - Line chart
+ - Line Chart
    - [default setting](http://chart.googleapis.com/chart?cht=lxy&chs=300x200&chd=t:-1|83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7&chtt=GoogleChartBundle+with+default+settings&chxt=x,y&chxr=0,0,19|1,0,100&chco=ffa909&chg=25,33.33,3,3)
    - [more lines, colors, widths, legend](http://chart.googleapis.com/chart?cht=lxy&chs=800x200&chd=t:-1|46,11,29,22,39,43,20,91,28,70,50,91,63,8,36,33,14,85,27,94|-1|58,55,40,44,58,60,58,54,48,59,47,47,47,47,40,59,45,44,46,46|-1|28,47,79,34,43,45,44,73,38,64,46,62,38,54,61,41,74,79,63,62|-1|40,56,66,45,76,63,63,76,72,62,45,28,50,27,75,23,54,42,21,46&chtt=Line+chart+generated+by+GoogleChartBundle&chdlp=b&chdl=grey+line|Line+%231|Line+%232|Line+%233&chxt=x,y&chxr=0,0,19&chco=eeeeee,ffa909,26348c,4fc400&chg=16.7,25,3,3&chls=1|4|3|2)
    - [sparkline](https://chart.googleapis.com/chart?cht=ls&chs=180x80&chd=t:-1|8,10,23,13,18,5,3,48,58,43,67,48,85,100,95,10,3,2&chxr=0,0,17|1,0,60&chco=000088 "sparkline")
+ - Pie Chart
+   - [default setting](http://chart.googleapis.com/chart?cht=p&chs=300x200&chd=t:40,60,30&chtt=Default+settings&chco=ffa909,26348c,4fc400)
+   - [more slices with legend](http://chart.googleapis.com/chart?cht=p&chs=300x200&chd=t:19,15,13,3&chtt=more+slices+with+legend&chco=ffa909,26348c,4fc400,e40613&chdl=Arc+%231|Arc+%232|Arc+%233|Arc+%234)
+   - [3D chart](http://chart.googleapis.com/chart?cht=p3&chs=300x200&chd=t:9,24,30,5&chtt=3D+chart&chco=ffa909,26348c,4fc400,e40613&chdl=Arc+%231|Arc+%232|Arc+%233|Arc+%234)
+ - Bar Chart
+   - [default setting](http://chart.googleapis.com/chart?cht=bvg&chs=300x200&chd=t:25,100,37,17,6,100&chtt=Default+settings&chco=ffa909&chxt=x,y&chxr=0,0,5|1,0,65&chg=0,33.3,3,3)
+   - [stacked and vertical](http://chart.googleapis.com/chart?cht=bvs&chs=300x200&chd=t:48,24,30,45,37,11|52,46,47,9,53,50&chtt=stacked+and+vertical&chco=ffa909,26348c&chxt=x,y&chxr=0,0,5|1,0,177&chg=0,33.3,3,3)
+   - [stacked and horizontal](http://chart.googleapis.com/chart?cht=bhs&chs=300x210&chd=t:21,2,41,36,35,18|49,26,45,19,13,23|31,8,11,21,18,6&chtt=stacked+and+horizontal&chco=ffa909,26348c,4fc400&chxt=y,x&chxr=0,0,5|1,0,160&chg=25,0,3,3)
 
 Documentation
 -------------

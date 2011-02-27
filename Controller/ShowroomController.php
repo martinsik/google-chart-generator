@@ -142,13 +142,13 @@ class ShowroomController extends Controller {
         $chart->addData(new Bar($this->getRandomData(6)));
         $charts[] = $chart;
         
-        $chart = new BarChart(array('position' => 'horizontal', 'size' => '300x550'));
-        $chart->addData(new Bar($this->getRandomData(6)));
-        $chart->addData(new Bar($this->getRandomData(6)));
-        $chart->addData(new Bar($this->getRandomData(6)));
+        $chart = new BarChart(array('position' => 'horizontal', 'size' => '300x210'));
+        $chart->addData(new Bar($this->getRandomData(3)));
+        $chart->addData(new Bar($this->getRandomData(3)));
+        //$chart->addData(new Bar($this->getRandomData(6)));
         $charts[] = $chart;
         
-        $chart = new BarChart(array('position' => 'horizontal', 'size' => '300x200'));
+        $chart = new BarChart(array('position' => 'horizontal', 'size' => '300x210'));
         $chart->setStacked(true);
         $chart->addData(new Bar($this->getRandomData(6)));
         $chart->addData(new Bar($this->getRandomData(6)));
