@@ -52,7 +52,7 @@ Register default bundle namespace in your `autoload.php`:
 
     // app/autoload.php
     $loader->registerNamespaces(array(
-        'Symfony'  => __DIR__ . '/../vendor/symfony/src',
+        'Symfony'  => array(__DIR__.'/../vendor/symfony/src', __DIR__.'/../vendor/bundles'),
         ...
         'Bundle'   => __DIR__ . '/../src',
     ));
