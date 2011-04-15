@@ -22,7 +22,7 @@ class SequenceData extends AbstractData implements \ArrayAccess, \Countable, \It
             $options
         );
         
-        if (!is_array($data)) {
+        if (!is_array($data) && $data) {
             $data = array($data);
         }
         parent::__construct($data, $options);
