@@ -140,7 +140,8 @@ class LineChart extends AbstractAxisChart {
             // check if the collection keys are in order
             
             $valuesString = $keysString = '';
-            $data = $dataCollection->getData();
+            $data = $this->getRevertX() ? array_reverse($dataCollection->getData()) : $dataCollection->getData();
+            
             foreach ($data as $x => $value) {
                 if (!$dataCollection->isSequence() && $chartType == 'lxy') {
                     $keysString .= $x . ',';

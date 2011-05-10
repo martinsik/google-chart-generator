@@ -13,19 +13,18 @@ class SequenceData extends AbstractData implements \ArrayAccess, \Countable, \It
     protected $innerPosition = 0;
     
     public function __construct($data = null, array $options = array()) {
+        parent::__construct($data, $options);
         $this->options = array_merge(
             array(
-                'color'         => 'auto',
-                'title'         => 'call setTitle($title) to change this text',
-                'printStrategy' => self::PRINT_STRATEGY_AUTO,
+                //'title'         => 'call setTitle($title) to change this text',
+                //'printStrategy' => self::PRINT_STRATEGY_AUTO,
             ),
-            $options
+            $this->options
         );
         
         if (!is_array($data) && $data) {
             $data = array($data);
         }
-        parent::__construct($data, $options);
     }
     
     
@@ -48,6 +47,14 @@ class SequenceData extends AbstractData implements \ArrayAccess, \Countable, \It
         }
         return true;
     }
+    
+    /*public function getData() {
+        if ($this->getRevertX()) {
+            return array_reverse($this->data);
+        } else {
+            return $this->data;
+        }
+    }*/
     
     public function removeAll() {
         $this->data = array();

@@ -8,6 +8,11 @@ use Bundle\GoogleChartBundle\Library\Grid;
 
 abstract class AbstractAxisChart extends AbstractChart {
 
+    const STRATEGY_NONE = 'none';
+    const STRATEGY_MIN = 'min';
+    const STRATEGY_MAX = 'max';
+    const STRATEGY_AVERAGE = 'average';
+    
     public function __construct(array $options = array()) {
         $yAxis = new Axis('y');
         $yAxis->setMin(0);
@@ -18,7 +23,11 @@ abstract class AbstractAxisChart extends AbstractChart {
                 'axis' => array (
                     new Axis('x'),
                     $yAxis,
-                ), 'grid' => new Grid(),
+                ),
+                'grid' => new Grid(),
+                'dataReductionStrategy' => 'none',
+                'revertX'       => false,
+                'revertY'       => false, // not implemented yet
             )
         );
         parent::__construct($options);
@@ -38,6 +47,36 @@ abstract class AbstractAxisChart extends AbstractChart {
     
     public function getGrid() {
         return $this->options['grid']; 
+    }
+    
+    public function setGrid($grid) {
+        $this->options['grid'] = $grid;
+    }
+    
+    public function setRevertX($bool) {
+        $this->options['revertX'] = $bool;
+    }
+    
+    public function getRevertX() {
+        return $this->options['revertX'];
+    }
+    
+    // not implemented yet
+    public function setRevertY($bool) {
+        $this->options['revertY'] = $bool;
+    }
+    
+    // not implemented yet
+    public function getRevertY() {
+        return $this->options['revertY'];
+    }
+    
+    public function getDataReductionStrategy() {
+        return $this->options['dataReductionStrategy']; 
+    }
+    
+    public function setDataReductionStrategy($strategy) {
+        $this->options['dataReductionStrategy'] = $strategy;
     }
     
     /**
@@ -98,10 +137,17 @@ abstract class AbstractAxisChart extends AbstractChart {
                 if ($axis->getMax() === Axis::AUTO || $axis->getMin() === Axis::AUTO) {
                     list($min, $max) = $axis->isVertical() ? $this->getYDimensions() : $this->getXDimensions();
                 }
-                $scalesArray[] = 
-                    /*($index - $disabledAxis)*/ $index++ . ',' .
-                    ($axis->getMin() === Axis::AUTO ? $min : $axis->getMin()) . ',' . 
-                    ($axis->getMax() === Axis::AUTO ? $max : $axis->getMax());
+                
+                $scalesPart = array (
+                    ($axis->getMin() === Axis::AUTO ? $min : $axis->getMin()),
+                    ($axis->getMax() === Axis::AUTO ? $max : $axis->getMax())
+                );
+                // check revert X axis
+                if ($axis->isHorizontal() && $this->getRevertX()) {
+                    $scalesPart = array_reverse($scalesPart);
+                }
+                
+                $scalesArray[] = /*($index - $disabledAxis)*/ $index++ . ',' . implode(',', $scalesPart);
                 
             }/* elseif (!$axis->isEnabled()) {
                 // each axis has index, we need to know how many disabled axis we want to skip
@@ -115,6 +161,11 @@ abstract class AbstractAxisChart extends AbstractChart {
         }
     }
     
+    /**
+     * Chart grid
+     * 
+     * @return string
+     */
     protected function getGridUrlPart() { 
         $grid = $this->getGrid();
         if ($grid->getBlocksX() === 0 && $grid->getBlocksY() === 0) {
@@ -190,6 +241,32 @@ abstract class AbstractAxisChart extends AbstractChart {
         }
         
         return array($min, $max);
+    }
+    
+    protected function prepareData() {
+        $dimensions = $this->getXDimensions('x');
+        $scale = floor(($dimensions['max'] - $dimensions['min']) / $this->getSizeX());
+        $retCollection = array();
+        
+        if ($scale > 2 && $this->getDataReductionStrategy() != self::STRATEGY_NONE) {
+            foreach ($this->getData() as $collection) {
+                $reducedCollection = new SequenceData();
+                $chunkIndex = $dimensions['min'];
+                $chunkArray = array();
+                $totalChunks = ceil(($dimensions['max'] - $dimensions['min']) / $scale);
+                
+                for ($i=0; $i < $totalChunks; $i++) {
+                    for ($j=$i * $totalChunks; $j < $scale; $j++) {
+                        if ($this->getDataReductionStrategy() == self::STRATEGY_MAX) {
+
+                        }
+                    }
+                }
+                $retCollection[] = $reducedCollection;
+            }
+        } else {
+            return $this->getData();
+        }
     }
     
     /**

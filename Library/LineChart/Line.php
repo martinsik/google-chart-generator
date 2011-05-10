@@ -14,7 +14,8 @@ class Line extends SequenceData {
                 'filled'      => false,
                 'normalized'  => false,
                 'width'       => 1,
-            ), $this->options
+            ),
+            $this->options
         );
 
     }
