@@ -57,6 +57,7 @@ class ShowroomController extends Controller {
         $chart->getYAxis()->setMin(10)->setMax(60);
         $charts[] = $chart;
         
+        // sparkline #1
         $chart = new LineChart();
         $chart->setTitle(null);
         $chart->setSize('180x120');
@@ -64,11 +65,13 @@ class ShowroomController extends Controller {
         $chart->addLine(new Line(array(5,6,14,8,11,3,2,29,35,26,40,29,51,60,57,6,2,1), array('color' => '000088')));
         $charts[] = $chart;
         
+        // sparkline #2
         $chart = new LineChart(array('title' => null, 'size' => '180x120', 'sparkline' => true));
         $chart->addLine(new Line(array(5,6,14,8,11,3,2,29,35,26,40,29,51,60,57,6,2,1), array('color' => '880000')));
         $charts[] = $chart;
         
-        $chart = new LineChart(array('size' => '180x120', 'title' => 'Custom x values', 'legend' => 'b'));
+        // legend position
+        $chart = new LineChart(array('title' => null, 'size' => '180x120', 'legend' => 'b'));
         $chart->addLine(new Line(array(2 => 50, 3 => 30, 4 => 35, 5 => 45, 6 => 20), array('title' => 'hello!')));
         $charts[] = $chart;
         
@@ -86,6 +89,10 @@ class ShowroomController extends Controller {
         $chart->addLine(new Line(array(5,24,18,8,11,27,26,29,35,20), array('width' => 3, 'title' => 'blue', 'color' => '0070C0')));
         $charts[] = $chart;
 
+        // data plain text encoding
+        $chart = new LineChart(array('title' => 'Plain text encoding'));
+        $chart->addLine(new Line($this->getRandomData(20)));
+        $charts[] = $chart;
 
         return $this->render('GoogleChartBundle:Showroom:charts.html.twig', array('charts' => $charts));
     }
@@ -100,7 +107,7 @@ class ShowroomController extends Controller {
         $charts[] = $chart;
         
         $chart = new PieChart();
-        $chart->addData(array(new Arc(40), new Arc(60), new Arc(30)));
+        $chart->addData(array(new Arc(40), new Arc(60, array('color' => 'BBBBBB')), new Arc(30)));
         $chart->setOrientation(0.5);
         $charts[] = $chart;
         

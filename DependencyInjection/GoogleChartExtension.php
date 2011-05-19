@@ -16,9 +16,4 @@ class GoogleChartExtension extends Extension {
         }
     }
 
-    public function getAlias()
-    {
-        return 'google_chart';
-    }
-    
 }

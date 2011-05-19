@@ -7,6 +7,11 @@ use Bundle\GoogleChartBundle\Library\DataCollection\AbstractData;
 
 abstract class AbstractChart {
     
+    const DATAFORMAT_TEXT = 'text';
+    const DATAFORMAT_SIMPLE_ENCODING = 'simple';
+    
+    protected $encodingConsts = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    
     protected $options = array();
     
     protected $data = array();
@@ -26,7 +31,8 @@ abstract class AbstractChart {
                     'width'   => 300,
                     'height'  => 200,
                 ),
-                'legend' => false
+                'legend' => false,
+                'dataFormat' => self::DATAFORMAT_SIMPLE_ENCODING,
             )
         );
 
@@ -162,6 +168,27 @@ abstract class AbstractChart {
         return $this->options['title'];
     }
     
+    public function setDataFormat($title) {
+        $this->options['dataFormat'] = $title;
+    }
+    
+    public function getDataFormat() {
+        return $this->options['dataFormat'];
+    }
+    
+    /**
+     * Returns single character flag according to selected data format
+     * 
+     * @return string  data format flag 
+     */
+    public function getDataFormatSign() {
+        if ($this->getDataFormat() == self::DATAFORMAT_TEXT) {
+            return 't';
+        } elseif ($this->getDataFormat() == self::DATAFORMAT_SIMPLE_ENCODING) {
+            return 's';
+        }
+    }
+    
     public function setLegend($legend) {
         if (!in_array($legend, array('l', 'r', 't', 'b', false, true, null))) {
             throw new \InvalidArgumentException();
@@ -171,6 +198,15 @@ abstract class AbstractChart {
     
     public function getLegend() {
         return $this->options['legend'];
+    }
+    
+    
+    protected function encodeValue($value) {
+        if ($this->getDataFormat() == self::DATAFORMAT_TEXT) {
+            return round($value * 100) . ',';
+        } elseif ($this->getDataFormat() == self::DATAFORMAT_SIMPLE_ENCODING) {
+            return $this->encodingConsts[$value * 61];
+        }
     }
     
     protected function getSizeUrlPart() {

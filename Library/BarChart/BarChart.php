@@ -80,7 +80,7 @@ class BarChart extends AbstractAxisChart {
         foreach ($this->getData() as $dataCollection) {
             $data = array();
             foreach ($dataCollection->getData() as $x => $value) {
-                $data[] = $dataCollection->applyPrintStrategy(($value - $min) * 100 / $range);
+                $data[] = $dataCollection->applyPrintStrategy(($value - $min) / $range);
             }
             
             $dataString .= implode(',', $data) . '|';

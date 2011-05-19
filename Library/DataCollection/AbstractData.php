@@ -23,7 +23,7 @@ class AbstractData {
             array(
                 'color'         => 'auto',
                 'title'         => 'call setTitle($title) to change this text',
-                'printStrategy' => self::PRINT_STRATEGY_AUTO,
+                //'printStrategy' => self::PRINT_STRATEGY_AUTO,
             ),
             $options
         );
@@ -75,13 +75,13 @@ class AbstractData {
     public function getPrintStrategy() {
         return $this->options['printStrategy'];
     }
-    
+    /*
     public function applyPrintStrategy($value) {
         if ($this->getPrintStrategy() == 'auto') {
             return round($value);
         }
         throw new Exception('Unknown print strategy.');
     }
-
+*/
     
 }

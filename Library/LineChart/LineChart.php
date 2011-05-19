@@ -131,10 +131,17 @@ class LineChart extends AbstractAxisChart {
 
     protected function getDataUrlPart() {
         //$series = array();
-        $dataString = 't:';
+        $dataString = $this->getDataFormatSign() . ':';
         $chartType = $this->getChartTypeUrlPart();
         list($min, $max) = $this->getYDimensions();
         $range = $max - $min;
+        
+        list($xmin, $xmax) = $this->getXDimensions();
+        $xrange = $xmax - $xmin;
+        if ($xmax > 61) {
+            $this->setDataFormat(self::DATAFORMAT_TEXT);
+        }
+        
         //var_dump($chartType);
         foreach ($this->getData() as $dataCollection) {
             // check if the collection keys are in order
@@ -144,19 +151,33 @@ class LineChart extends AbstractAxisChart {
             
             foreach ($data as $x => $value) {
                 if (!$dataCollection->isSequence() && $chartType == 'lxy') {
-                    $keysString .= $x . ',';
+                    if ($this->getDataFormat() == self::DATAFORMAT_TEXT) {
+                        $keysString .= $x . ',';
+                    } else {
+                        $keysString .= $this->encodeValue($x / $xmax);
+                    }
                 }
-                $valuesString .= $dataCollection->applyPrintStrategy(($value - $min) * 100 / $range) . ',';
+                //$valuesString .= $dataCollection->applyPrintStrategy(($value - $min) * 100 / $range) . ',';
+                $valuesString .= $this->encodeValue(($value - $min) / $range);
             }
             
-            $dataString .= ($keysString ? trim($keysString, ',') : '-1') . '|' . trim($valuesString, ',') . '|';
+           // if ($this->getDataFormat() == self::DATAFORMAT_TEXT) {
+                if ($keysString) {
+                    $dataString .= trim($keysString, ',|');
+                } else {
+                    $dataString .= $this->getDataFormat() == self::DATAFORMAT_TEXT ? '-1' : '_';
+                }
+                $dataString .= $this->getDataFormat() == self::DATAFORMAT_TEXT ? '|' : ',';
+            //}
+            $dataString .= trim($valuesString, ',') . ($this->getDataFormat() == self::DATAFORMAT_TEXT ? '|' : ',');
+            //$dataString .= ($keysString ? trim($keysString, ',') : '-1') . '|' . trim($valuesString, ',') . '|';
             
             //$series[] = array($keysString ? $keysString : '-1|', substr($valuesString, 0, -1));
         }
         
         //$dataString = implode($this->getChartTypeUrlPart() == 'lxy' ? '|-1|' : '|', $series);
         
-        return trim($dataString, '|');
+        return trim($dataString, '|,');
         
     }
     

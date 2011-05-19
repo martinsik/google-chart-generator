@@ -41,7 +41,7 @@ and put all content into `__my_project__/src/Bundle/GoogleChartBundle`
 
 ###Enable Bundle
 
-**NOTE:** Guidelines for Symfony2 PR6, for older versions might be slightly different.
+**NOTE:** Guidelines for Symfony2 PR7, for older versions might be slightly different.
 
 Register bundle in your `XXXKernel.php`:
 
