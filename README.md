@@ -82,4 +82,4 @@ Generated HTML output is:
 
 and finally the image:
 
-[show generated chart](http://chart.googleapis.com/chart?cht=lxy&chs=300x200&chd=t:-1|83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7&chtt=GoogleChartBundle+with+default+settings&chxt=x,y&chxr=0,0,19|1,0,100&chco=ffa909&chg=25,33.33,3,3 "GoogleChartBundle with default settings")
+[show generated chart](http://chart.googleapis.com/chart?cht=lxy&chs=300x200&chd=t:-1|83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7&chtt=GoogleChartGenerator+with+default+settings&chxt=x,y&chxr=0,0,19|1,0,100&chco=ffa909&chg=25,33.33,3,3 "GoogleChartGenerator with default settings")
