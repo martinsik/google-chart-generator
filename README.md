@@ -1,7 +1,7 @@
-GoogleChartBundle v0.1.3
+GoogleChartGenerator v0.1.4 - dev
 ========================
 
-Bundle for comfy implementation of [Google Chart API](http://code.google.com/apis/chart/).
+Standalone library for easy implementation of [Google Chart API](http://code.google.com/apis/chart/).
 
 How does it look like
 ---------------------
@@ -22,40 +22,29 @@ How does it look like
 Documentation
 -------------
 
-For deeper information about this bundle visit [GoogleChartBundle documentation](http://www.martinsikora.com/googlechartbundle "GoogleChartBundle documentation").
+For deeper information about this library visit [full GoogleChartGenerator documentation on my blog](http://www.martinsikora.com/googlechartgenerator "full GoogleChartGenerator documentation on my blog").
 
 Installation
 ------------
 
 ###Download the Source Code
 
-From GitHub repository [git@github.com:martinsik/GoogleChartBundle.git](https://github.com/martinsik/GoogleChartBundle "git@github.com:martinsik/GoogleChartBundle.git"):
+From GitHub repository [git@github.com:martinsik/GoogleChartGenerator.git](https://github.com/martinsik/GoogleChartGenerator "git@github.com:martinsik/GoogleChartGenerator.git"):
 
-    git clone git@github.com:martinsik/GoogleChartBundle.git __my_project__/src/Bundle/GoogleChartBundle
+    git clone git@github.com:martinsik/GoogleChartGenerator.git _your_project_lib/GoogleChartGenerator
 
 or download and unzip latest version from:
 
-    https://github.com/martinsik/GoogleChartBundle
+    https://github.com/martinsik/GoogleChartGenerator
 
-and put all content into `__my_project__/src/Bundle/GoogleChartBundle`
+and put all content into _your_project_lib/GoogleChartGenerator
 
-###Enable Bundle
+###Load classes
 
-**NOTE:** Guidelines for Symfony2 PR7, for older versions might be slightly different.
+Include loader if you don't have any autoloader:
 
-Register bundle in your `XXXKernel.php`:
-
-    // app/AppKernel.php
-    new Bundle\GoogleChartBundle\GoogleChartBundle()
-
-Register default bundle namespace in your `autoload.php`:
-
-    // app/autoload.php
-    $loader->registerNamespaces(array(
-        'Symfony'  => array(__DIR__.'/../vendor/symfony/src', __DIR__.'/../vendor/bundles'),
-        ...
-        'Bundle'   => __DIR__ . '/../src',
-    ));
+    #PHP
+    include "/_your_project_lib/GoogleChartGenerator/loader.php"
 
 
 Quick Tutorial
