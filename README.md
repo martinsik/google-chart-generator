@@ -37,16 +37,6 @@ or download and unzip latest version from:
 
     https://github.com/martinsik/GoogleChartGenerator
 
-and put all content into _your_project_lib/GoogleChartGenerator
-
-###Load classes
-
-Include loader if you don't have any autoloader:
-
-    #PHP
-    include "/_your_project_lib/GoogleChartGenerator/loader.php"
-
-
 Quick Tutorial
 --------------
 

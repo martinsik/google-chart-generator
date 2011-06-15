@@ -1,6 +1,6 @@
 <?php
 
-include_once 'loader.php';
+require_once __DIR__ . '/loader.php';
 
 use GoogleChartGenerator\Chart\PieChart\PieChart;
 use GoogleChartGenerator\Chart\PieChart\Arc;

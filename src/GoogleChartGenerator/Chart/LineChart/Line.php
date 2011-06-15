@@ -30,7 +30,7 @@ class Line extends SequenceData {
     
     public function setWidth($width) {
         if (!is_numeric($width)) {
-            throw new \InvalidArgumentException('Use only numeric value');
+            throw new \InvalidArgumentException('Use only numeric values');
         }
         $this->options['width'] = $width;
     }

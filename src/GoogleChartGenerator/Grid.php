@@ -58,7 +58,7 @@ class Grid {
     }
     
     public function getBlankSegmentLength() {
-        return $this->lineSegmentLength;
+        return $this->blankSegmentLength;
     }
     
     

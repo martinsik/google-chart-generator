@@ -1,6 +1,6 @@
 <?php
 
-include 'loader.php';
+require_once __DIR__ . '/loader.php';
 
 use GoogleChartGenerator\Chart\LineChart\LineChart;
 use GoogleChartGenerator\Chart\LineChart\Line;

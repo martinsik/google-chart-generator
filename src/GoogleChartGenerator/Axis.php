@@ -34,8 +34,12 @@ class Axis {
     }
     
     public function setLabels($labels) {
-        $this->labels = $labels;
-        return $this;
+        if (is_array($labels)) {
+            $this->labels = $labels;
+            return $this;
+        } else {
+            throw new \InvalidArgumentException('Axis labels must be an array');
+        }
     }
     
     public function getLabels() {
@@ -51,6 +55,8 @@ class Axis {
         return (boolean) $this->enabled;
     }
     
+    /**
+     * @TODO: impelment
     public function setFont(Font $font) {
         $this->font = $font;
         return $this;
@@ -59,10 +65,15 @@ class Axis {
     public function getFont() {
         return $this->font;
     }
+    */
     
     public function setPosition($position) {
-        $this->position = $position;
-        return $this;
+        if (in_array($position, array('x', 'y', 't', 'r'))) {
+            $this->position = $position;
+            return $this;
+        } else {
+            throw new \InvalidArgumentException('Use only "x", "y", "t", "r" for axis position');
+        }
     }
     
     public function getPosition() {
@@ -118,7 +129,7 @@ class Axis {
     
     protected function validateDimension($value) {
         if ($value != 'auto' && !is_numeric($value)) {
-            throw new \InvalidArgumentException('Use only \'auto\' or a numeric value');
+            throw new \InvalidArgumentException('Use only "auto" or a numeric value');
         }
         return true;
     }

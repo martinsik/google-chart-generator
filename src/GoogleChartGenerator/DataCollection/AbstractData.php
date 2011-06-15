@@ -2,9 +2,9 @@
 
 namespace GoogleChartGenerator\DataCollection;
 
-class AbstractData {
+abstract class AbstractData {
 
-    const PRINT_STRATEGY_AUTO = 'auto';
+    //const PRINT_STRATEGY_AUTO = 'auto';
     
     
     protected $options = array();
@@ -67,14 +67,14 @@ class AbstractData {
     public function getData() {
         return $this->data;
     }
-    
+    /*
     public function setPrintStrategy($strategy) {
         $this->options['printStrategy'] = $strategy;
     }
     
     public function getPrintStrategy() {
         return $this->options['printStrategy'];
-    }
+    }*/
     /*
     public function applyPrintStrategy($value) {
         if ($this->getPrintStrategy() == 'auto') {

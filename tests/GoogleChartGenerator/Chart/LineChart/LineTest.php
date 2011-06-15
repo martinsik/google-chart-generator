@@ -2,12 +2,10 @@
 
 namespace GoogleChartGenerator\Chart\LineChart;
 
-use GoogleChartGenerator\DataCollection\AbstractChartDataTest;
+use GoogleChartGenerator\DataCollection\AbstractSequenceDataTestCase;
 use GoogleChartGenerator\Chart\LineChart\Line;
 
-class LineTest extends AbstractChartDataTest {
-    
-    protected $chartData;
+class LineTest extends AbstractSequenceDataTestCase {
     
     public function setUp() {
         $this->chartData = new Line();
@@ -21,20 +19,28 @@ class LineTest extends AbstractChartDataTest {
         $this->chartData->setFilled(true);
         $this->assertTrue($this->chartData->getFilled()); // should be true
         
-        $this->chartData->setFilled(0);
+        $this->chartData->setFilled(false);
         $this->assertFalse($this->chartData->getFilled()); // should be false
+    }
+    
+    public function testWidth() {
+        $this->chartData->setWidth(100);
+        $this->assertEquals(100, $this->chartData->getWidth());
     }
     
     /**
      * @expectedException InvalidArgumentException 
      */
-    public function testWidth() {
-        $this->chartData->setWidth(100);
-        $this->assertEquals($this->chartData->getWidth(), 100);
-        
-        $this->chartData->setWidth('test');
+    public function testWidthException() {
+        $this->chartData->setWidth('wrong');
     }
     
-
+    public function testNormalized() {
+        $this->chartData->setNormalized(true);
+        $this->assertTrue($this->chartData->getNormalized());
+        
+        $this->chartData->setNormalized(false);
+        $this->assertFalse($this->chartData->getNormalized());
+    }
     
 }
