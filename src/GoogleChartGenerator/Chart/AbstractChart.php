@@ -221,6 +221,13 @@ abstract class AbstractChart {
     }
     
     protected function getColorsUrlPart() {
+        
+        //Allow for gradients based on single chart color
+        if (isset($this->options['color'])){ 
+            return $this->options['color'];
+        }
+        
+        //Process data colors
         $colours = array();
         $autoColoursIndex = 0;
         foreach ($this->getData() as $collection) {
