@@ -12,35 +12,31 @@ abstract class AbstractChart {
     
     protected $encodingConsts = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     
-    protected $options = array();
+    private $options = [];
     
-    protected $data = array();
+    protected $data = [];
     
-    protected $defaultOptions = array();
+    protected $defaultOptions = [];
     
     static protected $chartNumber = 1;
     
     
-    public function __construct(array $options = array()) {
-        
-        $this->defaultOptions = array_merge(
-            $this->defaultOptions,
-            array (
-                'title' => 'Chart #' . self::$chartNumber++,
-                'size' => array (
-                    'width'   => 300,
-                    'height'  => 200,
-                ),
-                'legend' => false,
-                'dataFormat' => self::DATAFORMAT_SIMPLE_ENCODING,
-            )
-        );
+    public function __construct() {
+//        $this->defaultOptions = array_merge(
+//            $this->defaultOptions, [
+//                'title' => 'Chart #' . self::$chartNumber++,
+//                'width'   => 300,
+//                'height'  => 200,
+//                'legend' => false,
+//                'dataFormat' => self::DATAFORMAT_SIMPLE_ENCODING,
+//            ]
+//        );
 
-        $this->options = array_merge($this->defaultOptions, $options);
+//        $this->options = array_merge($this->defaultOptions, $options);
         
-        if (isset($options['size'])) {
-            $this->setSize($options['size']);
-        }
+//        if (isset($options['size'])) {
+//            $this->setSize($options['size']);
+//        }
     }
     
 
@@ -71,9 +67,9 @@ abstract class AbstractChart {
         return '<img src="' . $this->renderUrl() . '" width="' . $this->getSizeX() . '" height="' . $this->getSizeY() . '" alt="' . $this->getTitle() . '" />';
     }
     
-    public function download($filename) {
-        file_put_contents($filename, file_get_contents($this->renderUrl()));
-    }
+//    public function download($filename) {
+//        file_put_contents($filename, file_get_contents($this->renderUrl()));
+//    }
     
     public function debugUrl() {
         return str_replace(array('?', '&'), array("\n    ?", "\n    &"), $this->renderUrl());
@@ -104,9 +100,9 @@ abstract class AbstractChart {
         return $this->data;
     }
     
-    public function getOptions() {
-        return $this->options;
-    }
+//    public function getOptions() {
+//        return $this->options;
+//    }
     
     /**
      * Sets chart output size in pixels
@@ -115,7 +111,7 @@ abstract class AbstractChart {
      * 
      * @param integer|string  $x 
      * @param integer         $y 
-     * @return boolena   Returns true if new chart size was successfuly set,
+     * @return boolean   Returns true if new chart size was successfuly set,
      *                   otherwise false
      */
     public function setSize($width, $height = null) {
@@ -141,7 +137,15 @@ abstract class AbstractChart {
         );
         
     }
+
+    protected function setOption($key, $value) {
+        $this->options[$key] = $value;
+    }
     
+    protected function getOption($key) {
+        $this->options[$key];
+    }
+
     /**
      * Get actual chart size
      * 
@@ -162,6 +166,7 @@ abstract class AbstractChart {
     
     public function setTitle($title) {
         $this->options['title'] = $title;
+        return $this;
     }
     
     public function getTitle() {
@@ -259,10 +264,20 @@ abstract class AbstractChart {
             return false;
         }
     }
+
+
+    protected function _renderOptions() {
+        $jsOptions = [];
+        if (isset($this->options['title'])) {
+            $jsOptions['title'] = $this->options['title'];
+        }
+
+        return 'var options = ' . json_encode($jsOptions, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
+    }
+
     
-    
-    abstract protected function getChartTypeUrlPart();
-    
-    abstract protected function getDataUrlPart();
+//    abstract protected function getChartTypeUrlPart();
+//
+//    abstract protected function getDataUrlPart();
     
 }

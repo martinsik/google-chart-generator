@@ -22,15 +22,15 @@ class SequenceData extends AbstractData implements \ArrayAccess, \Countable, \It
             $this->options
         );
         
-        if (!is_array($data) && $data) {
-            $data = array($data);
-        }
+//        if (!is_array($data) && $data) {
+//            $data = array($data);
+//        }
     }
     
     
     public function add($value, $index = null) {
         if (is_array($value) && !is_null($index)) {
-            throw new \InvalidArgumentException ('Sorry, but this doesn\'t make sence. Use only add(array), add(value) or add(value, index).');
+            throw new \InvalidArgumentException ('Sorry, but this doesn\'t make sense. Use only add(array), add(value) or add(value, index).');
         }
         if (is_array($value)) {
             if ($this->data) {
