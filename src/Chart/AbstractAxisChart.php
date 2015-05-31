@@ -34,7 +34,7 @@ abstract class AbstractAxisChart extends AbstractChart {
     }
     
     public function getAxis() {
-        return $this->options['axis'];
+        return $this->getOption('axis');
     }
     
     public function getXAxis() {
@@ -46,37 +46,37 @@ abstract class AbstractAxisChart extends AbstractChart {
     }
     
     public function getGrid() {
-        return $this->options['grid']; 
+        return $this->getOption(['grid']);
     }
     
     public function setGrid($grid) {
-        $this->options['grid'] = $grid;
+        $this->setOption('grid', $grid);
     }
     
     public function setRevertX($bool) {
-        $this->options['revertX'] = $bool;
+        $this->setOption('revertX', $bool);
     }
     
     public function getRevertX() {
-        return $this->options['revertX'];
+        return $this->getOption('revertX');
     }
     
     // not implemented yet
     public function setRevertY($bool) {
-        $this->options['revertY'] = $bool;
+        $this->setOption('revertY', $bool);
     }
     
     // not implemented yet
     public function getRevertY() {
-        return $this->options['revertY'];
+        return $this->getOption('revertY');
     }
     
     public function getDataReductionStrategy() {
-        return $this->options['dataReductionStrategy']; 
+        return $this->getOption('dataReductionStrategy');
     }
     
     public function setDataReductionStrategy($strategy) {
-        $this->options['dataReductionStrategy'] = $strategy;
+        $this->setOption('dataReductionStrategy', $strategy);
     }
     
     /**
@@ -86,7 +86,7 @@ abstract class AbstractAxisChart extends AbstractChart {
      * @return type 
      */
     protected function _getAxis($position) {
-        foreach ($this->options['axis'] as &$axis) {
+        foreach ($this->getOption('axis') as &$axis) {
             if ($axis->getPosition() == $position) {
                 return $axis;
             }

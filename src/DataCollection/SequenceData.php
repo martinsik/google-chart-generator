@@ -2,7 +2,6 @@
 
 namespace GoogleChartGenerator\DataCollection;
 
-use GoogleChartGenerator\DataCollection\AbstractData;
 
 class SequenceData extends AbstractData implements \ArrayAccess, \Countable, \Iterator {
 
@@ -14,11 +13,10 @@ class SequenceData extends AbstractData implements \ArrayAccess, \Countable, \It
     
     public function __construct($data = null, array $options = array()) {
         parent::__construct($data, $options);
-        $this->options = array_merge(
-            array(
+        $this->options = array_merge([
                 //'title'         => 'call setTitle($title) to change this text',
                 //'printStrategy' => self::PRINT_STRATEGY_AUTO,
-            ),
+            ],
             $this->options
         );
         
@@ -34,8 +32,8 @@ class SequenceData extends AbstractData implements \ArrayAccess, \Countable, \It
         }
         if (is_array($value)) {
             if ($this->data) {
-                foreach ($value as $value) {
-                    $this->data[] = $value;
+                foreach ($value as $v) {
+                    $this->data[] = $v;
                 }
             } else {
                 $this->data = $value;

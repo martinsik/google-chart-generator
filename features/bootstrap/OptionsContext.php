@@ -22,11 +22,7 @@ class OptionsContext extends BehatContext {
         $obj1 = new DummyChart();
         assertInstanceOf('GoogleChartGenerator\Mock\DummyChart', $obj1->setTitle('Dummy Chart #1'));
         $this->mockObjects['obj1'] = $obj1;
-        $this->expectedOptions['obj1'] = <<<EXPECTED_RESULT
-var options = {
-    "title": "Dummy Chart #1"
-}
-EXPECTED_RESULT;
+        $this->expectedOptions['obj1'] = ["title" => "Dummy Chart #1"];
 
     }
 
@@ -35,13 +31,13 @@ EXPECTED_RESULT;
      */
     public function compareThemWithTheirExpectedResults()
     {
-        $method = new \ReflectionMethod('GoogleChartGenerator\Mock\DummyChart', '_renderOptions');
-        $method->setAccessible(true);
+//        $method = new \ReflectionMethod('GoogleChartGenerator\Mock\DummyChart', 'getOptions');
+//        $method->setAccessible(true);
+//        $result = $method->invoke($obj);
 
         foreach ($this->mockObjects as $key => $obj) {
             /** @var $obj DummyChart */
-            $result = $method->invoke($obj);
-
+            $result = $obj->getOptions();
             assertEquals($this->expectedOptions[$key], $result);
         }
     }

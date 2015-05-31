@@ -100,9 +100,9 @@ abstract class AbstractChart {
         return $this->data;
     }
     
-//    public function getOptions() {
-//        return $this->options;
-//    }
+    public function getOptions() {
+        return $this->options;
+    }
     
     /**
      * Sets chart output size in pixels
@@ -145,7 +145,7 @@ abstract class AbstractChart {
     protected function getOption($key) {
         $this->options[$key];
     }
-
+    
     /**
      * Get actual chart size
      * 
@@ -266,14 +266,14 @@ abstract class AbstractChart {
     }
 
 
-    protected function _renderOptions() {
-        $jsOptions = [];
-        if (isset($this->options['title'])) {
-            $jsOptions['title'] = $this->options['title'];
-        }
+//    protected function _renderOptions() {
+//        $jsOptions = [];
+//        if (isset($this->options['title'])) {
+//            $jsOptions['title'] = $this->options['title'];
+//        }
 
-        return 'var options = ' . json_encode($jsOptions, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
-    }
+//        return 'var options = ' . json_encode($this->getOptions(), JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
+//    }
 
     
 //    abstract protected function getChartTypeUrlPart();

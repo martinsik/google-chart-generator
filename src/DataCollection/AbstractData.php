@@ -5,7 +5,7 @@ namespace GoogleChartGenerator\DataCollection;
 abstract class AbstractData {
 
     //const PRINT_STRATEGY_AUTO = 'auto';
-    
+    static $setNumber = 1;
     
     protected $options = array();
     
@@ -18,19 +18,16 @@ abstract class AbstractData {
     public static $defaultColours = array('ffa909', '26348c', '4fc400', 'e40613', 'e9d801', 'a71580');
 
     
-    public function __construct($data = null, array $options = array()) {
-        $this->options = array_merge(
-            array(
-                'color'         => 'auto',
-                'title'         => 'call setTitle($title) to change this text',
+    public function __construct($data = null, array $options = []) {
+        $this->options = array_merge([
+//                'color'         => 'auto',
+                'title'         => 'Data title #' . self::$setNumber++,
                 //'printStrategy' => self::PRINT_STRATEGY_AUTO,
-            ),
+            ],
             $options
         );
-        
-        if ($data) {
-            $this->data = $data;
-        }
+
+        $this->data = $data;
     }
 
     
@@ -42,25 +39,17 @@ abstract class AbstractData {
         return $this->options['title'];
     }
     
-    public function setColor($color) {
-        return $this->setColour($color);
-    }
-    
-    public function setColour($colour) {
+    public function setColor($colour) {
         $colour = ltrim($colour, '#');
         if (preg_match('/[0-9A-F]{2}[0-9A-F]{2}[0-9A-F]{2}/i', $colour)) {
             $this->options['color'] = $colour;
             return true;
         } else {
-            throw new \InvalidArgumentException ('Sorry, but the only appropriate color format is "RRGGBB"');
+            throw new \InvalidArgumentException ('The only allowed color format is hex "RRGGBB"');
         }
     }
     
     public function getColor() {
-        return $this->getColour();
-    }
-    
-    public function getColour() {
         return $this->options['color'];
     }
 

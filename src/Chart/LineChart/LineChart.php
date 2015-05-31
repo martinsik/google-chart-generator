@@ -25,11 +25,11 @@ class LineChart extends AbstractAxisChart {
     }
     
     public function setSparkline($sparkline) {
-        $this->options['sparkline'] = $sparkline;
+        $this->setOption('sparkline', $sparkline);
     }
     
     public function getSparkline() {
-        return $this->options['sparkline'];
+        return $this->getOption('sparkline');
     }
     
 
