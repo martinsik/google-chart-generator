@@ -1,6 +1,6 @@
 <?php
 
-namespace GoogleChartGenerator\Chart\PieChart;
+namespace GoogleChartGenerator\Chart;
 
 use GoogleChartGenerator\Chart\AbstractChart;
 

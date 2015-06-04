@@ -1,8 +1,9 @@
 <?php
 
-namespace GoogleChartGenerator\Chart\LineChart;
+namespace GoogleChartGenerator\Chart;
 
 use GoogleChartGenerator\Chart\AbstractAxisChart;
+use GoogleChartGenerator\Chart\LineChart\Line;
 use GoogleChartGenerator\Font;
 use GoogleChartGenerator\Axis;
 
@@ -12,37 +13,38 @@ class LineChart extends AbstractAxisChart {
     
     public function __construct(array $options = array()) {
         $this->defaultOptions = array_merge(
-            $this->defaultOptions,
-            array(
-                'sparkline' => false
-            )
+            $this->defaultOptions, [
+//                'sparkline' => false
+            ]
         );
         parent::__construct($options);
     }
     
-    public function addLine(Line $line) {
-        $this->addData($line);
-    }
+//    public function addLine(Line $line) {
+//        $this->addData($line);
+//    }
     
-    public function setSparkline($sparkline) {
-        $this->setOption('sparkline', $sparkline);
-    }
-    
-    public function getSparkline() {
-        return $this->getOption('sparkline');
-    }
-    
+//    public function setSparkline($sparkline) {
+//        $this->setOption('sparkline', $sparkline);
+//    }
+//
+//    public function getSparkline() {
+//        return $this->getOption('sparkline');
+//    }
 
+    protected function getType() {
+        return 'line';
+    }
     
     
     
     /**
      * Generating URL parts
      */
-    protected function getChartTypeUrlPart() {
-        if ($this->getSparkline()) {
-            return 'ls';
-        }
+//    protected function getChartTypeUrlPart() {
+//        if ($this->getSparkline()) {
+//            return 'ls';
+//        }
         /*$axisEnabled = false;
         foreach ($this->getAxis() as $axis) {
             if ($axis->isEnabled()) {
@@ -52,11 +54,11 @@ class LineChart extends AbstractAxisChart {
         }
         
         if ($axisEnabled) {*/
-            return 'lxy';
+//            return 'lxy';
         /*} else {
             return 'lxy';
         }*/
-    }
+//    }
     
     protected function getLineStylesUrlPart() {
         $widths = array();
@@ -128,6 +130,7 @@ class LineChart extends AbstractAxisChart {
         }
     }
 
+
     protected function getDataUrlPart() {
         //$series = array();
         $dataString = $this->getDataFormatSign() . ':';
@@ -136,10 +139,10 @@ class LineChart extends AbstractAxisChart {
         $range = $max - $min;
         
         list($xmin, $xmax) = $this->getXDimensions();
-        $xrange = $xmax - $xmin;
-        if ($xmax > 61) {
-            $this->setDataFormat(self::DATAFORMAT_TEXT);
-        }
+//        $xrange = $xmax - $xmin;
+//        if ($xmax > 61) {
+//            $this->setDataFormat(self::DATAFORMAT_TEXT);
+//        }
         
         //var_dump($chartType);
         foreach ($this->getData() as $dataCollection) {
@@ -179,7 +182,7 @@ class LineChart extends AbstractAxisChart {
         
         //$dataString = implode($this->getChartTypeUrlPart() == 'lxy' ? '|-1|' : '|', $series);
         
-        return trim($dataString, '|,');
+//        return trim($dataString, '|,');
         
     }
     

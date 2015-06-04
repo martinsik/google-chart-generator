@@ -1,7 +1,7 @@
 {
-    "name": "martinsik/php-doc-parser",
-    "homepage": "https://github.com/martinsik/php-doc-parser",
-    "description": "Parser for PHP documentation with CLI interface and output to JSON + Markdown.",
+    "name": "martinsik/google-chart-generator",
+    "homepage": "https://github.com/martinsik/google-chart-generator",
+    "description": "PHP 5.4+ wrapper around Google Chart API using Polymer 1.0 <google-chart> element",
     "license": "MIT",
     "require": {
         "php": ">=5.4"

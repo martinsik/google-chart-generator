@@ -1,8 +1,10 @@
 Feature: data-collections
-  In order to comfortably work with data in PHP
+  In order to comfortably work with data in PHP that are going to be rendered as parameters to <google-chart> element
   As a developer
-  I need to have comfortable wrapper around Chart's data sets
+  I need to have wrapper around Chart's data sets
 
-  Scenario: Test creating various data sets with their expected values
-    Given example data sets
-    Then compare them with expected values
+  Scenario: Create various data sets with basic types
+    Given example data sets with basic types
+    Then create multiple sequential data sets
+    Then test basic data collections and manipulation with expected values
+

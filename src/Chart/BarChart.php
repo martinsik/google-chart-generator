@@ -1,6 +1,6 @@
 <?php
 
-namespace GoogleChartGenerator\Chart\BarChart;
+namespace GoogleChartGenerator\Chart;
 
 use GoogleChartGenerator\Chart\AbstractAxisChart;
 use GoogleChartGenerator\Axis;

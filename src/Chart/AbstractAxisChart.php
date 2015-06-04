@@ -4,6 +4,8 @@ namespace GoogleChartGenerator\Chart;
 
 use GoogleChartGenerator\Chart\AbstractChart;
 use GoogleChartGenerator\Axis;
+use GoogleChartGenerator\DataCollection\AbstractSequenceDataTestCase;
+use GoogleChartGenerator\DataCollection\SequenceData;
 use GoogleChartGenerator\Grid;
 
 abstract class AbstractAxisChart extends AbstractChart {
@@ -12,38 +14,67 @@ abstract class AbstractAxisChart extends AbstractChart {
     const STRATEGY_MIN = 'min';
     const STRATEGY_MAX = 'max';
     const STRATEGY_AVERAGE = 'average';
-    
+
+    private $axes = [];
+
     public function __construct(array $options = array()) {
-        $yAxis = new Axis('y');
-        $yAxis->setMin(0);
-        
-        $this->defaultOptions = array_merge(
-            $this->defaultOptions,
-            array(
-                'axis' => array (
-                    new Axis('x'),
-                    $yAxis,
-                ),
-                'grid' => new Grid(),
-                'dataReductionStrategy' => 'none',
-                'revertX'       => false,
-                'revertY'       => false, // not implemented yet
-            )
-        );
         parent::__construct($options);
+//        $yAxis =
+//        $yAxis->setMin(0);
+
+        $this->axes[] = new Axis('y');
+        $this->axes[] = new Axis('x');
+
+//        $this->defaultOptions = array_merge(
+//            $this->defaultOptions, [
+////                'grid' => new Grid(),
+////                'dataReductionStrategy' => 'none',
+////                'revertX'       => false,
+////                'revertY'       => false, // not implemented yet
+//            ]
+//        );
     }
-    
-    public function getAxis() {
-        return $this->getOption('axis');
+
+    protected function getRows() {
+        $rows = [];
+        list($minX, $maxX) = $this->getXDimensions();
+//        list($minY, $maxY) = $this->getYDimensions();
+
+        for ($i = $minX; $i <= $maxX; $i++) {
+            $row = [$i];
+            foreach ($this->getData() as $collection) {
+                /** @var SequenceData $collection */
+                $row[] = isset($collection[$i]) ? $collection[$i] : null;
+            }
+            $rows[] = $row;
+        }
+        return $rows;
     }
-    
-    public function getXAxis() {
-        return $this->_getAxis('x');
+
+
+    public function addAxis(Axis $axis) {
+        $this->axes[] = $axis;
+        return $this;
     }
-    
-    public function getYAxis() {
-        return $this->_getAxis('y');
+
+    public function getAxes() {
+        return $this->axes;
     }
+
+    /**
+     * @return Axis
+     */
+//    public function getAxis() {
+//        return $this->_getAxis('x');
+//    }
+
+//    public function getXAxis() {
+//        return $this->_getAxis('x');
+//    }
+//
+//    public function getYAxis() {
+//        return $this->_getAxis('y');
+//    }
     
     public function getGrid() {
         return $this->getOption(['grid']);
@@ -53,31 +84,31 @@ abstract class AbstractAxisChart extends AbstractChart {
         $this->setOption('grid', $grid);
     }
     
-    public function setRevertX($bool) {
-        $this->setOption('revertX', $bool);
-    }
-    
-    public function getRevertX() {
-        return $this->getOption('revertX');
-    }
-    
-    // not implemented yet
-    public function setRevertY($bool) {
-        $this->setOption('revertY', $bool);
-    }
+//    public function setRevertX($bool) {
+//        $this->setOption('revertX', $bool);
+//    }
+//
+//    public function getRevertX() {
+//        return $this->getOption('revertX');
+//    }
     
     // not implemented yet
-    public function getRevertY() {
-        return $this->getOption('revertY');
-    }
+//    public function setRevertY($bool) {
+//        $this->setOption('revertY', $bool);
+//    }
+//
+//    // not implemented yet
+//    public function getRevertY() {
+//        return $this->getOption('revertY');
+//    }
     
-    public function getDataReductionStrategy() {
-        return $this->getOption('dataReductionStrategy');
-    }
-    
-    public function setDataReductionStrategy($strategy) {
-        $this->setOption('dataReductionStrategy', $strategy);
-    }
+//    public function getDataReductionStrategy() {
+//        return $this->getOption('dataReductionStrategy');
+//    }
+//
+//    public function setDataReductionStrategy($strategy) {
+//        $this->setOption('dataReductionStrategy', $strategy);
+//    }
     
     /**
      * Get first axis for specified dimension
@@ -85,8 +116,8 @@ abstract class AbstractAxisChart extends AbstractChart {
      * @param type $position
      * @return type 
      */
-    protected function _getAxis($position) {
-        foreach ($this->getOption('axis') as &$axis) {
+    public function getAxis($position) {
+        foreach ($this->axes as $axis) {
             if ($axis->getPosition() == $position) {
                 return $axis;
             }
@@ -112,15 +143,15 @@ abstract class AbstractAxisChart extends AbstractChart {
      * 
      * @return srting  Visible axes url part
      */
-    protected function getAxisUrlPart() {
-        $axisArray = array();
-        foreach ($this->getAxis() as $axis) {
-            if ($axis->isEnabled()) {
-                $axisArray[] = $axis->getPosition();
-            }
-        }
-        return implode(',', $axisArray);
-    }
+//    protected function getAxisUrlPart() {
+//        $axisArray = array();
+//        foreach ($this->getAxis() as $axis) {
+//            if ($axis->isEnabled()) {
+//                $axisArray[] = $axis->getPosition();
+//            }
+//        }
+//        return implode(',', $axisArray);
+//    }
     
     /**
      * Axis range
@@ -131,7 +162,7 @@ abstract class AbstractAxisChart extends AbstractChart {
         //$this->calculateDimensions(); // update chart dimensions
         $scalesArray = array();
         /*$disabledAxis = */$index = 0;
-        foreach ($this->getAxis() as $axis) {
+        foreach ($this->getAxes() as $axis) {
             if ($axis->isEnabled() && !$axis->hasDefaultSettings()) {
                 // if scale is set to 'auto' get minimal and maximal values found among all collections
                 if ($axis->getMax() === Axis::AUTO || $axis->getMin() === Axis::AUTO) {
@@ -166,7 +197,7 @@ abstract class AbstractAxisChart extends AbstractChart {
      * 
      * @return string
      */
-    protected function getGridUrlPart() { 
+    protected function getGridUrlPart() {
         $grid = $this->getGrid();
         if ($grid->getBlocksX() === 0 && $grid->getBlocksY() === 0) {
             return false;
@@ -218,7 +249,7 @@ abstract class AbstractAxisChart extends AbstractChart {
         
         $min = null;
         $max = null;
-        foreach ($this->getAxis() as $axis) {
+        foreach ($this->getAxes() as $axis) {
             //if ($dimension == 'vertical' && ($axis->getPosition() == 'y' || $axis->getPosition() = 'right')) {
             foreach ($this->getData() as $collection) {
                 if (($dimension == 'vertical' && ($axis->getPosition() == 'y' || $axis->getPosition() == 'right'))
@@ -250,7 +281,7 @@ abstract class AbstractAxisChart extends AbstractChart {
         
         if ($scale > 2 && $this->getDataReductionStrategy() != self::STRATEGY_NONE) {
             foreach ($this->getData() as $collection) {
-                $reducedCollection = new SequenceData();
+//                $reducedCollection = new SequenceData();
                 $chunkIndex = $dimensions['min'];
                 $chunkArray = array();
                 $totalChunks = ceil(($dimensions['max'] - $dimensions['min']) / $scale);

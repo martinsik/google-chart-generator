@@ -11,9 +11,6 @@ class Axis {
     
     const AUTO = 'auto';
     
-    /*
-     * by default generates automaticly numeric values according to values
-     */
     protected $labels;
     
     protected $enabled = true;
@@ -23,11 +20,11 @@ class Axis {
     /* not implemented yet */
     protected $font;
     
-    protected $max = 'auto';
+    protected $max = self::AUTO;
+
+    protected $min = self::AUTO;
     
-    protected $min = 'auto';
-    
-    public function __construct($position, $labels = 'auto', $font = null) {
+    public function __construct($position, $labels = self::AUTO, $font = null) {
         $this->labels = $labels;
         $this->font = $font;
         $this->position = $position;
@@ -128,7 +125,7 @@ class Axis {
     }*/
     
     protected function validateDimension($value) {
-        if ($value != 'auto' && !is_numeric($value)) {
+        if ($value != self::AUTO && !is_numeric($value)) {
             throw new \InvalidArgumentException('Use only "auto" or a numeric value');
         }
         return true;

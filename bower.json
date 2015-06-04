@@ -1,0 +1,6 @@
+{
+    "name": "google-chart-generator",
+    "dependencies": {
+        "google-chart": "GoogleWebComponents/google-chart#^1.0.0"
+    }
+}

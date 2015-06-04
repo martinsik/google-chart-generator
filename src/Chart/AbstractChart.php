@@ -17,11 +17,23 @@ abstract class AbstractChart {
     protected $data = [];
     
     protected $defaultOptions = [];
-    
+
+    private $jsonEncodeFlags = 0;
+
+    private $HTMLTemplate = <<<TEMPLATE
+<google-chart
+    type='__TYPE__'
+    options='__OPTIONS__'
+    cols='__COLS__'
+    rows='__ROWS__'>
+</google-chart>
+TEMPLATE;
+
+
     static protected $chartNumber = 1;
+
     
-    
-    public function __construct() {
+    public function __construct(array $options = []) {
 //        $this->defaultOptions = array_merge(
 //            $this->defaultOptions, [
 //                'title' => 'Chart #' . self::$chartNumber++,
@@ -32,6 +44,7 @@ abstract class AbstractChart {
 //            ]
 //        );
 
+        $this->options = $options;
 //        $this->options = array_merge($this->defaultOptions, $options);
         
 //        if (isset($options['size'])) {
@@ -40,17 +53,55 @@ abstract class AbstractChart {
     }
     
 
-    protected function getUrlParts() {
-        return array(
-            'cht'   => $this->getChartTypeUrlPart(),
-            'chs'   => $this->getSizeUrlPart(),
-            'chd'   => $this->getDataUrlPart(),
-            'chtt'  => $this->getTitleUrlPart(),
-            'chco'  => $this->getColorsUrlPart(),
-            'chdlp' => $this->getLegendPositionUrlPart(),
-            'chdl'  => $this->getLegendLabelsUrlPart(),
-        );
+    public function getElement() {
+        $params = [];
+        foreach ($this->getElementParameters() as $key => $values) {
+            $params[$key] = is_array($values) ? json_encode($values, $this->jsonEncodeFlags) : $values;
+        }
+        return str_replace(['__TYPE__', '__OPTIONS__', '__COLS__', '__ROWS__'], $params, $this->HTMLTemplate);
     }
+
+    protected function getElementParameters() {
+        return [
+            '__TYPE__' => $this->getType(),
+            '__OPTIONS__' => $this->getOptions(),
+            '__COLS__' => $this->getCols(),
+            '__ROWS__' => $this->getRows(),
+        ];
+    }
+
+    protected function getCols() {
+        $cols = [ ['type' => 'number'] ];
+        foreach ($this->getData() as $data) {
+            /** @var AbstractData $data */
+            $col = $data->getOptions();
+
+            $cols[] = $col;
+        }
+
+        return $cols;
+    }
+
+    protected function getRows() {
+        $rows = [];
+        foreach ($this->getData() as $data) {
+            /** @var AbstractData $data */
+            $rows[] = $data->getData();
+        }
+        return $rows;
+    }
+
+//    protected function getUrlParts() {
+//        return array(
+//            'cht'   => $this->getChartTypeUrlPart(),
+//            'chs'   => $this->getSizeUrlPart(),
+//            'chd'   => $this->getDataUrlPart(),
+//            'chtt'  => $this->getTitleUrlPart(),
+//            'chco'  => $this->getColorsUrlPart(),
+//            'chdlp' => $this->getLegendPositionUrlPart(),
+//            'chdl'  => $this->getLegendLabelsUrlPart(),
+//        );
+//    }
         
     public function renderUrl() {
         $filteredParts = array();
@@ -82,12 +133,8 @@ abstract class AbstractChart {
      */
     public function addData($data) {
         if (is_array($data)) {
-            foreach ($data as $dataCollection) {
-                if ($dataCollection instanceof AbstractData) {
-                    $this->data[] = $dataCollection;
-                } else {
-                    throw new \InvalidArgumentException();
-                }
+            foreach ($data as $collection) {
+                $this->addData($collection);
             }
         } elseif ($data instanceof AbstractData) {
             $this->data[] = $data;
@@ -276,7 +323,7 @@ abstract class AbstractChart {
 //    }
 
     
-//    abstract protected function getChartTypeUrlPart();
+    abstract protected function getType();
 //
 //    abstract protected function getDataUrlPart();
     

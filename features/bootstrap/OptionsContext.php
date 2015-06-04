@@ -24,6 +24,8 @@ class OptionsContext extends BehatContext {
         $this->mockObjects['obj1'] = $obj1;
         $this->expectedOptions['obj1'] = ["title" => "Dummy Chart #1"];
 
+        $this->mockObjects['obj2'] = new DummyChart(['title' => 'Dummy Chart #2']);
+        $this->expectedOptions['obj2'] = ['title' => 'Dummy Chart #2'];
     }
 
     /**
