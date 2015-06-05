@@ -22,8 +22,8 @@ abstract class AbstractAxisChart extends AbstractChart {
 //        $yAxis =
 //        $yAxis->setMin(0);
 
-        $this->axes[] = new Axis('y');
-        $this->axes[] = new Axis('x');
+        $this->axes[] = new Axis(Axis::VERTICAL, ['label' => 'y']);
+        $this->axes[] = new Axis(Axis::HORIZONTAL, ['label' => 'x']);
 
 //        $this->defaultOptions = array_merge(
 //            $this->defaultOptions, [
@@ -51,14 +51,41 @@ abstract class AbstractAxisChart extends AbstractChart {
         return $rows;
     }
 
+    public function getOptions() {
+        $options = parent::getOptions();
+        $series = [];
+
+        foreach ($this->getData() as $index => $collection) {
+            /** @var SequenceData $collection */
+            if ($collection->getSeriesOptions()) {
+                $series[$index] = $collection->getSeriesOptions();
+            }
+        }
+
+        if ($series) {
+            $options['series'] = $series;
+        }
+
+        return $options;
+    }
 
     public function addAxis(Axis $axis) {
         $this->axes[] = $axis;
         return $this;
     }
 
-    public function getAxes() {
-        return $this->axes;
+    public function getAxes($dimension = null) {
+        if ($dimension) {
+            $axes = [];
+            foreach ($this->axes as $axis) {
+                if ($axis->getDimension() == $dimension) {
+                    $axes[] = $axis;
+                }
+            }
+            return $axes;
+        } else {
+            return $this->axes;
+        }
     }
 
     /**
@@ -114,28 +141,29 @@ abstract class AbstractAxisChart extends AbstractChart {
      * Get first axis for specified dimension
      * 
      * @param type $position
-     * @return type 
+     * @return Axis
      */
-    public function getAxis($position) {
+    public function getAxisByTitle($title) {
         foreach ($this->axes as $axis) {
-            if ($axis->getPosition() == $position) {
+            if ($axis->getOption('label', $title) == $title) {
                 return $axis;
             }
         }
+        return null;
     }
     
-    
-    protected function getUrlParts() {
-        return array_merge(
-            parent::getUrlParts(),
-            array (
-                'chxt' => $this->getAxisUrlPart(), // visible axes
-                'chxr' => $this->getAxisRangeUrlPart(), // axis range
-                'chg'  => $this->getGridUrlPart(),
-            )
-        );
-    }
-    
+//
+//    protected function getUrlParts() {
+//        return array_merge(
+//            parent::getUrlParts(),
+//            array (
+//                'chxt' => $this->getAxisUrlPart(), // visible axes
+//                'chxr' => $this->getAxisRangeUrlPart(), // axis range
+//                'chg'  => $this->getGridUrlPart(),
+//            )
+//        );
+//    }
+//
 
     
     /**
@@ -234,11 +262,11 @@ abstract class AbstractAxisChart extends AbstractChart {
     }
     
     public function getYDimensions() {
-        return $this->calculateAxisDimensions('vertical');
+        return $this->calculateAxisDimensions(Axis::VERTICAL);
     }
     
     public function getXDimensions() {
-        return $this->calculateAxisDimensions('horizontal');
+        return $this->calculateAxisDimensions(Axis::HORIZONTAL);
     }
 
     
@@ -249,24 +277,24 @@ abstract class AbstractAxisChart extends AbstractChart {
         
         $min = null;
         $max = null;
-        foreach ($this->getAxes() as $axis) {
+        foreach ($this->getAxes($dimension) as $axis) {
+            /** @var Axis $axis */
+//            if (($dimension == 'vertical' && ($axis->getPosition() == 'y' || $axis->getPosition() == 'right'))
+//                || ($dimension == 'horizontal' && ($axis->getPosition() == 'x' || $axis->getPosition() == 'top'))) {
+
             //if ($dimension == 'vertical' && ($axis->getPosition() == 'y' || $axis->getPosition() = 'right')) {
             foreach ($this->getData() as $collection) {
-                if (($dimension == 'vertical' && ($axis->getPosition() == 'y' || $axis->getPosition() == 'right'))
-                        || ($dimension == 'horizontal' && ($axis->getPosition() == 'x' || $axis->getPosition() == 'top'))) {
-                    
-                    if ($axis->getMin() === Axis::AUTO) {
-                        $min = is_null($min) ? ($dimension == 'vertical' ? $collection->getMinY() : $collection->getMinX())
-                                             : min(($dimension == 'vertical' ? $collection->getMinY() : $collection->getMinX()), $min);
-                    } else {
-                        $min = $axis->getMin();
-                    }
-                    if ($axis->getMax() === Axis::AUTO) {
-                        $max = is_null($max) ? ($dimension == 'vertical' ? $collection->getMaxY() : $collection->getMaxX())
-                                             :  max(($dimension == 'vertical' ? $collection->getMaxY() : $collection->getMaxX()), $max);
-                    } else {
-                        $max = $axis->getMax();
-                    }
+                if ($axis->getMin() === Axis::AUTO) {
+                    $min = is_null($min) ? ($axis->isVertical() ? $collection->getMinY() : $collection->getMinX())
+                                         : min(($axis->isVertical() ? $collection->getMinY() : $collection->getMinX()), $min);
+                } else {
+                    $min = $axis->getMin();
+                }
+                if ($axis->getMax() === Axis::AUTO) {
+                    $max = is_null($max) ? ($axis->isVertical() ? $collection->getMaxY() : $collection->getMaxX())
+                                         :  max(($axis->isVertical() ? $collection->getMaxY() : $collection->getMaxX()), $max);
+                } else {
+                    $max = $axis->getMax();
                 }
             }
         }
@@ -274,31 +302,31 @@ abstract class AbstractAxisChart extends AbstractChart {
         return array($min, $max);
     }
     
-    protected function prepareData() {
-        $dimensions = $this->getXDimensions('x');
-        $scale = floor(($dimensions['max'] - $dimensions['min']) / $this->getSizeX());
-        $retCollection = array();
-        
-        if ($scale > 2 && $this->getDataReductionStrategy() != self::STRATEGY_NONE) {
-            foreach ($this->getData() as $collection) {
-//                $reducedCollection = new SequenceData();
-                $chunkIndex = $dimensions['min'];
-                $chunkArray = array();
-                $totalChunks = ceil(($dimensions['max'] - $dimensions['min']) / $scale);
-                
-                for ($i=0; $i < $totalChunks; $i++) {
-                    for ($j=$i * $totalChunks; $j < $scale; $j++) {
-                        if ($this->getDataReductionStrategy() == self::STRATEGY_MAX) {
-
-                        }
-                    }
-                }
-                $retCollection[] = $reducedCollection;
-            }
-        } else {
-            return $this->getData();
-        }
-    }
+//    protected function prepareData() {
+//        $dimensions = $this->getXDimensions('x');
+//        $scale = floor(($dimensions['max'] - $dimensions['min']) / $this->getSizeX());
+//        $retCollection = array();
+//
+//        if ($scale > 2 && $this->getDataReductionStrategy() != self::STRATEGY_NONE) {
+//            foreach ($this->getData() as $collection) {
+////                $reducedCollection = new SequenceData();
+//                $chunkIndex = $dimensions['min'];
+//                $chunkArray = array();
+//                $totalChunks = ceil(($dimensions['max'] - $dimensions['min']) / $scale);
+//
+//                for ($i=0; $i < $totalChunks; $i++) {
+//                    for ($j=$i * $totalChunks; $j < $scale; $j++) {
+//                        if ($this->getDataReductionStrategy() == self::STRATEGY_MAX) {
+//
+//                        }
+//                    }
+//                }
+//                $retCollection[] = $reducedCollection;
+//            }
+//        } else {
+//            return $this->getData();
+//        }
+//    }
     
     /**
      * @return boolean  True if it's necessary to print this axis

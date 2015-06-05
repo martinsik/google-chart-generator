@@ -2,6 +2,7 @@
 
 namespace GoogleChartGenerator;
 
+use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use GoogleChartGenerator\Font;
 
 /**
@@ -10,77 +11,57 @@ use GoogleChartGenerator\Font;
 class Axis {
     
     const AUTO = 'auto';
+    const VERTICAL = 'vertical';
+    const HORIZONTAL = 'horizontal';
+
+
+    protected $options;
     
-    protected $labels;
+    protected $hidden = true;
     
-    protected $enabled = true;
-    
-    protected $position;
-    
-    /* not implemented yet */
-    protected $font;
-    
+    protected $dimension;
+
     protected $max = self::AUTO;
 
     protected $min = self::AUTO;
     
-    public function __construct($position, $labels = self::AUTO, $font = null) {
-        $this->labels = $labels;
-        $this->font = $font;
-        $this->position = $position;
-    }
-    
-    public function setLabels($labels) {
-        if (is_array($labels)) {
-            $this->labels = $labels;
-            return $this;
-        } else {
-            throw new \InvalidArgumentException('Axis labels must be an array');
+    public function __construct($dimension, $options = []) {
+        if ($dimension != self::HORIZONTAL && $dimension != self::VERTICAL) {
+            throw new \InvalidArgumentException();
         }
+        $this->dimension = $dimension;
+        $this->options = $options;
     }
     
-    public function getLabels() {
-        return $this->labels;
-    }
-    
-    public function setEnabled($enabled) {
-        $this->enabled = $enabled;
+    public function setAuto($auto) {
+        $this->auto = $auto;
         return $this;
     }
-    
-    public function isEnabled() {
-        return (boolean) $this->enabled;
+
+    public function isAuto() {
+        return (boolean) $this->auto;
     }
+
     
-    /**
-     * @TODO: impelment
-    public function setFont(Font $font) {
-        $this->font = $font;
-        return $this;
+//    public function setPosition($position) {
+//        if (in_array($position, array('x', 'y', 't', 'r'))) {
+//            $this->position = $position;
+//            return $this;
+//        } else {
+//            throw new \InvalidArgumentException('Use only "x", "y", "t", "r" for axis position');
+//        }
+//    }
+//
+//    public function getPosition() {
+//        return $this->position;
+//    }
+
+    public function getOption($key, $default = null) {
+        return isset($this->options[$key]) ? $this->options[$key] : $default;
     }
-    
-    public function getFont() {
-        return $this->font;
-    }
-    */
-    
-    public function setPosition($position) {
-        if (in_array($position, array('x', 'y', 't', 'r'))) {
-            $this->position = $position;
-            return $this;
-        } else {
-            throw new \InvalidArgumentException('Use only "x", "y", "t", "r" for axis position');
-        }
-    }
-    
-    public function getPosition() {
-        return $this->position;
-    }
-    
-    public function setMin($min) {
-        if ($this->validateDimension($min)) {
-            $this->min = $min;
-        }
+
+    public function setMin($value) {
+        $this->min = intval($value);
         return $this;
     }
     
@@ -88,10 +69,8 @@ class Axis {
         return $this->min;
     }
     
-    public function setMax($max) {
-        if ($this->validateDimension($max)) {
-            $this->max = $max;
-        }
+    public function setMax($value) {
+        $this->max = intval($value);
         return $this;
     }
     
@@ -101,19 +80,19 @@ class Axis {
     
     
     public function hasDefaultSettings() {
-        if ($this->min == 0 && $this->max == 100) {
-            return true;
-        } else {
-            return false;
-        }
+        return ($this->min == self::AUTO && $this->max == self::AUTO);
     }
-    
+
+    public function getDimension() {
+        return $this->dimension;
+    }
+
     public function isVertical() {
-        return $this->getPosition() == 'y' || $this->getPosition() == 'r';
+        return $this->dimension == self::VERTICAL;
     }
     
     public function isHorizontal() {
-        return $this->getPosition() == 'x' || $this->getPosition() == 't';
+        return $this->dimension == self::HORIZONTAL;
     }
     
     /*public function hasToPrint() {
@@ -123,12 +102,5 @@ class Axis {
             return false;
         }
     }*/
-    
-    protected function validateDimension($value) {
-        if ($value != self::AUTO && !is_numeric($value)) {
-            throw new \InvalidArgumentException('Use only "auto" or a numeric value');
-        }
-        return true;
-    }
     
 }

@@ -18,7 +18,7 @@ abstract class AbstractData {
 //    public static $defaultColours = array('ffa909', '26348c', '4fc400', 'e40613', 'e9d801', 'a71580');
 
     
-    public function __construct($data = null, array $options = []) {
+    public function __construct($data = null, $options = []) {
         $this->options = array_merge([
 //                'color'         => 'auto',
 //                'title'         => 'Data title #' . self::$setNumber++,
@@ -46,7 +46,7 @@ abstract class AbstractData {
         return $this->data;
     }
 
-//    abstract public function getType();
+    abstract public function getType();
 
     /*
     public function setPrintStrategy($strategy) {

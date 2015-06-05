@@ -74,8 +74,7 @@ TEMPLATE;
         $cols = [ ['type' => 'number'] ];
         foreach ($this->getData() as $data) {
             /** @var AbstractData $data */
-            $col = $data->getOptions();
-
+            $col = array_merge(['type' => $data->getType()], $data->getOptions());
             $cols[] = $col;
         }
 
@@ -161,36 +160,36 @@ TEMPLATE;
      * @return boolean   Returns true if new chart size was successfuly set,
      *                   otherwise false
      */
-    public function setSize($width, $height = null) {
-        // check if the only value is one side of a square (eg. 300)
-        if (is_numeric($width) && is_null($height)) { // only the first parameter was specified and it's a number eg. 300
-            $size = $width . 'x' . $width;
-        } elseif (is_numeric($width) && is_numeric($height)) { // eg. $width = 300, $height = 200
-            $size = $width . 'x' . $height;
-        } elseif (is_null($height)) { // only the first parameter was specified and it's not a number, eg. 300x200
-            $size = $width;
-        }
-            
-        // check if new size has appropriate format
-        if (!preg_match('/^[0-9]+x[0-9]+$/i', $size)) {
-            throw new \InvalidArgumentException();
-        }
-        
-        list($width, $height) = explode('x', $size);
-        
-        $this->options['size'] = array(
-            'width'   => $width,
-            'height'  => $height,
-        );
-        
-    }
+//    public function setSize($width, $height = null) {
+//        // check if the only value is one side of a square (eg. 300)
+//        if (is_numeric($width) && is_null($height)) { // only the first parameter was specified and it's a number eg. 300
+//            $size = $width . 'x' . $width;
+//        } elseif (is_numeric($width) && is_numeric($height)) { // eg. $width = 300, $height = 200
+//            $size = $width . 'x' . $height;
+//        } elseif (is_null($height)) { // only the first parameter was specified and it's not a number, eg. 300x200
+//            $size = $width;
+//        }
+//
+//        // check if new size has appropriate format
+//        if (!preg_match('/^[0-9]+x[0-9]+$/i', $size)) {
+//            throw new \InvalidArgumentException();
+//        }
+//
+//        list($width, $height) = explode('x', $size);
+//
+//        $this->options['size'] = array(
+//            'width'   => $width,
+//            'height'  => $height,
+//        );
+//
+//    }
 
-    protected function setOption($key, $value) {
+    public function setOption($key, $value) {
         $this->options[$key] = $value;
     }
     
-    protected function getOption($key) {
-        $this->options[$key];
+    public function getOption($key, $default = null) {
+        return isset($this->options[$key]) ? $this->options[$key] : $default;
     }
     
     /**

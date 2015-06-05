@@ -7,10 +7,15 @@ use Behat\Behat\Context\BehatContext,
 use GoogleChartGenerator\Mock\DummyChart;
 use GoogleChartGenerator\Chart\LineChart;
 
+include_once 'RenderHTMLTemplateMixin.php';
+
 /**
  * Features context.
  */
 class LineChartContext extends BehatContext {
+
+    use RenderHTMLTemplateMixin;
+
 
     private $charts = [];
     private $expectedChart = [];
@@ -36,20 +41,38 @@ class LineChartContext extends BehatContext {
 EXPECTED;
 
 
-        $chart = new LineChart(['colors' => ['#00ff00', '#444', '#ff00ff']]);
+        $chart = new LineChart(['height' => 200, 'width' => 300]);
         $line = new LineChart\Line([15, 32, 52, 48]);
         $chart->addData($line);
-        $chart->addData(new LineChart\Line([2 => 14, 3 => 19, 4 => 12, 5 => 17, 6 => 13]));
-        $chart->addData(new LineChart\Line([0 => 42, 1 => 40, 2 => 36, 4 => 45, 5 => 42, 6 => 48]));
-        $chart->getAxis('y')->setMin(0);
+        $seriesOptions = ['color' => '#005500', 'lineDashStyle' => [5, 2], 'pointSize' => 3, 'lineWidth' => 1];
+        $chart->addData(new LineChart\Line([2 => 14, 3 => 19, 4 => 12, 5 => 17, 6 => 13], null, $seriesOptions));
+        $chart->addData(new LineChart\Line([0 => 42, 1 => 40, 2 => 36, 4 => 45, 5 => 42, 6 => 48], null, ['color' => 'black', 'lineWidth' => 4]));
+        $chart->getAxisByTitle('y')->setMin(0);
         $this->charts[] = $chart;
 
         $this->expectedChart[] = <<<EXPECTED
 <google-chart
     type='line'
-    options='{"colors":["#00ff00","#444","#ff00ff"]}'
+    options='{"height":200,"width":300,"series":{"1":{"color":"#005500","lineDashStyle":[5,2],"pointSize":3,"lineWidth":1},"2":{"color":"black","lineWidth":4}}}'
     cols='[{"type":"number"},{"type":"number"},{"type":"number"},{"type":"number"}]'
     rows='[[0,15,null,42],[1,32,null,40],[2,52,14,36],[3,48,19,null],[4,null,12,45],[5,null,17,42],[6,null,13,48]]'>
+</google-chart>
+EXPECTED;
+
+
+        $chart = new LineChart();
+        $chart->getAxisByTitle('x');
+
+        $chart->addData(new LineChart\Line([1020, 2040, 2000, 1800, 1060], ['label' => 'Line #1']));
+        $chart->addData(new LineChart\Line([-310, 270, 301, 208, 300], ['label' => 'Line #2']));
+        $this->charts[] = $chart;
+
+        $this->expectedChart[] = <<<EXPECTED
+<google-chart
+    type='line'
+    options='[]'
+    cols='[{"type":"number"},{"type":"number","label":"Line #1"},{"type":"number","label":"Line #2"}]'
+    rows='[[0,1020,-310],[1,2040,270],[2,2000,301],[3,1800,208],[4,1060,300]]'>
 </google-chart>
 EXPECTED;
     }
@@ -61,7 +84,11 @@ EXPECTED;
     {
         foreach ($this->charts as $index => $chart) {
             /** @var $chart LineChart */
-            assertEquals($this->expectedChart[$index], $chart->getElement());
+            if (isset($this->expectedChart[$index])) {
+                assertEquals($this->expectedChart[$index], $chart->getElement());
+            } else {
+                var_dump($chart->getElement());
+            }
         }
 
     }
@@ -71,21 +98,15 @@ EXPECTED;
      */
     public function manuallyCheckTheirResultsWithExpectedHtmlTemplatesInAs($dir, $filename)
     {
-        $dir = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '/../' . DIRECTORY_SEPARATOR . $dir);
-        @mkdir($dir);
-        $filepath = $dir . DIRECTORY_SEPARATOR . $filename;
-
-        @unlink($filepath);
-
 //        $expectHTML = [];
         $actualHTML = [];
         foreach ($this->charts as $index => $chart) {
+            /** @var $chart LineChart */
             $actualHTML[] = $chart->getElement();
         }
 
-        $html = file_get_contents($dir . DIRECTORY_SEPARATOR . '_template.html');
-        $html = str_replace(['__EXPECTED__', '__ACTUAL__'], [implode('', $this->expectedChart), implode('', $actualHTML)], $html);
-        file_put_contents($filepath, $html);
+        $this->render($dir, $filename, $actualHTML);
+
     }
 
 }

@@ -6,15 +6,15 @@ use GoogleChartGenerator\DataCollection\SequenceData;
 
 
 class Line extends SequenceData {
-    
-    public function __construct($data = [], array $options = []) {
-        parent::__construct($data, $options);
-        $this->options = array_merge([
-                'type' => 'number',
-            ],
-            $this->options
-        );
-    }
+
+//    public function __construct($data = [], array $options = [], $type = 'number') {
+//        parent::__construct($data, $options, $type);
+//        $this->options = array_merge([
+//                'type' => 'number',
+//            ],
+//            $this->options
+//        );
+//    }
 
 //    public function getType() {
 //        return 'number';
