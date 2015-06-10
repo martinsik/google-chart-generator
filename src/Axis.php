@@ -15,15 +15,15 @@ class Axis {
     const HORIZONTAL = 'horizontal';
 
 
-    protected $options;
+    protected $options = [];
     
-    protected $hidden = true;
+    private $render = false;
     
     protected $dimension;
 
-    protected $max = self::AUTO;
-
-    protected $min = self::AUTO;
+//    protected $max = self::AUTO;
+//
+//    protected $min = self::AUTO;
     
     public function __construct($dimension, $options = []) {
         if ($dimension != self::HORIZONTAL && $dimension != self::VERTICAL) {
@@ -60,28 +60,47 @@ class Axis {
         return isset($this->options[$key]) ? $this->options[$key] : $default;
     }
 
-    public function setMin($value) {
-        $this->min = intval($value);
+    public function setOption($name, $value) {
+        $this->options[$name] = $value;
+        $this->setRender(true);
+    }
+
+    public function getOptions() {
+        return $this->options;
+    }
+
+
+//    public function setMin($value) {
+//        $this->min = intval($value);
+//        return $this;
+//    }
+//
+//    public function getMin() {
+//        return $this->min;
+//    }
+//
+//    public function setMax($value) {
+//        $this->max = intval($value);
+//        return $this;
+//    }
+//
+//    public function getMax() {
+//        return $this->max;
+//    }
+
+    public function setRender($value) {
+        $this->render = boolval($value);
         return $this;
     }
-    
-    public function getMin() {
-        return $this->min;
-    }
-    
-    public function setMax($value) {
-        $this->max = intval($value);
-        return $this;
-    }
-    
-    public function getMax() {
-        return $this->max;
+
+    public function getRender() {
+        return $this->render;
     }
     
     
-    public function hasDefaultSettings() {
-        return ($this->min == self::AUTO && $this->max == self::AUTO);
-    }
+//    public function hasDefaultSettings() {
+//        return ($this->min == self::AUTO && $this->max == self::AUTO);
+//    }
 
     public function getDimension() {
         return $this->dimension;

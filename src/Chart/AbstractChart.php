@@ -63,7 +63,7 @@ TEMPLATE;
 
     protected function getElementParameters() {
         return [
-            '__TYPE__' => $this->getType(),
+            '__TYPE__' => $this->getChartName(),
             '__OPTIONS__' => $this->getOptions(),
             '__COLS__' => $this->getCols(),
             '__ROWS__' => $this->getRows(),
@@ -71,10 +71,10 @@ TEMPLATE;
     }
 
     protected function getCols() {
-        $cols = [ ['type' => 'number'] ];
+        $cols = [];
         foreach ($this->getData() as $data) {
             /** @var AbstractData $data */
-            $col = array_merge(['type' => $data->getType()], $data->getOptions());
+            $col = array_merge($data->getColumnOptions());
             $cols[] = $col;
         }
 
@@ -322,7 +322,7 @@ TEMPLATE;
 //    }
 
     
-    abstract protected function getType();
+    abstract protected function getChartName();
 //
 //    abstract protected function getDataUrlPart();
     

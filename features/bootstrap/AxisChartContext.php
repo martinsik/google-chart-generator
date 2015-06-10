@@ -4,6 +4,7 @@ use Behat\Behat\Context\BehatContext,
     Behat\Behat\Exception\PendingException,
     Behat\Gherkin\Node\TableNode;
 
+use GoogleChartGenerator\Axis;
 use GoogleChartGenerator\Mock\DummyAxisChart;
 use GoogleChartGenerator\Mock\DummySequentialDataCollection;
 
@@ -28,11 +29,11 @@ class AxisChartContext extends BehatContext {
         $this->expectedRangeX[] = [0, 4];
         $this->expectedRangeY[] = [2, 42];
         $this->expectedRows[] = [
-            [23, 31, 7],
-            [18, 42, 9],
-            [24, 34, 4],
-            [26, 31, 2],
-            [22, 36, 3],
+            [0, 23, 31, 7],
+            [1, 18, 42, 9],
+            [2, 24, 34, 4],
+            [3, 26, 31, 2],
+            [4, 22, 36, 3],
         ];
 
         // with missing values
@@ -40,18 +41,18 @@ class AxisChartContext extends BehatContext {
         $chart->addData(new DummySequentialDataCollection([15, 32, 52]));
         $chart->addData(new DummySequentialDataCollection([2 => 14, 3 => 19, 4 => 12, 6 => 13]));
         $chart->addData(new DummySequentialDataCollection([0 => 42, 1 => 40, 4 => 45]));
-        $chart->getAxis('y')->setMin(0);
+        $chart->getAxes(Axis::VERTICAL)[0]->setMin(0);
         $this->charts[] = $chart;
         $this->expectedRangeX[] = [0, 6];
         $this->expectedRangeY[] = [0, 52];
         $this->expectedRows[] = [
-            [15,   null, 42],
-            [32,   null, 40],
-            [52,   14,   null],
-            [null, 19,   null],
-            [null, 12,   45],
-            [null, null, null],
-            [null, 13,   null],
+            [0, 15,   null, 42],
+            [1, 32,   null, 40],
+            [2, 52,   14,   null],
+            [3, null, 19,   null],
+            [4, null, 12,   45],
+            [5, null, null, null],
+            [6, null, 13,   null],
         ];
     }
 

@@ -11,14 +11,11 @@ abstract class SequenceData extends AbstractData implements \ArrayAccess, \Count
      */
     protected $innerPosition = 0;
 
-    private $seriesOptions = [];
 
-    private $type;
-    
-    public function __construct($data = null, $options = [], $seriesOptions = [], $type = 'number') {
-        parent::__construct($data, $options ?: []);
-        $this->type = $type;
-        $this->seriesOptions = $seriesOptions ?: [];
+    public function __construct($data = null, $options = []) {
+        parent::__construct($data, array_merge([
+            'type' => 'number'
+        ], $options));
 //        $this->options = array_merge([
                 //'title'         => 'call setLabel($title) to change this text',
                 //'printStrategy' => self::PRINT_STRATEGY_AUTO,
@@ -77,20 +74,6 @@ abstract class SequenceData extends AbstractData implements \ArrayAccess, \Count
         return $this->type;
     }
 
-
-    public function setSeriesOption($name, $value) {
-        $this->seriesOptions[$name] = $value;
-    }
-
-    public function getSeriesOption($name) {
-        return $this->seriesOptions[$name];
-    }
-
-    public function getSeriesOptions() {
-        return $this->seriesOptions;
-    }
-
-    
     public function removeAll() {
         $this->data = [];
     }

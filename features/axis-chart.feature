@@ -8,4 +8,4 @@ Feature: axis-chart
     Then check their ranges cover all data sets
     And prepared rows cover entire range with missing values filled
 
-    Then default axes aren't rendered at all
+#    Then default axes aren't rendered at all

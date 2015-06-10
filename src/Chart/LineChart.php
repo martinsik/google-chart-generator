@@ -8,18 +8,17 @@ use GoogleChartGenerator\Font;
 use GoogleChartGenerator\Axis;
 
 class LineChart extends AbstractAxisChart {
-    
-    //protected $sparkline = false;
-    
+
+
     public function __construct(array $options = array()) {
-        $this->defaultOptions = array_merge(
-            $this->defaultOptions, [
-//                'sparkline' => false
-            ]
-        );
+//        $this->defaultOptions = array_merge(
+//            $this->defaultOptions, [
+////                'sparkline' => false
+//            ]
+//        );
         parent::__construct($options);
     }
-    
+
 //    public function addLine(Line $line) {
 //        $this->addData($line);
 //    }
@@ -32,13 +31,15 @@ class LineChart extends AbstractAxisChart {
 //        return $this->getOption('sparkline');
 //    }
 
-    protected function getType() {
+    protected function getChartName() {
         return 'line';
     }
-    
-    
-    
-    /**
+
+    protected function getRows() {
+        return parent::getRows();
+    }
+
+        /**
      * Generating URL parts
      */
 //    protected function getChartTypeUrlPart() {

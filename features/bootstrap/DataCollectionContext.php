@@ -14,7 +14,11 @@ use GoogleChartGenerator\Mock\DummySequentialDataCollection;
 class DataCollectionContext extends BehatContext {
 
     private $sets = [];
+    private $sets2 = [];
     private $expected = [];
+
+    private $expectedOptions = [];
+    private $expectedColumnOptions = [];
 
     /**
      * @Given /^example data sets with basic types$/
@@ -60,6 +64,7 @@ class DataCollectionContext extends BehatContext {
         $this->expected[] = [1 => 12, 5 => 42, 6 => 49, 3 => 32];
     }
 
+
     /**
      * @Then /^test basic data collections and manipulation with expected values$/
      */
@@ -71,4 +76,37 @@ class DataCollectionContext extends BehatContext {
         }
     }
 
+    /**
+     * @Given /^example option parameters$/
+     */
+    public function exampleOptionParameters()
+    {
+        $this->sets2[] = new DummyDataCollection([], ['type' => 'string', 'lineWidth' => '3']);
+        $this->expectedOptions[] = ['lineWidth' => '3'];
+        $this->expectedColumnOptions[] = ['type' => 'string'];
+
+        $this->sets2[] = new DummySequentialDataCollection([], ['lineWidth' => '2']);
+        $this->expectedOptions[] = ['lineWidth' => '2'];
+        $this->expectedColumnOptions[] = ['type' => 'number'];
+    }
+
+    /**
+     * @Then /^make sure these are properly filtered to only series options and only column options$/
+     */
+    public function makeSureTheseAreProperlyFilteredToOnlySeriesOptionsAndOnlyColumnOptions()
+    {
+        foreach ($this->sets2 as $index => $set) {
+            /** @var \GoogleChartGenerator\Chart\AbstractChart $set */
+            assertEquals($this->expectedOptions[$index], $set->getOptions());
+            assertEquals($this->expectedColumnOptions[$index], $set->getColumnOptions());
+        }
+    }
+
+    /**
+     * @Given /^only column options$/
+     */
+    public function onlyColumnOptions()
+    {
+        throw new PendingException();
+    }
 }

@@ -8,9 +8,11 @@ abstract class AbstractData {
     static $setNumber = 1;
     
     protected $options = [];
-    
+
     protected $data;
-    
+
+    private static $columnOptions = ['type', 'id', 'label', 'pattern'];
+
     /**
      * default colors used for data collection when set to auto
      * @var array
@@ -39,14 +41,16 @@ abstract class AbstractData {
     }
 
     public function getOptions() {
-        return $this->options;
+        return array_diff_key($this->options, array_flip(self::$columnOptions));
+    }
+
+    public function getColumnOptions() {
+        return array_intersect_key($this->options, array_flip(self::$columnOptions));
     }
 
     public function getData() {
         return $this->data;
     }
-
-    abstract public function getType();
 
     /*
     public function setPrintStrategy($strategy) {

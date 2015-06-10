@@ -8,3 +8,6 @@ Feature: data-collections
     Then create multiple sequential data sets
     Then test basic data collections and manipulation with expected values
 
+  Scenario:
+    Given example option parameters
+    Then make sure these are properly filtered to only series options and only column options

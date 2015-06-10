@@ -15,15 +15,22 @@ abstract class AbstractAxisChart extends AbstractChart {
     const STRATEGY_MAX = 'max';
     const STRATEGY_AVERAGE = 'average';
 
+    const DISCRETE = 'string';
+    const CONTINUOUS = 'number';
+    const DATE = 'date';
+
     private $axes = [];
+
+    private $mainAxisType = self::DISCRETE;
+
 
     public function __construct(array $options = array()) {
         parent::__construct($options);
 //        $yAxis =
 //        $yAxis->setMin(0);
 
-        $this->axes[] = new Axis(Axis::VERTICAL, ['label' => 'y']);
-        $this->axes[] = new Axis(Axis::HORIZONTAL, ['label' => 'x']);
+        $this->axes[] = new Axis(Axis::VERTICAL, ['title' => 'y']);
+        $this->axes[] = new Axis(Axis::HORIZONTAL, ['title' => 'x']);
 
 //        $this->defaultOptions = array_merge(
 //            $this->defaultOptions, [
@@ -41,7 +48,7 @@ abstract class AbstractAxisChart extends AbstractChart {
 //        list($minY, $maxY) = $this->getYDimensions();
 
         for ($i = $minX; $i <= $maxX; $i++) {
-            $row = [$i];
+            $row = [$this->getMainAxisType() == self::DISCRETE ? "$i" : $i];
             foreach ($this->getData() as $collection) {
                 /** @var SequenceData $collection */
                 $row[] = isset($collection[$i]) ? $collection[$i] : null;
@@ -51,14 +58,18 @@ abstract class AbstractAxisChart extends AbstractChart {
         return $rows;
     }
 
+    protected function getCols() {
+        return array_merge([['type' => $this->getMainAxisType()]], parent::getCols());
+    }
+
     public function getOptions() {
         $options = parent::getOptions();
         $series = [];
 
         foreach ($this->getData() as $index => $collection) {
             /** @var SequenceData $collection */
-            if ($collection->getSeriesOptions()) {
-                $series[$index] = $collection->getSeriesOptions();
+            if ($collection->getOptions()) {
+                $series[$index] = $collection->getOptions();
             }
         }
 
@@ -66,7 +77,35 @@ abstract class AbstractAxisChart extends AbstractChart {
             $options['series'] = $series;
         }
 
+        $vAxes = $this->_getAxesOptions(Axis::VERTICAL);
+        if ($vAxes) {
+            $options['vAxes'] = $vAxes;
+        }
+        $hAxes = $this->_getAxesOptions(Axis::HORIZONTAL);
+        if ($hAxes) {
+            $options['hAxes'] = $hAxes;
+        }
+
         return $options;
+    }
+
+    public function setMainAxisType($type) {
+        $this->mainAxisType = $type;
+        return $this;
+    }
+
+    public function getMainAxisType() {
+        return $this->mainAxisType;
+    }
+
+    private function _getAxesOptions($dimension) {
+        $axes = [];
+        foreach ($this->getAxes($dimension) as $axis) {
+            if ($axis->getRender()) {
+                $axes[] = $axis->getOptions();
+            }
+        }
+        return $axes;
     }
 
     public function addAxis(Axis $axis) {
@@ -274,7 +313,6 @@ abstract class AbstractAxisChart extends AbstractChart {
      * Get minimum and maximum values among all data collections for particular axis
      */
     protected function calculateAxisDimensions($dimension) {
-        
         $min = null;
         $max = null;
         foreach ($this->getAxes($dimension) as $axis) {
@@ -284,13 +322,13 @@ abstract class AbstractAxisChart extends AbstractChart {
 
             //if ($dimension == 'vertical' && ($axis->getPosition() == 'y' || $axis->getPosition() = 'right')) {
             foreach ($this->getData() as $collection) {
-                if ($axis->getMin() === Axis::AUTO) {
+                if ($axis->getOption('minValue', null) == null) {
                     $min = is_null($min) ? ($axis->isVertical() ? $collection->getMinY() : $collection->getMinX())
                                          : min(($axis->isVertical() ? $collection->getMinY() : $collection->getMinX()), $min);
                 } else {
                     $min = $axis->getMin();
                 }
-                if ($axis->getMax() === Axis::AUTO) {
+                if ($axis->getOption('minValue', null) == null) {
                     $max = is_null($max) ? ($axis->isVertical() ? $collection->getMaxY() : $collection->getMaxX())
                                          :  max(($axis->isVertical() ? $collection->getMaxY() : $collection->getMaxX()), $max);
                 } else {
