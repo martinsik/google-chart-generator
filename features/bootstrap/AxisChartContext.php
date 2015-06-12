@@ -12,9 +12,9 @@ use GoogleChartGenerator\Mock\DummySequentialDataCollection;
 class AxisChartContext extends BehatContext {
 
     private $charts = [];
-    private $expectedRange = [];
+    private $expectedRangeX = [];
     private $expectedRows = [];
-    private $expectedAxis = [];
+//    private $expectedAxis = [];
 
     /**
      * @Given /^charts with multiple data sets each with different ranges$/
@@ -27,7 +27,7 @@ class AxisChartContext extends BehatContext {
         $chart->addData(new DummySequentialDataCollection([7,   9,  4,  2,  3]));
         $this->charts[] = $chart;
         $this->expectedRangeX[] = [0, 4];
-        $this->expectedRangeY[] = [2, 42];
+//        $this->expectedRangeY[] = [2, 42];
         $this->expectedRows[] = [
             [0, 23, 31, 7],
             [1, 18, 42, 9],
@@ -41,10 +41,10 @@ class AxisChartContext extends BehatContext {
         $chart->addData(new DummySequentialDataCollection([15, 32, 52]));
         $chart->addData(new DummySequentialDataCollection([2 => 14, 3 => 19, 4 => 12, 6 => 13]));
         $chart->addData(new DummySequentialDataCollection([0 => 42, 1 => 40, 4 => 45]));
-        $chart->getAxes(Axis::VERTICAL)[0]->setMin(0);
+//        $chart->getAxes(Axis::VERTICAL)[0]->setMin(0);
         $this->charts[] = $chart;
         $this->expectedRangeX[] = [0, 6];
-        $this->expectedRangeY[] = [0, 52];
+//        $this->expectedRangeY[] = [0, 52];
         $this->expectedRows[] = [
             [0, 15,   null, 42],
             [1, 32,   null, 40],
@@ -53,6 +53,33 @@ class AxisChartContext extends BehatContext {
             [4, null, 12,   45],
             [5, null, null, null],
             [6, null, 13,   null],
+        ];
+
+        // with continuous main axis
+        $chart = new DummyAxisChart();
+        $chart->addData(new DummySequentialDataCollection([
+            2 => 42,
+            3 => 38,
+            7 => 45,
+            8 => 44,
+            10 => 41
+        ]));
+        $chart->addData(new DummySequentialDataCollection([
+            2 => 22,
+            3 => 24,
+            7 => 18,
+            8 => 20,
+            10 => 17
+        ]));
+        $chart->setMainAxisType(\GoogleChartGenerator\Chart\AbstractAxisChart::CONTINUOUS);
+        $this->charts[] = $chart;
+        $this->expectedRangeX[] = [2, 10];
+        $this->expectedRows[] = [
+            [2,  42, 22],
+            [3,  38, 24],
+            [7,  45, 18],
+            [8,  44, 20],
+            [10, 41, 17]
         ];
     }
 
@@ -64,7 +91,7 @@ class AxisChartContext extends BehatContext {
         foreach ($this->charts as $index => $chart) {
             /** @var DummyAxisChart $chart */
             assertEquals($this->expectedRangeX[$index], $chart->getXDimensions());
-            assertEquals($this->expectedRangeY[$index], $chart->getYDimensions());
+//            assertEquals($this->expectedRangeY[$index], $chart->getYDimensions());
         }
     }
 
@@ -78,7 +105,6 @@ class AxisChartContext extends BehatContext {
         foreach ($this->charts as $index => $chart) {
             /** @var DummyAxisChart $chart */
             $result = $method->invoke($chart);
-//            print_r($result);
             assertEquals($this->expectedRows[$index], $result);
         }
 

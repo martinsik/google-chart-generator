@@ -10,15 +10,6 @@ use GoogleChartGenerator\Axis;
 class LineChart extends AbstractAxisChart {
 
 
-    public function __construct(array $options = array()) {
-//        $this->defaultOptions = array_merge(
-//            $this->defaultOptions, [
-////                'sparkline' => false
-//            ]
-//        );
-        parent::__construct($options);
-    }
-
 //    public function addLine(Line $line) {
 //        $this->addData($line);
 //    }
@@ -35,9 +26,7 @@ class LineChart extends AbstractAxisChart {
         return 'line';
     }
 
-    protected function getRows() {
-        return parent::getRows();
-    }
+
 
         /**
      * Generating URL parts
@@ -132,60 +121,6 @@ class LineChart extends AbstractAxisChart {
     }
 
 
-    protected function getDataUrlPart() {
-        //$series = array();
-        $dataString = $this->getDataFormatSign() . ':';
-        $chartType = $this->getChartTypeUrlPart();
-        list($min, $max) = $this->getYDimensions();
-        $range = $max - $min;
-        
-        list($xmin, $xmax) = $this->getXDimensions();
-//        $xrange = $xmax - $xmin;
-//        if ($xmax > 61) {
-//            $this->setDataFormat(self::DATAFORMAT_TEXT);
-//        }
-        
-        //var_dump($chartType);
-        foreach ($this->getData() as $dataCollection) {
-            // check if the collection keys are in order
-            
-            $valuesString = $keysString = '';
-            $data = $this->getRevertX() ? array_reverse($dataCollection->getData()) : $dataCollection->getData();
-            
-            foreach ($data as $x => $value) {
-                if (!$dataCollection->isSequence() && $chartType == 'lxy') {
-                    if ($this->getDataFormat() == self::DATAFORMAT_TEXT) {
-                        $keysString .= $x . ',';
-                    } else {
-                        $keysString .= $this->encodeValue($x / $xmax);
-                    }
-                }
-                //$valuesString .= $dataCollection->applyPrintStrategy(($value - $min) * 100 / $range) . ',';
-                $valuesString .= $this->encodeValue(($value - $min) / $range);
-            }
-            
-           // if ($this->getDataFormat() == self::DATAFORMAT_TEXT) {
-            if ($keysString) {
-                $dataString .= trim($keysString, ',|');
-            } else {
-                $dataString .= $this->getDataFormat() == self::DATAFORMAT_TEXT ? '-1' : '_';
-            }
-            
-            //add dataset separator
-            $dataString .= $this->getDataFormat() == self::DATAFORMAT_TEXT ? '|' : ',';
-            
-            //}
-            $dataString .= trim($valuesString, ',') . ($this->getDataFormat() == self::DATAFORMAT_TEXT ? '|' : ',');
-            //$dataString .= ($keysString ? trim($keysString, ',') : '-1') . '|' . trim($valuesString, ',') . '|';
-            
-            //$series[] = array($keysString ? $keysString : '-1|', substr($valuesString, 0, -1));
-        }
-        
-        //$dataString = implode($this->getChartTypeUrlPart() == 'lxy' ? '|-1|' : '|', $series);
-        
-//        return trim($dataString, '|,');
-        
-    }
     
     
 }

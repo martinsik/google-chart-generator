@@ -3,64 +3,39 @@
 namespace GoogleChartGenerator\Chart;
 
 use GoogleChartGenerator\Chart\AbstractChart;
+use GoogleChartGenerator\Chart\PieChart\Arc;
+
 
 class PieChart extends AbstractChart {
     
-    public function __construct(array $options = array()) {
-        $this->defaultOptions = array_merge(
-            $this->defaultOptions,
-            array(
-                '3d'     => false,
-                'angle'  => 0,
-            )
-        );
-        parent::__construct($options);
-        
-    }
-    
-    public function set3d($bool) {
-        $this->options['3d'] = $bool;
-    }
-    
-    public function is3d() {
-        return $this->options['3d'];
-    }
-    
-    public function setOrientation($angle) {
-        $this->options['angle'] = $angle;
-    }
-    
-    public function getOrientation() {
-        return $this->options['angle'];
-    }
-    
-    protected function getChartTypeUrlPart() {
-        if ($this->is3d()) {
-            return 'p3';
+//    public function __construct(array $options = array()) {
+//        parent::__construct($options);
+//    }
+
+    public function addData($data) {
+        if (is_array($data)) {
+            foreach ($data as $arc) {
+                parent::addData($arc instanceof Arc ? $arc : new Arc($arc));
+            }
         } else {
-            return 'p';
+            parent::addData($data);
         }
     }
-    
-    protected function getOrientationUrlPart() {
-        return $this->options['angle'] ? $this->options['angle'] : false;
-    }
-    
-    protected function getDataUrlPart() {
-        $dataParts = array();
-        foreach ($this->getData() as $dataCollection) {
-            $dataParts[] = $dataCollection->getData();
+
+    public function getRows() {
+        $rows = [];
+        foreach ($this->data as $arc) {
+            $rows[] = $arc->getData();
         }
-        return 't:' . implode(',', $dataParts);
+        return $rows;
     }
-    
-    protected function getUrlParts() {
-        return array_merge(
-            parent::getUrlParts(),
-            array (
-                'chp' =>  $this->getOrientationUrlPart(),
-            )
-        );
+
+    protected function getCols() {
+        return [['type' => 'string', 'label' => 'Title'], ['type' => 'number', 'label' => 'Value']];
+    }
+
+    protected function getChartName() {
+        return 'pie';
     }
     
 }

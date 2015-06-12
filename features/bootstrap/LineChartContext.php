@@ -4,20 +4,14 @@ use Behat\Behat\Context\BehatContext;
 use GoogleChartGenerator\Chart\LineChart;
 use GoogleChartGenerator\Axis;
 
-include_once 'RenderHTMLTemplateMixin.php';
-
+require_once 'HTMLRenderableTrait.php';
 
 /**
  * Features context.
  */
-class LineChartContext extends BehatContext {
+class LineChartContext extends AbstractChartContext {
 
-    use RenderHTMLTemplateMixin;
-
-
-    private $charts = [];
-    private $expectedChart = [];
-
+    use HTMLRenderableTrait;
 
     /**
      * @Given /^a set of test data to create multiple line charts$/
@@ -29,7 +23,7 @@ class LineChartContext extends BehatContext {
         $chart->addData(new LineChart\Line([31, 27, 31, 28, 30], ['label' => 'Line #2']));
         $this->charts[] = $chart;
 
-        $this->expectedChart[] = <<<EXPECTED
+        $this->expected[] = <<<EXPECTED
 <google-chart
     type='line'
     options='{"title":"Test Chart #1"}'
@@ -48,7 +42,7 @@ EXPECTED;
 //        $chart->getAxisByTitle('y')->setMin(0);
         $this->charts[] = $chart;
 
-        $this->expectedChart[] = <<<EXPECTED
+        $this->expected[] = <<<EXPECTED
 <google-chart
     type='line'
     options='{"height":200,"width":300,"series":{"1":{"color":"#005500","lineDashStyle":[5,2],"pointSize":3,"lineWidth":1},"2":{"color":"black","lineWidth":4}}}'
@@ -71,7 +65,7 @@ EXPECTED;
         $chart->addData(new LineChart\Line([-310, 270, 301, 208, 300], ['label' => 'Line #2']));
         $this->charts[] = $chart;
 
-        $this->expectedChart[] = <<<EXPECTED
+        $this->expected[] = <<<EXPECTED
 <google-chart
     type='line'
     options='{"vAxes":[{"title":null,"format":"short"}],"hAxes":[{"title":"some title","gridlines":{"count":3}}]}'
@@ -79,38 +73,34 @@ EXPECTED;
     rows='[[0,1020,-310],[1,2040,270],[2,2000,301],[3,1800,208],[4,1060,300]]'>
 </google-chart>
 EXPECTED;
-    }
 
-    /**
-     * @Then /^compare line charts with expected values$/
-     */
-    public function compareLineChartsWithExpectedValues()
-    {
-        foreach ($this->charts as $index => $chart) {
-            /** @var $chart LineChart */
-            if (isset($this->expectedChart[$index])) {
-                assertEquals($this->expectedChart[$index], $chart->getElement());
-            } else {
-                var_dump($chart->getElement());
-            }
-        }
 
-    }
+        $chart = new LineChart(['title' => 'Test Continuous Chart']);
+        $chart->setMainAxisType(LineChart::CONTINUOUS);
+        $chart->addData(new LineChart\Line([
+            2 => 42,
+            5 => 38,
+            70 => 45,
+            80 => 44,
+            100 => 41
+        ]));
+        $chart->addData(new LineChart\Line([
+            2 => 22,
+            5 => 24,
+            70 => 18,
+            80 => 20,
+            100 => 17
+        ]));
+        $this->charts[] = $chart;
 
-    /**
-     * @Given /^manually check their results with expected HTML templates in "([^"]*)" as "([^"]*)"$/
-     */
-    public function manuallyCheckTheirResultsWithExpectedHtmlTemplatesInAs($dir, $filename)
-    {
-//        $expectHTML = [];
-        $actualHTML = [];
-        foreach ($this->charts as $index => $chart) {
-            /** @var $chart LineChart */
-            $actualHTML[] = $chart->getElement();
-        }
-
-        $this->render($dir, $filename, $actualHTML);
-
+        $this->expected[] = <<<EXPECTED
+<google-chart
+    type='line'
+    options='{"title":"Test Continuous Chart"}'
+    cols='[{"type":"number"},{"type":"number"},{"type":"number"}]'
+    rows='[[2,42,22],[5,38,24],[70,45,18],[80,44,20],[100,41,17]]'>
+</google-chart>
+EXPECTED;
     }
 
 }

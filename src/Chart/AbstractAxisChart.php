@@ -44,19 +44,32 @@ abstract class AbstractAxisChart extends AbstractChart {
 
     protected function getRows() {
         $rows = [];
+
         list($minX, $maxX) = $this->getXDimensions();
 //        list($minY, $maxY) = $this->getYDimensions();
 
-        for ($i = $minX; $i <= $maxX; $i++) {
-            $row = [$this->getMainAxisType() == self::DISCRETE ? "$i" : $i];
-            foreach ($this->getData() as $collection) {
-                /** @var SequenceData $collection */
-                $row[] = isset($collection[$i]) ? $collection[$i] : null;
+        if ($this->getMainAxisType() == self::DISCRETE) {
+            for ($i = $minX; $i <= $maxX; $i++) {
+                $rows[] = $this->getSingleRow($i);
             }
-            $rows[] = $row;
+        } else {
+            $data = $this->getData()[0];
+            foreach (array_keys($data->getData()) as $key) {
+                $rows[] = $this->getSingleRow($key);
+            }
         }
         return $rows;
     }
+
+    private function getSingleRow($i) {
+        $row = [$this->getMainAxisType() == self::DISCRETE ? "$i" : $i];
+        foreach ($this->getData() as $collection) {
+            /** @var SequenceData $collection */
+            $row[] = isset($collection[$i]) ? $collection[$i] : null;
+        }
+        return $row;
+    }
+
 
     protected function getCols() {
         return array_merge([['type' => $this->getMainAxisType()]], parent::getCols());

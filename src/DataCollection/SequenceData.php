@@ -70,9 +70,9 @@ abstract class SequenceData extends AbstractData implements \ArrayAccess, \Count
         }
     }*/
 
-    public function getType() {
-        return $this->type;
-    }
+//    public function getType() {
+//        return $this->type;
+//    }
 
     public function removeAll() {
         $this->data = [];
@@ -92,23 +92,23 @@ abstract class SequenceData extends AbstractData implements \ArrayAccess, \Count
         return max($keys);
     }
     
-    public function getMinY() {
-        return min($this->getData());
-    }
+//    public function getMinY() {
+//        return min($this->getData());
+//    }
+//
+//    public function getMaxY() {
+//        return max($this->getData());
+//    }
     
-    public function getMaxY() {
-        return max($this->getData());
-    }
-    
-    public function isSequence() {
-        $keys = $this->getKeys(); //array_keys($dataCollection);
-        if ($keys[count($keys) - 1] == count($keys) - 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
+//    public function isSequence() {
+//        $keys = $this->getKeys(); //array_keys($dataCollection);
+//        if ($keys[count($keys) - 1] == count($keys) - 1) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+//
     
     
     /**

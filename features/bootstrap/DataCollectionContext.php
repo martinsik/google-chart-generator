@@ -62,6 +62,7 @@ class DataCollectionContext extends BehatContext {
         $set->add(32, 3);
         $this->sets[] = $set;
         $this->expected[] = [1 => 12, 5 => 42, 6 => 49, 3 => 32];
+        
     }
 
 

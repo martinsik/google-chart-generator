@@ -11,6 +11,8 @@ class FeatureContext extends BehatContext {
         $this->useContext('data_collection_subcontext_alias', new DataCollectionContext());
         $this->useContext('axis_chart_subcontext_alias', new AxisChartContext());
         $this->useContext('line_chart_subcontext_alias', new LineChartContext());
+        $this->useContext('pie_chart_subcontext_alias', new PieChartContext());
+        $this->useContext('common_chart_subcontext_alias', new CommonChartContext());
     }
 
 }

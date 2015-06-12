@@ -7,7 +7,7 @@ use GoogleChartGenerator\Chart\AbstractAxisChart;
 
 class DummyAxisChart extends AbstractAxisChart {
 
-    public function getType() {
+    public function getChartName() {
         return 'dummy';
     }
 

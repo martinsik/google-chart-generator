@@ -9,7 +9,9 @@ abstract class AbstractChart {
     
     const DATAFORMAT_TEXT = 'text';
     const DATAFORMAT_SIMPLE_ENCODING = 'simple';
-    
+
+    private static $elmAttributes = ['elmWidth', 'elmHeight'];
+
     protected $encodingConsts = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     
     private $options = [];
@@ -89,41 +91,6 @@ TEMPLATE;
         }
         return $rows;
     }
-
-//    protected function getUrlParts() {
-//        return array(
-//            'cht'   => $this->getChartTypeUrlPart(),
-//            'chs'   => $this->getSizeUrlPart(),
-//            'chd'   => $this->getDataUrlPart(),
-//            'chtt'  => $this->getTitleUrlPart(),
-//            'chco'  => $this->getColorsUrlPart(),
-//            'chdlp' => $this->getLegendPositionUrlPart(),
-//            'chdl'  => $this->getLegendLabelsUrlPart(),
-//        );
-//    }
-        
-    public function renderUrl() {
-        $filteredParts = array();
-        $urlParts = $this->getUrlParts();
-        foreach ($urlParts as $key => $content) {
-            if ($content) {
-                $filteredParts[] = $key . '=' . $content;
-            }
-        }
-        return 'http://chart.googleapis.com/chart?' . implode('&', $filteredParts);
-    }
-    
-    public function render() {
-        return '<img src="' . $this->renderUrl() . '" width="' . $this->getSizeX() . '" height="' . $this->getSizeY() . '" alt="' . $this->getTitle() . '" />';
-    }
-    
-//    public function download($filename) {
-//        file_put_contents($filename, file_get_contents($this->renderUrl()));
-//    }
-    
-    public function debugUrl() {
-        return str_replace(array('?', '&'), array("\n    ?", "\n    &"), $this->renderUrl());
-    }
     
     /**
      * Add data to the chart
@@ -147,7 +114,20 @@ TEMPLATE;
     }
     
     public function getOptions() {
-        return $this->options;
+        return array_diff_key($this->options, array_flip(self::$elmAttributes));
+    }
+
+    public function getAttributes() {
+        $attrs = array_intersect_key($this->options, array_flip(self::$elmAttributes));
+        if (isset($attrs['elmWidth'])) {
+            $attrs['width'] = $attrs['elmWidth'];
+            unset($attrs['elmWidth']);
+        }
+        if (isset($attrs['elmHeight'])) {
+            $attrs['height'] = $attrs['elmHeight'];
+            unset($attrs['elmHeight']);
+        }
+        return $attrs;
     }
     
     /**
