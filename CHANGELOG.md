@@ -1,4 +1,8 @@
-### 2.0
+### 2.0.1
+
+Cleanup and readme fixes.
+
+### 2.0.0
 
 Added composer.json
 Switched to Polymer 1.0
