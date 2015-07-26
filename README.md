@@ -132,3 +132,11 @@ Get element HTML with `$chart->getElement()`.
 ```
 
 See all possible options for [column charts](https://developers.google.com/chart/interactive/docs/gallery/columnchart).
+
+## Tests
+
+All tests in this project are based on [behat](docs.behat.org/).
+
+```
+$ bin/behat
+```
