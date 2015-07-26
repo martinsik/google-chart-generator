@@ -1,6 +1,7 @@
 composer.phar
 composer.lock
 vendor/
+bower_components
 features/generated_html/line-chart.html
 features/generated_html/pie-chart.html
 features/generated_html/bar-chart.html

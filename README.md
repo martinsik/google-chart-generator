@@ -140,3 +140,9 @@ All tests in this project are based on [behat](docs.behat.org/).
 ```
 $ bin/behat
 ```
+
+Then manually check generated charts in `features/generated_html`
+
+## License
+
+Google Chart Generator is licensed under The MIT License.
