@@ -1,7 +1,10 @@
 composer.phar
+composer.lock
 vendor/
 features/generated_html/line-chart.html
 features/generated_html/pie-chart.html
+features/generated_html/bar-chart.html
+features/generated_html/column-chart.html
 
 # Commit your application's lock file http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file
 # You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file

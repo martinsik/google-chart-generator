@@ -21,10 +21,7 @@ class Axis {
     
     protected $dimension;
 
-//    protected $max = self::AUTO;
-//
-//    protected $min = self::AUTO;
-    
+
     public function __construct($dimension, $options = []) {
         if ($dimension != self::HORIZONTAL && $dimension != self::VERTICAL) {
             throw new \InvalidArgumentException();
@@ -42,20 +39,6 @@ class Axis {
         return (boolean) $this->auto;
     }
 
-    
-//    public function setPosition($position) {
-//        if (in_array($position, array('x', 'y', 't', 'r'))) {
-//            $this->position = $position;
-//            return $this;
-//        } else {
-//            throw new \InvalidArgumentException('Use only "x", "y", "t", "r" for axis position');
-//        }
-//    }
-//
-//    public function getPosition() {
-//        return $this->position;
-//    }
-
     public function getOption($key, $default = null) {
         return isset($this->options[$key]) ? $this->options[$key] : $default;
     }
@@ -69,25 +52,6 @@ class Axis {
         return $this->options;
     }
 
-
-//    public function setMin($value) {
-//        $this->min = intval($value);
-//        return $this;
-//    }
-//
-//    public function getMin() {
-//        return $this->min;
-//    }
-//
-//    public function setMax($value) {
-//        $this->max = intval($value);
-//        return $this;
-//    }
-//
-//    public function getMax() {
-//        return $this->max;
-//    }
-
     public function setRender($value) {
         $this->render = boolval($value);
         return $this;
@@ -96,11 +60,6 @@ class Axis {
     public function getRender() {
         return $this->render;
     }
-    
-    
-//    public function hasDefaultSettings() {
-//        return ($this->min == self::AUTO && $this->max == self::AUTO);
-//    }
 
     public function getDimension() {
         return $this->dimension;
@@ -113,13 +72,5 @@ class Axis {
     public function isHorizontal() {
         return $this->dimension == self::HORIZONTAL;
     }
-    
-    /*public function hasToPrint() {
-        if ($this->min == 0 && $this->max == 100) {
-            return $this->isEnabled();
-        } else {
-            return false;
-        }
-    }*/
     
 }

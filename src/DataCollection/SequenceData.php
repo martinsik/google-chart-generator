@@ -3,7 +3,7 @@
 namespace GoogleChartGenerator\DataCollection;
 
 
-abstract class SequenceData extends AbstractData implements \ArrayAccess, \Countable, \Iterator {
+class SequenceData extends AbstractData implements \ArrayAccess, \Countable, \Iterator {
 
     /**
      * inner pointer positon (used only when iterating data array)
@@ -16,20 +16,10 @@ abstract class SequenceData extends AbstractData implements \ArrayAccess, \Count
         parent::__construct($data, array_merge([
             'type' => 'number'
         ], $options));
-//        $this->options = array_merge([
-                //'title'         => 'call setLabel($title) to change this text',
-                //'printStrategy' => self::PRINT_STRATEGY_AUTO,
-//            ],
-//            $this->options
-//        );
-        
-//        if (!is_array($data) && $data) {
-//            $data = array($data);
-//        }
     }
     
     
-    public function add($value, $index = null) {
+    public function add($value, $index = null, $keepIndies = false) {
 //        if (is_array($value) && !is_null($index)) {
 //            throw new \InvalidArgumentException ('Use only add(array), add(array, index), add(value) or add(value, index).');
 //        }
@@ -37,8 +27,12 @@ abstract class SequenceData extends AbstractData implements \ArrayAccess, \Count
             if (!is_null($index)) {
                 $this->data = array_merge(array_slice($this->data, 0, $index), $value, array_slice($this->data, $index));
             } elseif ($this->data) {
-                foreach ($value as $v) {
-                    $this->data[] = $v;
+                if ($keepIndies) {
+                    foreach ($value as $key => $v) {
+                        $this->data[$key] = $v;
+                    }
+                } else {
+                    $this->data = array_merge($this->data, $value);
                 }
             } else {
                 $this->data = $value;
@@ -50,29 +44,6 @@ abstract class SequenceData extends AbstractData implements \ArrayAccess, \Count
         }
         return true;
     }
-
-//    public function getData(array $range = [], $fillEmpty = true) {
-//        if (!$range) {
-//            return $this->data;
-//        }
-//
-//        $out = [];
-//        for ($i = $range[0]; $i < $range[1]; $i++) {
-//            $out[$i] =
-//        }
-//    }
-    
-    /*public function getData() {
-        if ($this->getRevertX()) {
-            return array_reverse($this->data);
-        } else {
-            return $this->data;
-        }
-    }*/
-
-//    public function getType() {
-//        return $this->type;
-//    }
 
     public function removeAll() {
         $this->data = [];
@@ -91,26 +62,8 @@ abstract class SequenceData extends AbstractData implements \ArrayAccess, \Count
         $keys = array_keys($this->getData());
         return max($keys);
     }
-    
-//    public function getMinY() {
-//        return min($this->getData());
-//    }
-//
-//    public function getMaxY() {
-//        return max($this->getData());
-//    }
-    
-//    public function isSequence() {
-//        $keys = $this->getKeys(); //array_keys($dataCollection);
-//        if ($keys[count($keys) - 1] == count($keys) - 1) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-//
-    
-    
+
+
     /**
      * Implementation of ArrayAccess interface
      */

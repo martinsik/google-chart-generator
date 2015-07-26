@@ -5,8 +5,8 @@ trait HTMLRenderableTrait {
     protected function compareChartsWithExpectedValues()
     {
         foreach ($this->charts as $index => $chart) {
-            if (isset($this->expectedChart[$index])) {
-                assertEquals($this->expectedChart[$index], $chart->getElement());
+            if (isset($this->expected[$index])) {
+                assertEquals($this->expected[$index], $chart->getElement());
             } else {
                 var_dump($chart->getElement());
             }
@@ -33,7 +33,7 @@ trait HTMLRenderableTrait {
         @unlink($filePath);
         $html = file_get_contents($dir . DIRECTORY_SEPARATOR . '_template.html');
         $actualHtml = array_map(function($html) {
-            return '<div><div>' . $html . '</div><pre>' . htmlentities($html) . '</pre></div>';
+            return '<div><div>' . "\n" . $html . "\n" . '</div><pre>' . "\n" . htmlentities($html) . "\n" . '</pre></div>';
         }, $elements);
 
         $html = str_replace('__CONTENT__', implode('', $actualHtml), $html);

@@ -10,7 +10,7 @@ abstract class AbstractChart {
     const DATAFORMAT_TEXT = 'text';
     const DATAFORMAT_SIMPLE_ENCODING = 'simple';
 
-    private static $elmAttributes = ['elmWidth', 'elmHeight'];
+    private static $elmAttributes = ['width', 'height'];
 
     protected $encodingConsts = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     
@@ -23,7 +23,7 @@ abstract class AbstractChart {
     private $jsonEncodeFlags = 0;
 
     private $HTMLTemplate = <<<TEMPLATE
-<google-chart
+<google-chart style="__STYLES__"
     type='__TYPE__'
     options='__OPTIONS__'
     cols='__COLS__'
@@ -60,7 +60,7 @@ TEMPLATE;
         foreach ($this->getElementParameters() as $key => $values) {
             $params[$key] = is_array($values) ? json_encode($values, $this->jsonEncodeFlags) : $values;
         }
-        return str_replace(['__TYPE__', '__OPTIONS__', '__COLS__', '__ROWS__'], $params, $this->HTMLTemplate);
+        return str_replace(['__TYPE__', '__OPTIONS__', '__COLS__', '__ROWS__', '__STYLES__'], $params, $this->HTMLTemplate);
     }
 
     protected function getElementParameters() {
@@ -69,6 +69,7 @@ TEMPLATE;
             '__OPTIONS__' => $this->getOptions(),
             '__COLS__' => $this->getCols(),
             '__ROWS__' => $this->getRows(),
+            '__STYLES__' => $this->getFormattedStyles()
         ];
     }
 
@@ -117,17 +118,31 @@ TEMPLATE;
         return array_diff_key($this->options, array_flip(self::$elmAttributes));
     }
 
-    public function getAttributes() {
+    public function getStyles() {
         $attrs = array_intersect_key($this->options, array_flip(self::$elmAttributes));
-        if (isset($attrs['elmWidth'])) {
-            $attrs['width'] = $attrs['elmWidth'];
-            unset($attrs['elmWidth']);
+        $styles = [];
+        if (isset($attrs['width'])) {
+            $styles['width'] = $attrs['width'];
+//            unset($attrs['width']);
         }
-        if (isset($attrs['elmHeight'])) {
-            $attrs['height'] = $attrs['elmHeight'];
-            unset($attrs['elmHeight']);
+        if (isset($attrs['height'])) {
+            $styles['height'] = $attrs['height'];
+//            unset($attrs['height']);
         }
-        return $attrs;
+        return $styles;
+    }
+
+    public function getFormattedStyles() {
+        $styles = $this->getStyles();
+        if (!$styles) {
+            return '';
+        }
+
+        $str = '';
+        foreach ($styles as $key => $style) {
+            $str .= $key . ':' . $style . ';';
+        }
+        return $str;
     }
     
     /**

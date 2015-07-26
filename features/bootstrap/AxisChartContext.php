@@ -58,17 +58,17 @@ class AxisChartContext extends BehatContext {
         // with continuous main axis
         $chart = new DummyAxisChart();
         $chart->addData(new DummySequentialDataCollection([
-            2 => 42,
-            3 => 38,
-            7 => 45,
-            8 => 44,
+             2 => 42,
+             3 => 38,
+             7 => 45,
+             8 => 44,
             10 => 41
         ]));
         $chart->addData(new DummySequentialDataCollection([
-            2 => 22,
-            3 => 24,
-            7 => 18,
-            8 => 20,
+             2 => 22,
+             3 => 24,
+             7 => 18,
+             8 => 20,
             10 => 17
         ]));
         $chart->setMainAxisType(\GoogleChartGenerator\Chart\AbstractAxisChart::CONTINUOUS);
@@ -107,14 +107,6 @@ class AxisChartContext extends BehatContext {
             $result = $method->invoke($chart);
             assertEquals($this->expectedRows[$index], $result);
         }
-
-    }
-
-    /**
-     * @Then /^default axes aren\'t rendered at all$/
-     */
-    public function defaultAxesArenTRenderedAtAll()
-    {
 
     }
 

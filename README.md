@@ -1,75 +1,130 @@
-GoogleChartGenerator v0.1.4 - dev
-========================
+# Google Chart Generator
 
-Standalone library for easy implementation of [Google Chart API](http://code.google.com/apis/chart/).
+PHP 5.4+ wrapper around [Google Chart API](https://developers.google.com/chart/interactive/docs/) based on Polymer 1.0 component <google-chart>.
 
-How does it look like
----------------------
+## Installation
 
- - Line Chart
-   - [default setting](http://chart.googleapis.com/chart?cht=lxy&chs=300x200&chd=t:-1|83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7&chtt=GoogleChartBundle+with+default+settings&chxt=x,y&chxr=0,0,19|1,0,100&chco=ffa909&chg=25,33.33,3,3)
-   - [more lines, colors, widths, legend](http://chart.googleapis.com/chart?cht=lxy&chs=800x200&chd=t:-1|46,11,29,22,39,43,20,91,28,70,50,91,63,8,36,33,14,85,27,94|-1|58,55,40,44,58,60,58,54,48,59,47,47,47,47,40,59,45,44,46,46|-1|28,47,79,34,43,45,44,73,38,64,46,62,38,54,61,41,74,79,63,62|-1|40,56,66,45,76,63,63,76,72,62,45,28,50,27,75,23,54,42,21,46&chtt=Line+chart+generated+by+GoogleChartBundle&chdlp=b&chdl=grey+line|Line+%231|Line+%232|Line+%233&chxt=x,y&chxr=0,0,19&chco=eeeeee,ffa909,26348c,4fc400&chg=16.7,25,3,3&chls=1|4|3|2)
-   - [sparkline](https://chart.googleapis.com/chart?cht=ls&chs=180x80&chd=t:-1|8,10,23,13,18,5,3,48,58,43,67,48,85,100,95,10,3,2&chxr=0,0,17|1,0,60&chco=000088 "sparkline")
- - Pie Chart
-   - [default setting](http://chart.googleapis.com/chart?cht=p&chs=300x200&chd=t:40,60,30&chtt=Default+settings&chco=ffa909,26348c,4fc400)
-   - [more slices with legend](http://chart.googleapis.com/chart?cht=p&chs=300x200&chd=t:19,15,13,3&chtt=more+slices+with+legend&chco=ffa909,26348c,4fc400,e40613&chdl=Arc+%231|Arc+%232|Arc+%233|Arc+%234)
-   - [3D chart](http://chart.googleapis.com/chart?cht=p3&chs=300x200&chd=t:9,24,30,5&chtt=3D+chart&chco=ffa909,26348c,4fc400,e40613&chdl=Arc+%231|Arc+%232|Arc+%233|Arc+%234)
- - Bar Chart
-   - [default setting](http://chart.googleapis.com/chart?cht=bvg&chs=300x200&chd=t:25,100,37,17,6,100&chtt=Default+settings&chco=ffa909&chxt=x,y&chxr=0,0,5|1,0,65&chg=0,33.3,3,3)
-   - [stacked and vertical](http://chart.googleapis.com/chart?cht=bvs&chs=300x200&chd=t:48,24,30,45,37,11|52,46,47,9,53,50&chtt=stacked+and+vertical&chco=ffa909,26348c&chxt=x,y&chxr=0,0,5|1,0,177&chg=0,33.3,3,3)
-   - [stacked and horizontal](http://chart.googleapis.com/chart?cht=bhs&chs=300x210&chd=t:21,2,41,36,35,18|49,26,45,19,13,23|31,8,11,21,18,6&chtt=stacked+and+horizontal&chco=ffa909,26348c,4fc400&chxt=y,x&chxr=0,0,5|1,0,160&chg=25,0,3,3)
+Add `composer.json` dependency:
 
-Documentation
--------------
+```
+"require": {
+    "martinsik/google-chart-generator": "^2.0.0"
+}
+```
 
-For deeper information about this library visit [full GoogleChartGenerator documentation on my blog](http://www.martinsikora.com/googlechartgenerator "full GoogleChartGenerator documentation on my blog").
+Add `bower.json` dependency (Polymer 1.0):
 
-Installation
-------------
+```
+"dependencies": {
+    "google-chart": "GoogleWebComponents/google-chart#^1.0.0"
+}
+```
 
-###Download the Source Code
+Eventually, install `google-chart` Polymer component [as you want](https://www.polymer-project.org/1.0/docs/start/getting-the-code.html).
 
-From GitHub repository [git@github.com:martinsik/GoogleChartGenerator.git](https://github.com/martinsik/GoogleChartGenerator "git@github.com:martinsik/GoogleChartGenerator.git"):
+## Charts
 
-    git clone git@github.com:martinsik/GoogleChartGenerator.git _your_project_lib/GoogleChartGenerator
+Right now, four chart types are supported: [line](https://developers.google.com/chart/interactive/docs/gallery/linechart), [bar](https://developers.google.com/chart/interactive/docs/gallery/barchart), [column](https://developers.google.com/chart/interactive/docs/gallery/columnchart) and [pie](https://developers.google.com/chart/interactive/docs/gallery/piechart) charts.
 
-or download and unzip latest version from:
+The PHP wrapper is very liberal, it lets you set any Google Chart options via data or chart options. It doesn't have special methods for every possible option because there are are so many of them and it doesn't make sense to make wrappers for every single one of them.
 
-    https://github.com/martinsik/GoogleChartGenerator
+To use any chart you have to import Polymer 1.0 <google-chart> element and WebComponents polyfill first:
 
-Quick Tutorial
---------------
+```
+<!-- Polyfill Web Components support for older browsers -->
+<script src="/bower_components/webcomponentsjs/webcomponents.min.js"></script>
 
-defining a line chart:
+<!-- Import element -->
+<link rel="import" href="/bower_components/google-chart/google-chart.html">
+```
 
-    $chart = new LineChart(array('title' => 'Chart with default settings'));
-    $chart->addLine(new Line(array(83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7)));
+### Line chart
 
-rendering in a Twig view:
+Creating a line chart:
 
-    {# render <img> tag #}
-    {{ chart.render }}
+```php
+$chart = new LineChart(['title' => 'Test Chart #1']);
+$chart->addData(new SequenceData([12, 24, 20, 18, 16, 45, 23, 15, 65, 32], ['label' => 'Line #1']));
+$chart->addData(new SequenceData([31, 27, 31, 28, 30, 40, 52, 48, 78, 45], ['label' => 'Line #2']));
+```
 
-    {# or just get image url #}
-    {{ chart.renderUrl }}
-    
+Get element HTML with `$chart->getElement()`.
 
-or in a PHP view:
+```
+<google-chart style=""
+    type='line'
+    options='{"title":"Test Chart #1"}'
+    cols='[{"type":"string"},{"type":"number","label":"Line #1"},{"type":"number","label":"Line #2"}]'
+    rows='[["0",12,31],["1",24,27],["2",20,31],["3",18,28],["4",16,30],["5",45,40],["6",23,52],["7",15,48],["8",65,78],["9",32,45]]'>
+</google-chart>
+```
 
-    <!-- render <img> tag -->
-    <?php echo $chart->render(); ?>
+See all possible options for [line charts](https://developers.google.com/chart/interactive/docs/gallery/linechart).
 
-    <!-- or just get image url -->
-    <?php echo $chart->renderUrl(); ?>
+### Pie chart
 
-Generated HTML output is:
+Creating pie chart:
 
-    <!-- render <img> tag -->
-    <img src="http://chart.googleapis.com/chart?cht=lxy&chs=300x200&chd=t:-1|83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7&chtt=Chart+with+default+settings&chxt=x,y&chxr=0,0,19|1,0,100&chco=ffa909&chg=25,33.33,3,3" width="300" height="200" alt="GoogleChartBundle with default settings" />
+```
+$chart = new PieChart(['width' => '150px', 'height' => '150px', 'pieHole' => 0.5]);
+$chart->addData([new SingleData(40, 'Arc #1'), new SingleData(60, 'Arc #2'), new SingleData(80, 'Arc #3')]);
+```
 
-    <!-- or just get image url -->
-    http://chart.googleapis.com/chart?cht=lxy&chs=300x200&chd=t:-1|83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7&chtt=Chart+with+default+settings&chxt=x,y&chxr=0,0,19|1,0,100&chco=ffa909&chg=25,33.33,3,3
+Get element HTML with `$chart->getElement()`.
 
-and finally the image:
+```
+<google-chart style="width:150px;height:150px;"
+    type='pie'
+    options='{"pieHole":0.5}'
+    cols='[{"type":"string","label":"Title"},{"type":"number","label":"Value"}]'
+    rows='[["Arc #1",40],["Arc #2",60],["Arc #3",80]]'>
+</google-chart>
+```
 
-[show generated chart](http://chart.googleapis.com/chart?cht=lxy&chs=300x200&chd=t:-1|83,32,56,38,50,65,18,50,65,54,40,100,22,4,41,7&chtt=GoogleChartGenerator+with+default+settings&chxt=x,y&chxr=0,0,19|1,0,100&chco=ffa909&chg=25,33.33,3,3 "GoogleChartGenerator with default settings")
+See all possible options for [pie charts](https://developers.google.com/chart/interactive/docs/gallery/piechart).
+
+### Bar chart
+
+Creating bar chart:
+
+```
+$chart = new BarChart();
+$chart->addData(new SequenceData([20, 40, 30]));
+```
+
+Get element HTML with `$chart->getElement()`.
+
+```
+<google-chart style=""
+    type='bar'
+    options='[]'
+    cols='[{"type":"string"},{"type":"number"}]'
+    rows='[["0",20],["1",40],["2",30]]'>
+</google-chart>
+```
+
+See all possible options for [bar charts](https://developers.google.com/chart/interactive/docs/gallery/barchart).
+
+### Column chart
+
+Creating column chart:
+
+```
+$chart = new ColumnChart(['width' => '700px', 'isStacked' => true, 'legend' => ['position' => 'none']]);
+$chart->addData(new SequenceData(["a1" => 20, "a2" => 40, "a3" => 30], ['label' => 'aaa']));
+$chart->addData(new SequenceData(["a1" => 15, "a2" => 32, "a3" => 34], ['label' => 'bbb']));
+$chart->addData(new SequenceData(["a1" => 21, "a2" => 42, "a3" => 17], ['label' => 'ccc']));
+```
+
+Get element HTML with `$chart->getElement()`.
+
+```
+<google-chart style="width:700px;"
+    type='bar'
+    options='{"isStacked":true,"legend":{"position":"none"}}'
+    cols='[{"type":"string"},{"type":"number","label":"aaa"},{"type":"number","label":"bbb"},{"type":"number","label":"ccc"}]'
+    rows='[["a1",20,15,21],["a2",40,32,42],["a3",30,34,17]]'>
+</google-chart>
+```
+
+See all possible options for [column charts](https://developers.google.com/chart/interactive/docs/gallery/columnchart).

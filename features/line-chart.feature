@@ -5,5 +5,4 @@ Feature: line-chart
 
   Scenario:
     Given a set of test data to create multiple line charts
-    Then compare charts with expected values
-    And manually check their results with expected HTML templates in "./generated_html" as "line-chart.html"
+    Then compare line charts with expected values and manually check their results with expected HTML templates in "./generated_html" as "line-chart.html"

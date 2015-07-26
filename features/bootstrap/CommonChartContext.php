@@ -10,21 +10,17 @@ class CommonChartContext extends AbstractChartContext {
     public function aSetOfTestDummyCharts()
     {
         $chart = new DummyChart([
-            'width' => '100',
-            'height' => '150',
-            'elmWidth' => '300px',
-            'elmHeight' => '400px',
+            'width' => '300px',
+            'height' => '400px',
         ]);
         $this->charts[] = $chart;
         $this->expected[] = [
-            'options' => [
-                'width' => '100',
-                'height' => '150'
-            ],
-            'attributes' => [
+            'options' => [],
+            'styles' => [
                 'width' => '300px',
                 'height' => '400px',
             ],
+            'formattedStyle' => 'width:300px;height:400px;'
         ];
     }
 
@@ -35,10 +31,9 @@ class CommonChartContext extends AbstractChartContext {
     {
         foreach ($this->charts as $index => $chart) {
             assertEquals($this->expected[$index]['options'], $chart->getOptions());
-            assertEquals($this->expected[$index]['attributes'], $chart->getAttributes());
+            assertEquals($this->expected[$index]['styles'], $chart->getStyles());
+            assertEquals($this->expected[$index]['formattedStyle'], $chart->getFormattedStyles());
         }
     }
-
-
 
 }

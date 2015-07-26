@@ -12,7 +12,9 @@ class FeatureContext extends BehatContext {
         $this->useContext('axis_chart_subcontext_alias', new AxisChartContext());
         $this->useContext('line_chart_subcontext_alias', new LineChartContext());
         $this->useContext('pie_chart_subcontext_alias', new PieChartContext());
+        $this->useContext('bar_chart_subcontext_alias', new BarChartContext());
         $this->useContext('common_chart_subcontext_alias', new CommonChartContext());
+        $this->useContext('column_chart_subcontext_alias', new ColumnChartContext());
     }
 
 }

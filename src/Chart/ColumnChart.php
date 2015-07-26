@@ -3,12 +3,12 @@
 namespace GoogleChartGenerator\Chart;
 
 use GoogleChartGenerator\Chart\AbstractAxisChart;
-use GoogleChartGenerator\Axis;
+//use GoogleChartGenerator\Axis;
 
-class BarChart extends AbstractAxisChart {
+class ColumnChart extends AbstractAxisChart {
 
     protected function getChartName() {
-        return 'bar';
+        return 'column';
     }
 
 }

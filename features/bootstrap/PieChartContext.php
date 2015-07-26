@@ -2,6 +2,7 @@
 
 use Behat\Behat\Context\BehatContext;
 use GoogleChartGenerator\Chart\PieChart;
+use GoogleChartGenerator\DataCollection\SingleData;
 use GoogleChartGenerator\Axis;
 
 require_once 'HTMLRenderableTrait.php';
@@ -21,10 +22,10 @@ class PieChartContext extends AbstractChartContext
     {
         $chart = new PieChart(['legend' => 'none']);
         $chart->addData([20, 40, 30]);
-        $chart->addData(new PieChart\Arc(10));
+        $chart->addData(new SingleData(10));
         $this->charts[] = $chart;
         $this->expected[] = <<<EXPECTED
-<google-chart
+<google-chart style=""
     type='pie'
     options='{"legend":"none"}'
     cols='[{"type":"string","label":"Title"},{"type":"number","label":"Value"}]'
@@ -33,20 +34,30 @@ class PieChartContext extends AbstractChartContext
 EXPECTED;
 
 
-        $chart = new PieChart(['width' => '100px', 'height' => '100px']);
-        $chart->addData([new PieChart\Arc(40, 'Arc #1'), new PieChart\Arc(60, 'Arc #2'), new PieChart\Arc(80, 'Arc #3')]);
+        $chart = new PieChart(['width' => '150px', 'height' => '150px', 'pieHole' => 0.5]);
+        $chart->addData([new SingleData(40, 'Arc #1'), new SingleData(60, 'Arc #2'), new SingleData(80, 'Arc #3')]);
         $this->charts[] = $chart;
         $this->expected[] = <<<EXPECTED
-<google-chart
+<google-chart style="width:150px;height:150px;"
     type='pie'
-    options='{"width":"100px","height":"100px"}'
+    options='{"pieHole":0.5}'
     cols='[{"type":"string","label":"Title"},{"type":"number","label":"Value"}]'
     rows='[["Arc #1",40],["Arc #2",60],["Arc #3",80]]'>
 </google-chart>
 EXPECTED;
 
 
-
+        $chart = new PieChart(['is3D' => true, 'title' => '3D Pie Chart', 'width' => '500px', 'height' => '400px']);
+        $chart->addData([new SingleData(40, 'Arc #1'), new SingleData(60, 'Arc #2'), new SingleData(80, 'Arc #3')]);
+        $this->charts[] = $chart;
+        $this->expected[] = <<<EXPECTED
+<google-chart style="width:500px;height:400px;"
+    type='pie'
+    options='{"is3D":true,"title":"3D Pie Chart"}'
+    cols='[{"type":"string","label":"Title"},{"type":"number","label":"Value"}]'
+    rows='[["Arc #1",40],["Arc #2",60],["Arc #3",80]]'>
+</google-chart>
+EXPECTED;
     }
 
     /**
