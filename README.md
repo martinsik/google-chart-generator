@@ -1,6 +1,6 @@
 # Google Chart Generator
 
-PHP 5.4+ wrapper around [Google Chart API](https://developers.google.com/chart/interactive/docs/) based on Polymer 1.0 component <google-chart>.
+PHP 5.4+ wrapper around [Google Chart API](https://developers.google.com/chart/interactive/docs/) based on [Polymer 1.0 component `<google-chart>`](https://elements.polymer-project.org/elements/google-chart).
 
 ## Installation
 
@@ -60,6 +60,10 @@ Get element HTML with `$chart->getElement()`.
 ```
 
 See all possible options for [line charts](https://developers.google.com/chart/interactive/docs/gallery/linechart).
+
+The above code would result into this chart.
+
+![Example Line Chart](https://raw.githubusercontent.com/martinsik/google-chart-generator/master/doc/line-chart.png)
 
 ### Pie chart
 
