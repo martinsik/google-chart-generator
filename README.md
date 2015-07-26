@@ -50,7 +50,7 @@ $chart->addData(new SequenceData([31, 27, 31, 28, 30, 40, 52, 48, 78, 45], ['lab
 
 Get element HTML with `$chart->getElement()`.
 
-```
+```html
 <google-chart style=""
     type='line'
     options='{"title":"Test Chart #1"}'
@@ -69,14 +69,14 @@ The above code would result into this chart.
 
 Creating pie chart:
 
-```
+```php
 $chart = new PieChart(['width' => '150px', 'height' => '150px', 'pieHole' => 0.5]);
 $chart->addData([new SingleData(40, 'Arc #1'), new SingleData(60, 'Arc #2'), new SingleData(80, 'Arc #3')]);
 ```
 
 Get element HTML with `$chart->getElement()`.
 
-```
+```html
 <google-chart style="width:150px;height:150px;"
     type='pie'
     options='{"pieHole":0.5}'
@@ -91,14 +91,14 @@ See all possible options for [pie charts](https://developers.google.com/chart/in
 
 Creating bar chart:
 
-```
+```php
 $chart = new BarChart();
 $chart->addData(new SequenceData([20, 40, 30]));
 ```
 
 Get element HTML with `$chart->getElement()`.
 
-```
+```html
 <google-chart style=""
     type='bar'
     options='[]'
@@ -113,7 +113,7 @@ See all possible options for [bar charts](https://developers.google.com/chart/in
 
 Creating column chart:
 
-```
+```php
 $chart = new ColumnChart(['width' => '700px', 'isStacked' => true, 'legend' => ['position' => 'none']]);
 $chart->addData(new SequenceData(["a1" => 20, "a2" => 40, "a3" => 30], ['label' => 'aaa']));
 $chart->addData(new SequenceData(["a1" => 15, "a2" => 32, "a3" => 34], ['label' => 'bbb']));
@@ -122,7 +122,7 @@ $chart->addData(new SequenceData(["a1" => 21, "a2" => 42, "a3" => 17], ['label' 
 
 Get element HTML with `$chart->getElement()`.
 
-```
+```html
 <google-chart style="width:700px;"
     type='bar'
     options='{"isStacked":true,"legend":{"position":"none"}}'
