@@ -1,5 +1,7 @@
 # Google Chart Generator
 
+[![Build Status](https://travis-ci.org/martinsik/google-chart-generator.svg?branch=master)](https://travis-ci.org/martinsik/google-chart-generator)
+
 PHP 5.4+ wrapper around [Google Chart API](https://developers.google.com/chart/interactive/docs/) based on [Polymer 1.0 component `<google-chart>`](https://elements.polymer-project.org/elements/google-chart).
 
 ## Installation
