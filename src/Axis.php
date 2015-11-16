@@ -36,7 +36,7 @@ class Axis {
     }
 
     public function isAuto() {
-        return (boolean) $this->auto;
+        return \boolval($this->auto);
     }
 
     public function getOption($key, $default = null) {
@@ -53,7 +53,7 @@ class Axis {
     }
 
     public function setRender($value) {
-        $this->render = boolval($value);
+        $this->render = \boolval($value);
         return $this;
     }
 
