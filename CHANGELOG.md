@@ -1,4 +1,8 @@
-### 2.0.1
+### 2.0.3
+
+Added travis.yml
+
+### 2.0.2
 
 Cleanup and readme fixes.
 
